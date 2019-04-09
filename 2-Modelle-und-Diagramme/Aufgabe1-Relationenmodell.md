@@ -1,6 +1,6 @@
 # Veranstaltungen
 
-Veranstaltung
+Veranstaltung (id, )
 Seminar
 Oberseminar
 Problemseminar
