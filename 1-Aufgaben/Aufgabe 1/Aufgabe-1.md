@@ -17,4 +17,3 @@ Das bereitgestellte UML-Diagramm beschreibt die Mini-Welt der Abteilung Datenban
 - Relationenmodell, inklusive aller in der Aufgabenstellung geforderten Angaben
 - SQL-DDL-Skript zum Erzeugen der Datenbank
 - SQL-Skript/Java-Programm zum Laden der CSV-Daten in die Datenbank
-
