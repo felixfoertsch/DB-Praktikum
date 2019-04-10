@@ -10,17 +10,17 @@ CREATE TABLE klausur
 
 CREATE TABLE abschlussklausur
 (
-    id INTEGER REFERENCES klausur PRIMARY KEY
+    klausurId INTEGER REFERENCES klausur PRIMARY KEY
 );
 
 CREATE TABLE zwischenklausur
 (
-    id INTEGER REFERENCES klausur PRIMARY KEY
+    klausurId INTEGER REFERENCES klausur PRIMARY KEY
 );
 
 CREATE TABLE wiederholungsklausur
 (
-    id INTEGER REFERENCES abschlussklausur PRIMARY KEY
+    klausurId INTEGER REFERENCES abschlussklausur PRIMARY KEY
 );
 
 CREATE TABLE veranstaltung
@@ -34,37 +34,37 @@ CREATE TABLE veranstaltung
 
 CREATE TABLE seminar
 (
-    id INTEGER REFERENCES veranstaltung PRIMARY KEY
+    veranstaltungId INTEGER REFERENCES veranstaltung PRIMARY KEY
 );
 
 CREATE TABLE oberseminar
 (
-    id INTEGER REFERENCES seminar PRIMARY KEY
+    seminarId INTEGER REFERENCES seminar PRIMARY KEY
 );
 
 CREATE TABLE problemseminar
 (
-    id INTEGER REFERENCES seminar PRIMARY KEY
+    seminarId INTEGER REFERENCES seminar PRIMARY KEY
 );
 
 CREATE TABLE praktikum
 (
-    id INTEGER REFERENCES veranstaltung PRIMARY KEY
+    veranstaltungId INTEGER REFERENCES veranstaltung PRIMARY KEY
 );
 
 CREATE TABLE grundvorlesung
 (
-    id INTEGER REFERENCES veranstaltung PRIMARY KEY
+    veranstaltungId INTEGER REFERENCES veranstaltung PRIMARY KEY
 
 );
 CREATE TABLE spezialvorlesung
 (
-    id INTEGER REFERENCES veranstaltung PRIMARY KEY
+    veranstaltungId INTEGER REFERENCES veranstaltung PRIMARY KEY
 );
 
 CREATE TABLE uebung
 (
-    id               INTEGER REFERENCES veranstaltung PRIMARY KEY,
+    veranstaltungId  INTEGER REFERENCES veranstaltung PRIMARY KEY,
     grundvorlesungId INTEGER REFERENCES grundvorlesung
 );
 
@@ -110,7 +110,7 @@ CREATE TABLE studiengang
 
 CREATE TABLE abhaltung
 (
-    raumId          INTEGER REFERENCES raum NOT NULL,
+    raumId          INTEGER REFERENCES raum          NOT NULL,
     veranstaltungId INTEGER REFERENCES veranstaltung NOT NULL,
     wochentag       VARCHAR(100),
     zeit            TIME,
@@ -119,7 +119,7 @@ CREATE TABLE abhaltung
 
 CREATE TABLE aufsicht
 (
-    klausurId     INTEGER REFERENCES klausur NOT NULL,
+    klausurId     INTEGER REFERENCES klausur     NOT NULL,
     mitarbeiterId INTEGER REFERENCES mitarbeiter NOT NULL,
     PRIMARY KEY (klausurId, mitarbeiterId)
 );
@@ -134,7 +134,7 @@ CREATE TABLE bearbeitung
 
 CREATE TABLE betreut
 (
-    mitarbeiterId   INTEGER REFERENCES mitarbeiter NOT NULL,
+    mitarbeiterId   INTEGER REFERENCES mitarbeiter   NOT NULL,
     veranstaltungId INTEGER REFERENCES veranstaltung NOT NULL,
     PRIMARY KEY (mitarbeiterId, veranstaltungId)
 );
@@ -142,14 +142,14 @@ CREATE TABLE betreut
 CREATE TABLE ort
 (
     klausurId INTEGER REFERENCES klausur NOT NULL,
-    raumId  INTEGER REFERENCES raum NOT NULL,
+    raumId    INTEGER REFERENCES raum    NOT NULL,
     PRIMARY KEY (klausurId, raumId)
 );
 
 CREATE TABLE studium
 (
     studiengangId INTEGER REFERENCES studiengang NOT NULL,
-    studentId     INTEGER REFERENCES student NOT NULL,
+    studentId     INTEGER REFERENCES student     NOT NULL,
     imma          DATE,
     exma          DATE,
     semester      INTEGER,
@@ -169,8 +169,8 @@ CREATE TABLE studentTeilnahmeKlausur
 
 CREATE TABLE studentTeilnahmeVeranstaltung
 (
-    studentId       INTEGER REFERENCES student NOT NULL ,
-    veranstaltungId INTEGER REFERENCES veranstaltung NOT NULL ,
+    studentId       INTEGER REFERENCES student       NOT NULL,
+    veranstaltungId INTEGER REFERENCES veranstaltung NOT NULL,
     note            INTEGER,
     PRIMARY KEY (studentId, veranstaltungId)
 );
