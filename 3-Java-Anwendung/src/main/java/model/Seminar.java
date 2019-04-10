@@ -1,5 +1,5 @@
 package model;
 
-public class Seminar {
+public class Seminar extends Veranstaltung {
     Integer veranstaltungId;
 }
