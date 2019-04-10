@@ -1,5 +1,5 @@
 package model;
 
-public class Abschlussklausur {
+public class Abschlussklausur extends Klausur {
     Integer klausurId;
 }

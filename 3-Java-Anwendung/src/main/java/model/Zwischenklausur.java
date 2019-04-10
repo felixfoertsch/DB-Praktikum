@@ -1,5 +1,5 @@
 package model;
 
-public class Zwischenklausur {
+public class Zwischenklausur extends Klausur {
     Integer klausurId;
 }

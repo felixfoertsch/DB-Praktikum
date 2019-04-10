@@ -1,5 +1,5 @@
 package model;
 
-public class Grundvorlesung {
+public class Grundvorlesung extends Veranstaltung {
     Integer veranstaltungId;
 }
