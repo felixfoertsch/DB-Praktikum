@@ -1,11 +1,5 @@
-buildscript {
-    dependencies {
-        classpath 'com.h2database:h2:1.4.197'
-    }
-}
-
 plugins {
-    id 'java'
+    id "java"
     id "org.flywaydb.flyway" version "5.2.4"
 }
 
@@ -14,21 +8,18 @@ version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
-
-
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.apache.commons/commons-csv
-    compile group: 'org.apache.commons', name: 'commons-csv', version: '1.6'
+    compile "org.apache.commons:commons-csv:1.6" // https://mvnrepository.com/artifact/org.apache.commons/commons-csv
     compile "org.postgresql:postgresql:42.2.5"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile "junit:junit:4.12"
 }
 
 flyway {
-    url = 'jdbc:postgresql://localhost:5432/dbp'
-    user = 'dbp'
-    password = 'dbp'
+    url = "jdbc:postgresql://localhost:5432/dbp"
+    user = "dbp"
+    password = "dbp"
 }
