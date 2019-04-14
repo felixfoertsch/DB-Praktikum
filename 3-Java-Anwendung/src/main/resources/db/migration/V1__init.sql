@@ -23,7 +23,7 @@ CREATE TABLE veranstaltung (
     id            SERIAL PRIMARY KEY,
     name          VARCHAR(100),
     jahr          DATE,
-    semester      INTEGER,
+    semester      VARCHAR(100),
     maxTeilnehmer INTEGER
 );
 
@@ -75,7 +75,7 @@ CREATE TABLE aufgabe (
     id        SERIAL PRIMARY KEY,
     klausurId INTEGER REFERENCES klausur ON DELETE CASCADE,
     rang      INTEGER,
-    maxPunkte INTEGER
+    maxPunkte NUMERIC(2, 1)
 );
 
 CREATE TABLE raum (
@@ -108,7 +108,7 @@ CREATE TABLE aufsicht (
 CREATE TABLE bearbeitung (
     studentId INTEGER REFERENCES student ON DELETE CASCADE NOT NULL,
     aufgabeId INTEGER REFERENCES aufgabe ON DELETE CASCADE NOT NULL,
-    punkte    INTEGER,
+    punkte    NUMERIC(2, 1),
     PRIMARY KEY (studentId, aufgabeId)
 );
 
@@ -138,15 +138,15 @@ CREATE TABLE studentTeilnahmeKlausur (
     klausurId    INTEGER REFERENCES klausur ON DELETE RESTRICT NOT NULL,
     erschienen   BOOLEAN,
     entschuldigt BOOLEAN,
-    punkte       INTEGER,
-    note         INTEGER,
+    punkte       NUMERIC(2, 1),
+    note         NUMERIC(2, 1),
     PRIMARY KEY (studentId, klausurId)
 );
 
 CREATE TABLE studentTeilnahmeVeranstaltung (
     studentId       INTEGER REFERENCES student       ON DELETE CASCADE NOT NULL,
     veranstaltungId INTEGER REFERENCES veranstaltung ON DELETE RESTRICT NOT NULL,
-    note            INTEGER,
+    note            NUMERIC(2, 1),
     PRIMARY KEY (studentId, veranstaltungId)
 );
 

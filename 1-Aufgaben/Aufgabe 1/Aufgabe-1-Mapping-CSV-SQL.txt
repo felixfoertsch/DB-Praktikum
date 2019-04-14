@@ -1,0 +1,72 @@
+klausurpunkte (zB 15ss_cdm.csv) [;] (lists are , sep.)
+Matrikel > student.matrikelNr X
+KlausurNr ???
+Punkte > bearbeitung CHANGED (some values do not have a decimal point) (list x,y,z needs to be transferred to bearbeitung join table, logic is needed to match punkte to aufgabeId) ~
+
+klausur_aufgaben.csv
+KlausurNr ???
+aufgaben_nr > aufgabe.rang X (?)
+Punkte > aufgabe.maxPunkte CHANGED (digit after . is always 0)
+
+klausuren.csv
+datum > klausur.datum X (format may be problematic)
+name ???
+ort > ort (transfer to ort join table, most times there is NO list to imply m:n relationship, sometimes there is) ~
+uhrzeitVon > klausur.uhrzeitVon X (format may be problematic)
+Punktzahl100 ???
+Gesamtpunktzahl > klausur.gesamtpunktzahl X
+Aufsicht > aufsicht (transfer list "X, Y, Z" to aufsicht join table) ~
+VeranstKennung ???
+Typ > abschlussklausur (AK) / zwischenklausur (ZK) / wiederholungsklausur (WDH) (logic required) ~
+KlausurNr ???
+
+klausurerg.csv
+KlausurNr ???
+Typ > abschlussklausur (AK) / zwischenklausur (ZK) / wiederholungsklausur (WDH) (logic required) ~
+Matrikelnr > student.matrikelNr X
+NichtErschienen > studentTeilnahmeKlausur.erschienen (invers) X
+Entschuldigt > studentTeilnahmeKlausur.entschuldigt X
+Punkte > studentTeilnahmeKlausur.punkte CHANGED
+Note > studentTeilnahmeKlausur.note CHANGED
+
+semprakerg.csv
+VKennung ??? (maybe veranstaltung.name, but there is name in veranstaltungen.csv)
+Matrikelnr > student.matrikelNr X
+Note > studentTeilnahmeVeranstaltung.note CHANGED
+
+staff.csv
+vorname > mitarbeiter.vorname X
+nachname > mitarbeiter.nachname X
+titel ???
+raum > raum.bezeichnung X
+mail > mitarbeiter.email X
+
+student.csv
+Matrikel > student.matrikelNr X
+Nachname > student.nachname X
+Vorname > student.vorname X
+Email > student.uniMail X
+Studiengang > studiengang.name X
+Abschluss > studiengang.abschluss X
+Regelstudienzeit > studiengang.regelstudienzeit X
+Imma > studium.imma X (format may be problematic)
+Exma > studium.exma X (format may be problematic)
+Semester > studium.semester X
+
+veranstaltungen.csv
+typ > oberseminar & seminar (OS) / problemseminar & seminar (PS) / praktikum (P) / grundvorlesung (V) / spezialvorlesung (SV) / uebung (Ü) (logic required) ~
+name > veranstaltung.name X
+jahr > veranstaltung.jahr X
+semester > veranstaltung.semester CHANGED (to VARCHAR(100))
+raum > abhaltung (transfer to abhaltung join table, data implies 1:1 relationship) ~
+maxTeilnehmer > veranstaltung.maxTeilnehmer X
+dozent > betreut (transfer list "X, Y, Z" to betreut join table) ~
+zeit > abhaltung.zeit X (format may be problematic)
+tag > abhaltung.wochentag X
+kennung ???
+
+
+X = datatype works
+CHANGED = changed datatype (to NUMERIC(2, 1) if not noted otherwise)
+~ = datatype not applicable (join table, etc.)
+??? = I'm lost.
