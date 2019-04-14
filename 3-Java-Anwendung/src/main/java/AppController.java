@@ -1,8 +1,6 @@
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.commons.csv.CSVFormat;
@@ -17,7 +15,6 @@ public class AppController {
 
     @FXML
     public void importButtonClicked(Event e) throws Exception {
-        System.out.println("Button clicked");
         FileChooser fileChooser = new FileChooser();
 
         Stage newStage = new Stage();
@@ -26,9 +23,7 @@ public class AppController {
     }
 
     private void importCSV(File csv) throws Exception {
-
         Reader in = new FileReader(csv);
-
         switch (csv.getName()) {
             case "klausur_aufgaben.csv":
                 Iterable<CSVRecord> klausur_aufgaben = CSVFormat.RFC4180.withHeader(
