@@ -31,5 +31,4 @@ javafx {
     modules = ['javafx.controls', 'javafx.fxml']
 }
 
-
 mainClassName = 'App'
