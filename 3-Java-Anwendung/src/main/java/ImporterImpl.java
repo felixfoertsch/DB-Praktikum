@@ -2,8 +2,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import sun.jvm.hotspot.StackTrace;
-
 import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileReader;
@@ -25,7 +23,7 @@ public class ImporterImpl implements Importer {
 
     public void parseCSVandImportToDataSource(Collection<File> files, DataSource dataSource) {
 
-        for (File csv: files) {
+        for (File csv : files) {
             try {
                 switch (csv.getName()) {
                     case "klausur_aufgaben.csv":
@@ -53,7 +51,7 @@ public class ImporterImpl implements Importer {
                         throw new IllegalStateException("Unexpected value: " + csv.getName());
                 }
             } catch (Exception e) {
-                System.out.println();
+                System.out.println(e.toString());
             }
 
         }
