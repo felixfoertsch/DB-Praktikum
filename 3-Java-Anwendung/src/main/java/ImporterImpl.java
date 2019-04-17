@@ -21,6 +21,17 @@ public class ImporterImpl implements Importer {
         return csvFiles;
     }
 
+    public Collection<File> importArrayWrappedSingleCSV() {
+        Collection<File> csvFiles = new ArrayList<>();
+
+        FileChooser fileChooser = new FileChooser();
+
+        Stage newStage = new Stage();
+        csvFiles.add(fileChooser.showOpenDialog(newStage));
+
+        return csvFiles;
+    }
+
     public void parseCSVandImportToDataSource(Collection<File> files, DataSource dataSource) {
 
         for (File csv : files) {
@@ -48,7 +59,7 @@ public class ImporterImpl implements Importer {
                         importVeranstaltungen(csv, dataSource);
                         break;
                     default:
-                        throw new IllegalStateException("Unexpected value: " + csv.getName());
+                        importPunkte(csv, dataSource);
                 }
             } catch (Exception e) {
                 System.out.println(e.toString());
@@ -165,5 +176,9 @@ public class ImporterImpl implements Importer {
         for (CSVRecord record : veranstaltungen) {
             System.out.println(record.toString());
         }
+    }
+
+    private void importPunkte(File csv, DataSource dataSource) throws Exception {
+        String VLKenning = csv.getName();
     }
 }

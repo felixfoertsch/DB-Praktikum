@@ -8,7 +8,7 @@ import java.util.Collection;
 
 public class AppController {
     public Button importButton = null;
-    private Importer importer;
+    private ImporterImpl importer;
     private DataSource dataSource;
 
     public AppController() {
@@ -17,7 +17,7 @@ public class AppController {
 
     @FXML
     public void importButtonClicked(Event e) {
-        Collection<File> files = importer.importCSVtoMemory();
+        Collection<File> files = importer.importArrayWrappedSingleCSV();
         importer.parseCSVandImportToDataSource(files, dataSource);
     }
 
