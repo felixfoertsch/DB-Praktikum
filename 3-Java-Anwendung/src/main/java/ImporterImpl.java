@@ -1,8 +1,9 @@
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import model.*;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import javax.sql.DataSource;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
@@ -32,43 +33,50 @@ public class ImporterImpl implements Importer {
         return csvFiles;
     }
 
-    public void parseCSVandImportToDataSource(Collection<File> files, DataSource dataSource) {
+    public Universitaet parseCSVandCreateModel(Collection<File> files) {
+        Universitaet universitaet = new Universitaet();
+        ArrayList<Student> studenten = universitaet.getStudenten();
+        ArrayList<Mitarbeiter> mitarbeiter = universitaet.getMitarbeiter();
+        ArrayList<Veranstaltung> veranstaltungen = universitaet.getVeranstaltungen();
+        ArrayList<Klausur> klausuren = universitaet.getKlausuren();
 
         for (File csv : files) {
             try {
                 switch (csv.getName()) {
                     case "klausur_aufgaben.csv":
-                        importKlausurAufgaben(csv, dataSource);
+                        importKlausurAufgaben(csv);
                         break;
                     case "klausuren.csv":
-                        importKlausuren(csv, dataSource);
+                        importKlausuren(csv);
                         break;
                     case "klausurerg.csv":
-                        importKlausurErg(csv, dataSource);
+                        importKlausurErg(csv);
                         break;
                     case "semprakerg.csv":
-                        importSemPrakErg(csv, dataSource);
+                        importSemPrakErg(csv);
                         break;
                     case "staff.csv":
-                        importStaff(csv, dataSource);
+                        importStaff(csv);
                         break;
                     case "student.csv":
-                        importStudent(csv, dataSource);
+                        importStudent(csv, studenten);
                         break;
                     case "veranstaltungen.csv":
-                        importVeranstaltungen(csv, dataSource);
+                        importVeranstaltungen(csv, veranstaltungen, mitarbeiter);
                         break;
                     default:
-                        importPunkte(csv, dataSource);
+                        importPunkte(csv);
                 }
             } catch (Exception e) {
                 System.out.println(e.toString());
             }
 
         }
+
+        return universitaet;
     }
     
-    private void importKlausurAufgaben(File csv, DataSource dataSource) throws Exception {
+    private void importKlausurAufgaben(File csv) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> klausur_aufgaben = CSVFormat.RFC4180.withHeader(
                 "KlausurNr",
@@ -80,7 +88,7 @@ public class ImporterImpl implements Importer {
         }
     }
     
-    private void importKlausuren(File csv, DataSource dataSource) throws Exception {
+    private void importKlausuren(File csv) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> klausuren = CSVFormat.RFC4180.withHeader(
                 "datum",
@@ -94,12 +102,11 @@ public class ImporterImpl implements Importer {
                 "Typ",
                 "KlausurNr"
         ).parse(in);
-        for (CSVRecord record : klausuren) {
-            System.out.println(record.toString());
-        }
+
+
     }
     
-    private void importKlausurErg(File csv, DataSource dataSource) throws Exception {
+    private void importKlausurErg(File csv) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> klausurerg = CSVFormat.RFC4180.withHeader(
                 "KlausurNr",
@@ -115,7 +122,7 @@ public class ImporterImpl implements Importer {
         }
     }
     
-    private void importSemPrakErg(File csv, DataSource dataSource) throws Exception {
+    private void importSemPrakErg(File csv) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> semprakerg = CSVFormat.RFC4180.withHeader(
                 "VKennung",
@@ -127,7 +134,7 @@ public class ImporterImpl implements Importer {
         }
     }
     
-    private void importStaff(File csv, DataSource dataSource) throws Exception {
+    private void importStaff(File csv) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> staff = CSVFormat.RFC4180.withHeader(
                 "vorname",
@@ -141,13 +148,14 @@ public class ImporterImpl implements Importer {
         }
     }
     
-    private void importStudent(File csv, DataSource dataSource) throws Exception {
+    private void importStudent(File csv, ArrayList<Student> studenten) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> student = CSVFormat.RFC4180.withHeader(
                 "Matrikel",
                 "Nachname",
                 "Vorname",
                 "Email",
+                "Studiengang",
                 "Abschluss",
                 "Regelstudienzeit",
                 "Imma",
@@ -156,10 +164,14 @@ public class ImporterImpl implements Importer {
         ).parse(in);
         for (CSVRecord record : student) {
             System.out.println(record.toString());
+            Studiengang studiengang = new Studiengang(record.get("Studiengang"), record.get("Abschluss"), record.get("Regelstudienzeit"));
+            Studium studium = new Studium(record.get("Imma"), record.get("Exma"), record.get("Semester"), studiengang);
+            Student s = new Student(record.get("Matrikel"), record.get("Vorname"), record.get("Nachname"), record.get("Email"), studium);
+            studenten.add(s);
         }
     }
     
-    private void importVeranstaltungen(File csv, DataSource dataSource) throws Exception {
+    private void importVeranstaltungen(File csv, ArrayList<Veranstaltung> va, ArrayList<Mitarbeiter> ma) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> veranstaltungen = CSVFormat.RFC4180.withHeader(
                 "typ",
@@ -175,10 +187,42 @@ public class ImporterImpl implements Importer {
         ).parse(in);
         for (CSVRecord record : veranstaltungen) {
             System.out.println(record.toString());
+            Veranstaltung v;
+            switch (record.get("typ")) {
+                case "V":
+                    v = new Grundvorlesung();
+                    break;
+                case "SV":
+                    v = new Spezialvorlesung();
+                    break;
+                case "P":
+                    v = new Praktikum();
+                    break;
+                case "PS":
+                    v = new Problemseminar();
+                    break;
+                case "OS":
+                    v = new Oberseminar();
+                    break;
+                case "Ü":
+                    v = new Uebung();
+                    break;
+                default:
+                    v = new Veranstaltung();
+            }
+            Mitarbeiter mitarbeiter = new Mitarbeiter();
+            for (Mitarbeiter m : ma) {
+                if (m.getNachname().equals(record.get("name"))) {
+                    mitarbeiter = m;
+                    break;
+                }
+                mitarbeiter.setNachname(record.get("name"));
+            }
+            v.setData(record.get("name"), record.get("jahr"), record.get("semester"), record.get("maxTeilnehmer"), mitarbeiter);
         }
     }
 
-    private void importPunkte(File csv, DataSource dataSource) throws Exception {
+    private void importPunkte(File csv) throws Exception {
         String VLKenning = csv.getName();
     }
 }
