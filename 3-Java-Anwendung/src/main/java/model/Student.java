@@ -15,4 +15,8 @@ public class Student {
         this.uniMail = uniMail;
         this.studium = studium;
     }
+
+    public String getMatrikelNr() {
+        return matrikelNr;
+    }
 }

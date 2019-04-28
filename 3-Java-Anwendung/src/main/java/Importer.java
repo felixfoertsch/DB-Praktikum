@@ -2,8 +2,9 @@ import model.Universitaet;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Map;
 
 public interface Importer {
-    Collection<File> importCSVtoMemory();
-    Universitaet parseCSVandCreateModel(Collection<File> csv);
+    Map<String, File> importCSVtoMemory();
+    Universitaet parseCSVandCreateModel(Map<String, File> csv);
 }

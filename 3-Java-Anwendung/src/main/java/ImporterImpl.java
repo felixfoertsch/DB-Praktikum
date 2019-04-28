@@ -9,11 +9,13 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ImporterImpl implements Importer {
 
-    public Collection<File> importCSVtoMemory() {
-        Collection<File> csvFiles = new ArrayList<>();
+    public Map<String, File> importCSVtoMemory() {
+        Map<String, File> csvFiles = new HashMap<>();
         FileChooser fileChooser = new FileChooser();
 
         Stage newStage = new Stage();
@@ -34,46 +36,28 @@ public class ImporterImpl implements Importer {
     }
 
     // Reihenfolge: Student, Mitarbeiter
-    public Universitaet parseCSVandCreateModel(Collection<File> files) {
+    public Universitaet parseCSVandCreateModel(Map<String, File> files) {
         Universitaet universitaet = new Universitaet();
-        ArrayList<Student> studenten = universitaet.getStudenten();
-        ArrayList<Mitarbeiter> mitarbeiter = universitaet.getMitarbeiter();
-        ArrayList<Veranstaltung> veranstaltungen = universitaet.getVeranstaltungen();
-        ArrayList<Klausur> klausuren = universitaet.getKlausuren();
+        Map<String, Student> studenten = universitaet.getStudenten();
+        Map<String, Mitarbeiter> mitarbeiter = universitaet.getMitarbeiter();
+        Map<String, Veranstaltung> veranstaltungen = universitaet.getVeranstaltungen();
+        Map<String, Klausur> klausuren = universitaet.getKlausuren();
 
-        for (File csv : files) {
-            try {
-                switch (csv.getName()) {
-                    case "klausur_aufgaben.csv":
-                        importKlausurAufgaben(csv);
-                        break;
-                    case "klausuren.csv":
-                        importKlausuren(csv);
-                        break;
-                    case "klausurerg.csv":
-                        importKlausurErg(csv);
-                        break;
-                    case "semprakerg.csv":
-                        importSemPrakErg(csv);
-                        break;
-                    case "staff.csv":
-                        importStaff(csv, mitarbeiter);
-                        break;
-                    case "student.csv":
-                        importStudent(csv, studenten);
-                        break;
-                    //Abhängig von mitarbeitern, ggf Reihenfolge beachten
-                    case "veranstaltungen.csv":
-                        importVeranstaltungen(csv, veranstaltungen, mitarbeiter);
-                        break;
-                    default:
-                        importPunkte(csv);
-                }
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
+        try {
+            importStaff(files.get("staff.csv"), mitarbeiter);
+            importStudent(files.get("student.csv"), studenten);
 
+            importKlausuren(files.get("klausuren.csv"));
+            importKlausurAufgaben(files.get("klausur_aufgaben.csv"));
+            importKlausurErg(files.get("klausurerg.csv"));
+            importSemPrakErg(files.get("semprakerg.csv"));
+            importVeranstaltungen(files.get("veranstaltungen.csv"), veranstaltungen, mitarbeiter);
+            importPunkte();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            System.out.println("Import failed!");
         }
+
         return universitaet;
     }
     
@@ -89,7 +73,7 @@ public class ImporterImpl implements Importer {
         }
     }
     
-    private void importKlausuren(File csv) throws Exception {
+    private void importKlausuren(File csv, Map<String, Mitarbeiter> mitarbeiter) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> klausuren = CSVFormat.RFC4180.withHeader(
                 "datum",
@@ -104,7 +88,26 @@ public class ImporterImpl implements Importer {
                 "KlausurNr"
         ).parse(in);
 
-
+        for (CSVRecord record : klausuren) {
+            Klausur k;
+            switch (record.get("Typ")){
+                case "AK":
+                    k = new Abschlussklausur();
+                    break;
+                case "ZK":
+                    k = new Zwischenklausur();
+                    break;
+                case "WDH":
+                    k = new Wiederholungsklausur();
+                    break;
+                default:
+                    k = new Klausur();
+            }
+            System.out.println(record.toString());
+            k.setDatum(record.get("datum"));
+            k.setUhrzeitVon(record.get("uhrzeitVon"));
+            k.setGesamtpunktzahl(record.get("gesamtpunktzahl"));
+        }
     }
     
     private void importKlausurErg(File csv) throws Exception {
@@ -135,7 +138,7 @@ public class ImporterImpl implements Importer {
         }
     }
     
-    private void importStaff(File csv, ArrayList<Mitarbeiter> mitarbeiter) throws Exception {
+    private void importStaff(File csv, Map<String, Mitarbeiter> mitarbeiter) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> staff = CSVFormat.RFC4180.withHeader(
                 "vorname",
@@ -149,11 +152,11 @@ public class ImporterImpl implements Importer {
             Raum raum = new Raum(record.get("raum"));
             // Vorname und Nachname sind im Datensatz vertauscht
             Mitarbeiter m = new Mitarbeiter(record.get("nachname"), record.get("vorname"), record.get("mail"), record.get("titel"), raum);
-            mitarbeiter.add(m);
+            mitarbeiter.put(m.getNachname(), m);
         }
     }
     
-    private void importStudent(File csv, ArrayList<Student> studenten) throws Exception {
+    private void importStudent(File csv, Map<String, Student> studenten) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> student = CSVFormat.RFC4180.withHeader(
                 "Matrikel",
@@ -172,11 +175,11 @@ public class ImporterImpl implements Importer {
             Studiengang studiengang = new Studiengang(record.get("Studiengang"), record.get("Abschluss"), record.get("Regelstudienzeit"));
             Studium studium = new Studium(record.get("Imma"), record.get("Exma"), record.get("Semester"), studiengang);
             Student s = new Student(record.get("Matrikel"), record.get("Vorname"), record.get("Nachname"), record.get("Email"), studium);
-            studenten.add(s);
+            studenten.put(s.getMatrikelNr(), s);
         }
     }
     
-    private void importVeranstaltungen(File csv, ArrayList<Veranstaltung> veranstaltungen, ArrayList<Mitarbeiter> ma) throws Exception {
+    private void importVeranstaltungen(File csv, Map<String, Veranstaltung> veranstaltungen, Map<String, Mitarbeiter> ma) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> veranstaltungenCSV = CSVFormat.RFC4180.withHeader(
                 "typ",
@@ -215,20 +218,20 @@ public class ImporterImpl implements Importer {
                 default:
                     v = new Veranstaltung();
             }
-            ArrayList<Mitarbeiter> vaBetreuer = new ArrayList<>();
-            if (record.get("dozent").contains(",")) {
-
-            }
-            for (Mitarbeiter m : ma) {
-
-            }
-
-
-            v.setData(record.get("name"), record.get("jahr"), record.get("semester"), record.get("maxTeilnehmer"), vaBetreuer);
+            v.setData(record.get("name"), record.get("jahr"), record.get("semester"), record.get("maxTeilnehmer"), record.get("kennung"));
+            getMitarbeiter(record.get("dozent"), ma;
         }
     }
 
     private void importPunkte(File csv) throws Exception {
         String VLKenning = csv.getName();
+    }
+
+    private Collection<Mitarbeiter> getMitarbeiter(String header, Map<String, Mitarbeiter> mitarbeiterListe) {
+        // Take a string and look through mitarbeiterListe with the instantiated mitarbeiter objects to fetch the objects (lookup by nachname)
+        if (header.contains(",")) {
+            // "Junghanns, Christen" -> Split up String and return Collection with seperated objects
+        }
+        return
     }
 }

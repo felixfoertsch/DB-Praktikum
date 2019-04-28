@@ -1,33 +1,35 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Universitaet {
-    private ArrayList<Student> studenten;
-    private ArrayList<Mitarbeiter> mitarbeiter;
-    private ArrayList<Veranstaltung> veranstaltungen;
-    private ArrayList<Klausur> klausuren;
+    private Map<String, Student> studenten;
+    private Map<String, Mitarbeiter> mitarbeiter;
+    private Map<String, Veranstaltung> veranstaltungen;
+    private Map<String, Klausur> klausuren;
 
     public Universitaet() {
-        this.studenten = new ArrayList<>();
-        this.mitarbeiter = new ArrayList<>();
-        this.veranstaltungen = new ArrayList<>();
-        this.klausuren = new ArrayList<>();
+        this.studenten = new HashMap<>();
+        this.mitarbeiter = new HashMap<>();
+        this.veranstaltungen = new HashMap<>();
+        this.klausuren = new HashMap<>();
     }
 
-    public ArrayList<Student> getStudenten() {
+    public Map<String, Student> getStudenten() {
         return studenten;
     }
 
-    public ArrayList<Mitarbeiter> getMitarbeiter() {
+    public Map<String, Mitarbeiter> getMitarbeiter() {
         return mitarbeiter;
     }
 
-    public ArrayList<Veranstaltung> getVeranstaltungen() {
+    public Map<String, Veranstaltung> getVeranstaltungen() {
         return veranstaltungen;
     }
 
-    public ArrayList<Klausur> getKlausuren() {
+    public Map<String, Klausur> getKlausuren() {
         return klausuren;
     }
 
