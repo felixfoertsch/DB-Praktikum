@@ -6,6 +6,7 @@ import model.Universitaet;
 import javax.sql.DataSource;
 import java.io.File;
 import java.util.Collection;
+import java.util.Map;
 
 public class AppController {
     public Button importButton = null;
@@ -20,8 +21,8 @@ public class AppController {
 
     @FXML
     public void importButtonClicked(Event e) {
-        Collection<File> files = importer.importArrayWrappedSingleCSV();
-        importer.parseCSVandCreateModel(files);
+        Map<String, File> files = importer.importCSVtoMemory();
+        importer.parseCSVandImportToDataSource(files, dataSource);
     }
 
 }

@@ -1,3 +1,4 @@
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.*;
@@ -11,15 +12,41 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import javax.sql.DataSource;
+import java.io.File;
+import java.io.FileReader;
+import java.io.Reader;
+import java.util.*;
 
 public class ImporterImpl implements Importer {
 
     public Map<String, File> importCSVtoMemory() {
         Map<String, File> csvFiles = new HashMap<>();
-        FileChooser fileChooser = new FileChooser();
+
+        DirectoryChooser directoryChooser = new DirectoryChooser();
 
         Stage newStage = new Stage();
-        File selectedFile = fileChooser.showOpenDialog(newStage);
+        File path = directoryChooser.showDialog(newStage);
+
+        if (path != null) {
+            File[] listOfFiles = path.listFiles();
+
+            for (int i = 0; i < listOfFiles.length; i++) {
+                if (listOfFiles[i].isFile()) {
+                    System.out.println("Added file " + listOfFiles[i].getName());
+                    csvFiles.put(listOfFiles[i].getName(), listOfFiles[i]);
+                } else if (listOfFiles[i].isDirectory()) {
+                    System.out.println("Added directory " + listOfFiles[i].getName());
+                    csvFiles.put(listOfFiles[i].getName(), listOfFiles[i]);
+                }
+            }
+        } else {
+            System.out.println("Path is null.");
+        }
+
+        System.out.println(Arrays.toString(csvFiles.entrySet().toArray()));
+
+        //Map<String, File> kp = retrievePunkte(csvFiles.get("klausurpunkte"));
 
         return csvFiles;
     }
@@ -62,6 +89,66 @@ public class ImporterImpl implements Importer {
     }
     
     private void importKlausurAufgaben(File csv) throws Exception {
+    public Map<String, File> retrievePunkte(File folder) {
+
+        Map<String, File> punkte = new HashMap<>();
+
+        File[] listOfFiles = folder.listFiles();
+
+        if (folder != null) {
+
+            for (int i = 0; i < listOfFiles.length; i++) {
+                if (listOfFiles[i].isFile()) {
+                    System.out.println("Added file " + listOfFiles[i].getName());
+                    punkte.put(listOfFiles[i].getName(), listOfFiles[i]);
+                }
+            }
+        } else {
+            System.out.println("Path is null.");
+        }
+
+        System.out.println(Arrays.toString(punkte.entrySet().toArray()));
+
+        return punkte;
+    }
+
+    public void parseCSVandImportToDataSource(Map<String, File> files, DataSource dataSource) {
+
+        /*for (File csv : files) {
+            try {
+                switch (csv.getName()) {
+                    case "klausur_aufgaben.csv":
+                        importKlausurAufgaben(csv, dataSource);
+                        break;
+                    case "klausuren.csv":
+                        importKlausuren(csv, dataSource);
+                        break;
+                    case "klausurerg.csv":
+                        importKlausurErg(csv, dataSource);
+                        break;
+                    case "semprakerg.csv":
+                        importSemPrakErg(csv, dataSource);
+                        break;
+                    case "staff.csv":
+                        importStaff(csv, dataSource);
+                        break;
+                    case "student.csv":
+                        importStudent(csv, dataSource);
+                        break;
+                    case "veranstaltungen.csv":
+                        importVeranstaltungen(csv, dataSource);
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + csv.getName());
+                }
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+
+        }*/
+    }
+
+    private void importKlausurAufgaben(File csv, DataSource dataSource) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> klausur_aufgaben = CSVFormat.RFC4180.withHeader(
                 "KlausurNr",
