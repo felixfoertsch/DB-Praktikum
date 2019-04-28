@@ -1,6 +1,7 @@
 package model;
 
 import java.time.Year;
+import java.util.ArrayList;
 
 public class Veranstaltung {
     private Integer id;
@@ -8,9 +9,9 @@ public class Veranstaltung {
     private Year jahr;
     private String semester;
     private Integer maxTeilnehmer;
-    private Mitarbeiter mitarbeiter;
+    private ArrayList<Mitarbeiter> mitarbeiter;
 
-    public void setData(String name, String jahr, String semester, String maxTeilnehmer, Mitarbeiter mitarbeiter) {
+    public void setData(String name, String jahr, String semester, String maxTeilnehmer, ArrayList<Mitarbeiter> mitarbeiter) {
         this.name = name;
         this.jahr = Year.parse(jahr);
         this.semester = semester;

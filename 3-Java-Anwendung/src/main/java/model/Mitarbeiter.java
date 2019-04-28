@@ -1,10 +1,20 @@
 package model;
 
 public class Mitarbeiter {
-    Integer id;
-    String vorname;
-    String nachname;
-    String email;
+    private Integer id;
+    private String vorname;
+    private String nachname;
+    private String email;
+    private String titel;
+    private Raum raum;
+
+    public Mitarbeiter(String vorname, String nachname, String email, String titel, Raum raum) {
+        this.vorname = vorname;
+        this.nachname = nachname;
+        this.email = email;
+        this.titel = titel;
+        this.raum = raum;
+    }
 
     public void setVorname(String vorname) {
         this.vorname = vorname;

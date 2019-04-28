@@ -33,6 +33,7 @@ public class ImporterImpl implements Importer {
         return csvFiles;
     }
 
+    // Reihenfolge: Student, Mitarbeiter
     public Universitaet parseCSVandCreateModel(Collection<File> files) {
         Universitaet universitaet = new Universitaet();
         ArrayList<Student> studenten = universitaet.getStudenten();
@@ -56,11 +57,12 @@ public class ImporterImpl implements Importer {
                         importSemPrakErg(csv);
                         break;
                     case "staff.csv":
-                        importStaff(csv);
+                        importStaff(csv, mitarbeiter);
                         break;
                     case "student.csv":
                         importStudent(csv, studenten);
                         break;
+                    //Abhängig von mitarbeitern, ggf Reihenfolge beachten
                     case "veranstaltungen.csv":
                         importVeranstaltungen(csv, veranstaltungen, mitarbeiter);
                         break;
@@ -72,7 +74,6 @@ public class ImporterImpl implements Importer {
             }
 
         }
-
         return universitaet;
     }
     
@@ -134,7 +135,7 @@ public class ImporterImpl implements Importer {
         }
     }
     
-    private void importStaff(File csv) throws Exception {
+    private void importStaff(File csv, ArrayList<Mitarbeiter> mitarbeiter) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> staff = CSVFormat.RFC4180.withHeader(
                 "vorname",
@@ -145,6 +146,10 @@ public class ImporterImpl implements Importer {
         ).parse(in);
         for (CSVRecord record : staff) {
             System.out.println(record.toString());
+            Raum raum = new Raum(record.get("raum"));
+            // Vorname und Nachname sind im Datensatz vertauscht
+            Mitarbeiter m = new Mitarbeiter(record.get("nachname"), record.get("vorname"), record.get("mail"), record.get("titel"), raum);
+            mitarbeiter.add(m);
         }
     }
     
@@ -171,9 +176,9 @@ public class ImporterImpl implements Importer {
         }
     }
     
-    private void importVeranstaltungen(File csv, ArrayList<Veranstaltung> va, ArrayList<Mitarbeiter> ma) throws Exception {
+    private void importVeranstaltungen(File csv, ArrayList<Veranstaltung> veranstaltungen, ArrayList<Mitarbeiter> ma) throws Exception {
         Reader in = new FileReader(csv);
-        Iterable<CSVRecord> veranstaltungen = CSVFormat.RFC4180.withHeader(
+        Iterable<CSVRecord> veranstaltungenCSV = CSVFormat.RFC4180.withHeader(
                 "typ",
                 "name",
                 "jahr",
@@ -185,7 +190,7 @@ public class ImporterImpl implements Importer {
                 "tag",
                 "kennung"
         ).parse(in);
-        for (CSVRecord record : veranstaltungen) {
+        for (CSVRecord record : veranstaltungenCSV) {
             System.out.println(record.toString());
             Veranstaltung v;
             switch (record.get("typ")) {
@@ -210,15 +215,16 @@ public class ImporterImpl implements Importer {
                 default:
                     v = new Veranstaltung();
             }
-            Mitarbeiter mitarbeiter = new Mitarbeiter();
-            for (Mitarbeiter m : ma) {
-                if (m.getNachname().equals(record.get("name"))) {
-                    mitarbeiter = m;
-                    break;
-                }
-                mitarbeiter.setNachname(record.get("name"));
+            ArrayList<Mitarbeiter> vaBetreuer = new ArrayList<>();
+            if (record.get("dozent").contains(",")) {
+
             }
-            v.setData(record.get("name"), record.get("jahr"), record.get("semester"), record.get("maxTeilnehmer"), mitarbeiter);
+            for (Mitarbeiter m : ma) {
+
+            }
+
+
+            v.setData(record.get("name"), record.get("jahr"), record.get("semester"), record.get("maxTeilnehmer"), vaBetreuer);
         }
     }
 
