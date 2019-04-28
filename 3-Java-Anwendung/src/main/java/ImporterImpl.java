@@ -1,29 +1,74 @@
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+
 import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 public class ImporterImpl implements Importer {
 
-    public Collection<File> importCSVtoMemory() {
-        Collection<File> csvFiles = new ArrayList<>();
-        FileChooser fileChooser = new FileChooser();
+    public Map<String, File> importCSVtoMemory() {
+        Map<String, File> csvFiles = new HashMap<>();
+
+        DirectoryChooser directoryChooser = new DirectoryChooser();
 
         Stage newStage = new Stage();
-        File selectedFile = fileChooser.showOpenDialog(newStage);
+        File path = directoryChooser.showDialog(newStage);
+
+        if (path != null) {
+            File[] listOfFiles = path.listFiles();
+
+            for (int i = 0; i < listOfFiles.length; i++) {
+                if (listOfFiles[i].isFile()) {
+                    System.out.println("Added file " + listOfFiles[i].getName());
+                    csvFiles.put(listOfFiles[i].getName(), listOfFiles[i]);
+                } else if (listOfFiles[i].isDirectory()) {
+                    System.out.println("Added directory " + listOfFiles[i].getName());
+                    csvFiles.put(listOfFiles[i].getName(), listOfFiles[i]);
+                }
+            }
+        } else {
+            System.out.println("Path is null.");
+        }
+
+        System.out.println(Arrays.toString(csvFiles.entrySet().toArray()));
+
+        //Map<String, File> kp = retrievePunkte(csvFiles.get("klausurpunkte"));
 
         return csvFiles;
     }
 
-    public void parseCSVandImportToDataSource(Collection<File> files, DataSource dataSource) {
+    public Map<String, File> retrievePunkte(File folder) {
 
-        for (File csv : files) {
+        Map<String, File> punkte = new HashMap<>();
+
+        File[] listOfFiles = folder.listFiles();
+
+        if (folder != null) {
+
+            for (int i = 0; i < listOfFiles.length; i++) {
+                if (listOfFiles[i].isFile()) {
+                    System.out.println("Added file " + listOfFiles[i].getName());
+                    punkte.put(listOfFiles[i].getName(), listOfFiles[i]);
+                }
+            }
+        } else {
+            System.out.println("Path is null.");
+        }
+
+        System.out.println(Arrays.toString(punkte.entrySet().toArray()));
+
+        return punkte;
+    }
+
+    public void parseCSVandImportToDataSource(Map<String, File> files, DataSource dataSource) {
+
+        /*for (File csv : files) {
             try {
                 switch (csv.getName()) {
                     case "klausur_aufgaben.csv":
@@ -54,9 +99,9 @@ public class ImporterImpl implements Importer {
                 System.out.println(e.toString());
             }
 
-        }
+        }*/
     }
-    
+
     private void importKlausurAufgaben(File csv, DataSource dataSource) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> klausur_aufgaben = CSVFormat.RFC4180.withHeader(
@@ -68,7 +113,7 @@ public class ImporterImpl implements Importer {
             System.out.println(record.toString());
         }
     }
-    
+
     private void importKlausuren(File csv, DataSource dataSource) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> klausuren = CSVFormat.RFC4180.withHeader(
@@ -87,7 +132,7 @@ public class ImporterImpl implements Importer {
             System.out.println(record.toString());
         }
     }
-    
+
     private void importKlausurErg(File csv, DataSource dataSource) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> klausurerg = CSVFormat.RFC4180.withHeader(
@@ -103,7 +148,7 @@ public class ImporterImpl implements Importer {
             System.out.println(record.toString());
         }
     }
-    
+
     private void importSemPrakErg(File csv, DataSource dataSource) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> semprakerg = CSVFormat.RFC4180.withHeader(
@@ -115,7 +160,7 @@ public class ImporterImpl implements Importer {
             System.out.println(record.toString());
         }
     }
-    
+
     private void importStaff(File csv, DataSource dataSource) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> staff = CSVFormat.RFC4180.withHeader(
@@ -129,7 +174,7 @@ public class ImporterImpl implements Importer {
             System.out.println(record.toString());
         }
     }
-    
+
     private void importStudent(File csv, DataSource dataSource) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> student = CSVFormat.RFC4180.withHeader(
@@ -147,7 +192,7 @@ public class ImporterImpl implements Importer {
             System.out.println(record.toString());
         }
     }
-    
+
     private void importVeranstaltungen(File csv, DataSource dataSource) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> veranstaltungen = CSVFormat.RFC4180.withHeader(

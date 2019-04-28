@@ -1,8 +1,9 @@
 import javax.sql.DataSource;
 import java.io.File;
 import java.util.Collection;
+import java.util.Map;
 
 public interface Importer {
-    Collection<File> importCSVtoMemory();
-    void parseCSVandImportToDataSource(Collection<File> csv, DataSource dataSource);
+    Map<String, File> importCSVtoMemory();
+    void parseCSVandImportToDataSource(Map<String, File> csv, DataSource dataSource);
 }
