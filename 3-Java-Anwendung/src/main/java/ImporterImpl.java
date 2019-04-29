@@ -42,8 +42,26 @@ public class ImporterImpl implements Importer {
             System.out.println("Path is null.");
         }
         System.out.println(Arrays.toString(csvFiles.entrySet().toArray()));
-        //Map<String, File> kp = retrievePunkte(csvFiles.get("klausurpunkte"));
         return csvFiles;
+    }
+
+    /**
+     * Retrieves the klausurpunkte folder as a Map from the directory chooser.
+     * @param folder klausurpunkte folder
+     * @return <K: Filename, V: CSV file>
+     */
+    private Map<String, File> retrieveKlausurPunkteFolder(File folder) {
+        Map<String, File> punkte = new HashMap<>();
+        File[] listOfFiles = folder.listFiles();
+        assert listOfFiles != null;
+        for (File listOfFile : listOfFiles) {
+            if (listOfFile.isFile()) {
+                System.out.println("Add file " + listOfFile.getName());
+                punkte.put(listOfFile.getName(), listOfFile);
+            }
+        }
+        System.out.println(Arrays.toString(punkte.entrySet().toArray()));
+        return punkte;
     }
 
     /**
@@ -53,6 +71,7 @@ public class ImporterImpl implements Importer {
      */
     public Universitaet parseCSVandCreateModel(Map<String, File> files) {
         Universitaet universitaet = new Universitaet();
+        Map<String, File> klausurpunkte = retrieveKlausurPunkteFolder(files.get("klausurpunkte"));
 
         try {
             importStaff(files.get("staff.csv"), universitaet.getMitarbeiter(), universitaet.getRaeume());
@@ -62,12 +81,11 @@ public class ImporterImpl implements Importer {
             importVeranstaltungen(files.get("veranstaltungen.csv"), universitaet.getVeranstaltungen(), universitaet.getMitarbeiter(), universitaet.getRaeume());
             importKlausurErg(files.get("klausurerg.csv"), universitaet.getKlausuren(), universitaet.getStudenten());
             importSemPrakErg(files.get("semprakerg.csv"), universitaet.getVeranstaltungen(), universitaet.getStudenten());
-            //importPunkte();
+            importPunkte(klausurpunkte);
         } catch (Exception e) {
             System.out.println(e.toString());
             System.out.println("Import failed!");
         }
-
         return universitaet;
     }
 
@@ -341,26 +359,8 @@ public class ImporterImpl implements Importer {
             }
         }
     }
-    
-    private Map<String, File> retrievePunkte(File folder) {
-        Map<String, File> punkte = new HashMap<>();
-        File[] listOfFiles = folder.listFiles();
-        if (folder != null) {
-            for (File listOfFile : listOfFiles) {
-                if (listOfFile.isFile()) {
-                    System.out.println("Added file " + listOfFile.getName());
-                    punkte.put(listOfFile.getName(), listOfFile);
-                }
-            }
-        } else {
-            System.out.println("Path is null.");
-        }
-        System.out.println(Arrays.toString(punkte.entrySet().toArray()));
-        return punkte;
-    }
 
-    private void importPunkte(File csv) throws Exception {
-        String VLKenning = csv.getName();
+    private void importPunkte(Map<String, File> klausurpunkteFolder) throws Exception {
     }
 
     /**
