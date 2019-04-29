@@ -21,7 +21,10 @@ public class AppController {
     @FXML
     public void importButtonClicked(Event e) {
         Map<String, File> files = importer.importCSVtoMemory();
-        importer.parseCSVandCreateModel(files);
+        Universitaet universitaet = importer.parseCSVandCreateModel(files);
+        //TODO: Get following out of Controller
+        PersisterImpl persister = new PersisterImpl();
+        persister.persistUniversitaet(universitaet);
     }
 
 }

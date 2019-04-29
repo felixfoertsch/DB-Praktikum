@@ -19,4 +19,16 @@ public class Student {
     public String getMatrikelNr() {
         return matrikelNr;
     }
+
+    public String getVorname() {
+        return vorname;
+    }
+
+    public String getNachname() {
+        return nachname;
+    }
+
+    public String getUniMail() {
+        return uniMail;
+    }
 }
