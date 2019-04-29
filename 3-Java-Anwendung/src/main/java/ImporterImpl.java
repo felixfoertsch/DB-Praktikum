@@ -55,9 +55,8 @@ public class ImporterImpl implements Importer {
             importKlausuren(files.get("klausuren.csv"), universitaet.getMitarbeiter(), universitaet.getRaeume(), universitaet.getKlausuren());
             importKlausurAufgaben(files.get("klausur_aufgaben.csv"), universitaet.getKlausuren());
             importVeranstaltungen(files.get("veranstaltungen.csv"), universitaet.getVeranstaltungen(), universitaet.getMitarbeiter(), universitaet.getRaeume());
-
-            //importKlausurErg(files.get("klausurerg.csv"));
-            //importSemPrakErg(files.get("semprakerg.csv"));
+            importKlausurErg(files.get("klausurerg.csv"), universitaet.getKlausuren(), universitaet.getStudenten());
+            importSemPrakErg(files.get("semprakerg.csv"), universitaet.getVeranstaltungen(), universitaet.getStudenten());
             //importPunkte();
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -271,7 +270,7 @@ public class ImporterImpl implements Importer {
         }
     }
 
-    private void importKlausurErg(File csv) throws Exception {
+    private void importKlausurErg(File csv, Map<String, Klausur> klausurMap, Map<String, Student> studentMap) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> klausurergCSV = CSVFormat.RFC4180.withHeader(
                 "KlausurNr",
@@ -281,21 +280,46 @@ public class ImporterImpl implements Importer {
                 "Entschuldigt",
                 "Punkte",
                 "Note"
-        ).parse(in);
+        ).withSkipHeaderRecord().parse(in);
         for (CSVRecord record : klausurergCSV) {
             System.out.println(record.toString());
+            Klausur k = klausurMap.get(record.get("KlausurNr"));
+            Student s = studentMap.get(record.get("Matrikelnr"));
+            if (k == null || s == null) {
+                continue;
+            }
+            KlausurTeilnahme kt = new KlausurTeilnahme(
+                    k,
+                    record.get("Typ"),
+                    s,
+                    record.get("NichtErschienen"),
+                    record.get("Entschuldigt"),
+                    record.get("Punkte"),
+                    record.get("Note")
+            );
+            k.addKlausurTeilnahme(kt);
+            s.addKlausurTeilnahme(kt);
         }
     }
 
-    private void importSemPrakErg(File csv) throws Exception {
+    private void importSemPrakErg(File csv, Map<String, Veranstaltung> veranstaltungMap, Map<String, Student> studentMap) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> semprakergCSV = CSVFormat.RFC4180.withHeader(
                 "VKennung",
                 "Matrikelnr",
                 "Note"
-        ).parse(in);
+        ).withSkipHeaderRecord().parse(in);
         for (CSVRecord record : semprakergCSV) {
             System.out.println(record.toString());
+            Veranstaltung v = veranstaltungMap.get(record.get("VKennung"));
+            if (v instanceof Praktikum) {
+                Praktikum p = (Praktikum) v;
+                Student s = studentMap.get(record.get("Matrikelnr"));
+                if (s == null) { continue; }
+                PraktikumTeilnahme pt = new PraktikumTeilnahme(p, s, record.get("Note"));
+                p.addPraktikumTeilnahme(pt);
+                s.addPraktikumTeilnahme(pt);
+            }
         }
     }
 
