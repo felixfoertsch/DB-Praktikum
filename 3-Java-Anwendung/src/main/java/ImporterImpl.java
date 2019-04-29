@@ -15,37 +15,42 @@ import java.util.*;
 
 public class ImporterImpl implements Importer {
 
+    /**
+     * Interaction method. Displays a JavaFX directory chooser and loads all the CSV files into a Map with the file
+     * name as the key.
+     * @return HashMap<K: Filename, V: CSV file>
+     */
     public Map<String, File> importCSVtoMemory() {
         Map<String, File> csvFiles = new HashMap<>();
-
         DirectoryChooser directoryChooser = new DirectoryChooser();
-
         Stage newStage = new Stage();
         File path = directoryChooser.showDialog(newStage);
 
         if (path != null) {
             File[] listOfFiles = path.listFiles();
-
-            for (int i = 0; i < listOfFiles.length; i++) {
-                if (listOfFiles[i].isFile()) {
-                    System.out.println("Add file " + listOfFiles[i].getName());
-                    csvFiles.put(listOfFiles[i].getName(), listOfFiles[i]);
-                } else if (listOfFiles[i].isDirectory()) {
-                    System.out.println("Add directory " + listOfFiles[i].getName());
-                    csvFiles.put(listOfFiles[i].getName(), listOfFiles[i]);
+            assert listOfFiles != null;
+            for (File listOfFile : listOfFiles) {
+                if (listOfFile.isFile()) {
+                    System.out.println("Add file " + listOfFile.getName());
+                    csvFiles.put(listOfFile.getName(), listOfFile);
+                } else if (listOfFile.isDirectory()) {
+                    System.out.println("Add directory " + listOfFile.getName());
+                    csvFiles.put(listOfFile.getName(), listOfFile);
                 }
             }
         } else {
             System.out.println("Path is null.");
         }
-
         System.out.println(Arrays.toString(csvFiles.entrySet().toArray()));
-
         //Map<String, File> kp = retrievePunkte(csvFiles.get("klausurpunkte"));
-
         return csvFiles;
     }
 
+    /**
+     * Main method of the Importer. Imports a folder of CSV files into an University object that contains all the data.
+     * @param files folder containing the CSV files to be imported
+     * @return Universitaet object that contains all of the imported data, ready to be persisted
+     */
     public Universitaet parseCSVandCreateModel(Map<String, File> files) {
         Universitaet universitaet = new Universitaet();
 
@@ -69,8 +74,8 @@ public class ImporterImpl implements Importer {
     /**
      * A Mitarbeiter contains his associated Raum object.
      * @param csv staff.csv
-     * @param mitarbeiterMap
-     * @param raeumeMap
+     * @param mitarbeiterMap the map of the Mitarbeiter of the Universitaet
+     * @param raeumeMap the map of the Raum of the Universitaet
      * @throws Exception rethrows FileNotFoundException
      */
     private void importStaff(File csv, Map<String, Mitarbeiter> mitarbeiterMap, Map<String, Raum> raeumeMap) throws Exception {
@@ -95,7 +100,7 @@ public class ImporterImpl implements Importer {
     /**
      * A Student contains his associated Studiengang and Studium objects.
      * @param csv student.csv
-     * @param studentMap
+     * @param studentMap the map of the Student of the Universitaet
      * @throws Exception rethrows FileNotFoundException
      */
     private void importStudent(File csv, Map<String, Student> studentMap) throws Exception {
@@ -127,7 +132,7 @@ public class ImporterImpl implements Importer {
      * @param csv klausuren.csv
      * @param mitarbeiterMap the map of the Mitarbeiter of the Universitaet
      * @param raumMap the map of the Raum of the Universitaet
-     * @param klausurMap
+     * @param klausurMap the map of the Klausuren of the Universitaet
      * @throws Exception rethrows FileNotFoundException
      */
     private void importKlausuren(File csv, Map<String, Mitarbeiter> mitarbeiterMap, Map<String, Raum> raumMap, Map<String, Klausur> klausurMap) throws Exception {
@@ -270,6 +275,13 @@ public class ImporterImpl implements Importer {
         }
     }
 
+    /**
+     * Creates KlausurTeilnahme and puts them into its correspondig Klausur as well as Student.
+     * @param csv klausurerg.csv
+     * @param klausurMap the map of the Klausuren of the Universitaet
+     * @param studentMap the map of the Student of the Universitaet
+     * @throws Exception rethrows FileNotFoundException
+     */
     private void importKlausurErg(File csv, Map<String, Klausur> klausurMap, Map<String, Student> studentMap) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> klausurergCSV = CSVFormat.RFC4180.withHeader(
@@ -302,6 +314,13 @@ public class ImporterImpl implements Importer {
         }
     }
 
+    /**
+     * Creates PraktikumTeilnahme and puts them into its correspondig Praktikum as well as Student.
+     * @param csv semprakerg.csv
+     * @param veranstaltungMap the Map of the Veranstaltungen of the Universitaet
+     * @param studentMap the map of the Student of the Universitaet
+     * @throws Exception rethrows FileNotFoundException
+     */
     private void importSemPrakErg(File csv, Map<String, Veranstaltung> veranstaltungMap, Map<String, Student> studentMap) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> semprakergCSV = CSVFormat.RFC4180.withHeader(
@@ -322,8 +341,7 @@ public class ImporterImpl implements Importer {
             }
         }
     }
-
-
+    
     private Map<String, File> retrievePunkte(File folder) {
         Map<String, File> punkte = new HashMap<>();
         File[] listOfFiles = folder.listFiles();
