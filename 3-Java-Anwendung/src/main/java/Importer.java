@@ -1,8 +1,10 @@
-import javax.sql.DataSource;
+import model.Universitaet;
+
 import java.io.File;
 import java.util.Collection;
+import java.util.Map;
 
 public interface Importer {
-    Collection<File> importCSVtoMemory();
-    void parseCSVandImportToDataSource(Collection<File> csv, DataSource dataSource);
+    Map<String, File> importCSVtoMemory();
+    Universitaet parseCSVandCreateModel(Map<String, File> csv);
 }

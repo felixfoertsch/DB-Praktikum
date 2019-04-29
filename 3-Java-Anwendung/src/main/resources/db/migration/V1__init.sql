@@ -5,7 +5,7 @@ CREATE TABLE klausur
     grundvorlesungId   INTEGER,
     datum              DATE,
     uhrzeitVon         TIME,
-    gesamtpunktzahl    INTEGER
+    gesamtpunktzahl    NUMERIC(3,1)
 );
 
 CREATE TABLE abschlussklausur
@@ -91,7 +91,7 @@ CREATE TABLE aufgabe
     id        SERIAL PRIMARY KEY,
     klausurId INTEGER REFERENCES klausur ON DELETE CASCADE,
     rang      INTEGER,
-    maxPunkte NUMERIC(2, 1)
+    maxPunkte NUMERIC(3, 1)
 );
 
 CREATE TABLE raum
@@ -129,7 +129,7 @@ CREATE TABLE bearbeitung
 (
     studentId INTEGER REFERENCES student ON DELETE CASCADE NOT NULL,
     aufgabeId INTEGER REFERENCES aufgabe ON DELETE CASCADE NOT NULL,
-    punkte    NUMERIC(2, 1),
+    punkte    NUMERIC(3, 1),
     PRIMARY KEY (studentId, aufgabeId)
 );
 
@@ -163,7 +163,7 @@ CREATE TABLE studentTeilnahmeKlausur
     klausurId    INTEGER REFERENCES klausur ON DELETE RESTRICT NOT NULL,
     erschienen   BOOLEAN,
     entschuldigt BOOLEAN,
-    punkte       NUMERIC(2, 1),
+    punkte       NUMERIC(3, 1),
     note         NUMERIC(2, 1),
     PRIMARY KEY (studentId, klausurId)
 );
