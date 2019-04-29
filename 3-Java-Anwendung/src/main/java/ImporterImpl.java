@@ -28,10 +28,10 @@ public class ImporterImpl implements Importer {
 
             for (int i = 0; i < listOfFiles.length; i++) {
                 if (listOfFiles[i].isFile()) {
-                    System.out.println("Added file " + listOfFiles[i].getName());
+                    System.out.println("Add file " + listOfFiles[i].getName());
                     csvFiles.put(listOfFiles[i].getName(), listOfFiles[i]);
                 } else if (listOfFiles[i].isDirectory()) {
-                    System.out.println("Added directory " + listOfFiles[i].getName());
+                    System.out.println("Add directory " + listOfFiles[i].getName());
                     csvFiles.put(listOfFiles[i].getName(), listOfFiles[i]);
                 }
             }
@@ -58,7 +58,6 @@ public class ImporterImpl implements Importer {
 
             importKlausurErg(files.get("klausurerg.csv"));
             importSemPrakErg(files.get("semprakerg.csv"));
-
             //importPunkte();
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -83,7 +82,7 @@ public class ImporterImpl implements Importer {
                 "titel",
                 "raum",
                 "mail"
-        ).parse(in);
+        ).withSkipHeaderRecord().parse(in);
         for (CSVRecord record : staffCSV) {
             System.out.println(record.toString());
             Raum raum = new Raum(record.get("raum"));
@@ -113,7 +112,7 @@ public class ImporterImpl implements Importer {
                 "Imma",
                 "Exma",
                 "Semester"
-        ).parse(in);
+        ).withSkipHeaderRecord().parse(in);
         for (CSVRecord record : studentCSV) {
             System.out.println(record.toString());
             Studiengang studiengang = new Studiengang(record.get("Studiengang"), record.get("Abschluss"), record.get("Regelstudienzeit"));
@@ -145,7 +144,7 @@ public class ImporterImpl implements Importer {
                 "VeranstKennung",
                 "Typ",
                 "KlausurNr"
-        ).parse(in);
+        ).withSkipHeaderRecord().parse(in);
 
         for (CSVRecord record : klausurenCSV) {
             Klausur k;
@@ -182,13 +181,13 @@ public class ImporterImpl implements Importer {
      */
     private void importKlausurAufgaben(File csv, Map<String, Klausur> klausurMap) throws Exception {
         Reader in = new FileReader(csv);
-        Iterable<CSVRecord> klausur_aufgabenCSV = CSVFormat.RFC4180.withHeader(
+        Iterable<CSVRecord> klausur_aufgabenCSV = CSVFormat.DEFAULT.withHeader(
                 "KlausurNr",
                 "aufgaben_nr",
                 "Punkte"
-        ).parse(in);
-        Map<Integer, Aufgabe> aufgabenMap = new HashMap<>();
+        ).withSkipHeaderRecord().withDelimiter(';').parse(in);
         for (CSVRecord record : klausur_aufgabenCSV) {
+            System.out.println(record.toString());
             String klausurNr = record.get("KlausurNr");
             // klausur_aufgaben has an unnecessary extra underscore on the third column for Zwischenklausuren (15_ws_dbs1_zk)
             if (klausurNr.contains("zk")) {
@@ -223,7 +222,7 @@ public class ImporterImpl implements Importer {
                 "zeit",
                 "tag",
                 "kennung"
-        ).parse(in);
+        ).withSkipHeaderRecord().parse(in);
         for (CSVRecord record : veranstaltungenCSV) {
             System.out.println(record.toString());
             Veranstaltung v;

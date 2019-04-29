@@ -12,8 +12,15 @@ public class Studium {
 
     public Studium(String imma, String exma, String semester, Studiengang studiengang) {
         this.imma = Year.parse(imma);
-        this.exma = Year.parse(exma);
+        this.exma = parseExma(exma);
         this.semester = Integer.valueOf(semester);
         this.studiengang = studiengang;
+    }
+
+    private Year parseExma(String exma) {
+        if (exma.equals("NA")) {
+            return null;
+        }
+        return Year.parse(exma);
     }
 }

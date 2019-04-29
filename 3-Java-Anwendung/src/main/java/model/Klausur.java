@@ -1,9 +1,13 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Klausur {
@@ -25,7 +29,7 @@ public class Klausur {
     public void setData(String name, String datum, String uhrzeitVon, String gesamtpunktzahl, String punktzahl100, String vaKennung, String klausurNr, Collection<Mitarbeiter> aufsichten, Collection<Raum> orte){
         this.aufgaben = new HashMap<>();
         this.name = name;
-        this.datum = LocalDate.parse(datum);
+        this.datum = LocalDate.parse(datum, getLocalDateFormatter());
         this.uhrzeitVon = LocalTime.parse(uhrzeitVon);
         this.gesamtpunktzahl = Double.valueOf(gesamtpunktzahl);
         this.punktzahl100 = Double.valueOf(punktzahl100);
@@ -45,5 +49,9 @@ public class Klausur {
 
     public String generateKey() {
         return klausurNr;
+    }
+
+    private DateTimeFormatter getLocalDateFormatter() {
+        return DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.GERMAN);
     }
 }
