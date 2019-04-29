@@ -56,8 +56,8 @@ public class ImporterImpl implements Importer {
             importKlausurAufgaben(files.get("klausur_aufgaben.csv"), universitaet.getKlausuren());
             importVeranstaltungen(files.get("veranstaltungen.csv"), universitaet.getVeranstaltungen(), universitaet.getMitarbeiter(), universitaet.getRaeume());
 
-            importKlausurErg(files.get("klausurerg.csv"));
-            importSemPrakErg(files.get("semprakerg.csv"));
+            //importKlausurErg(files.get("klausurerg.csv"));
+            //importSemPrakErg(files.get("semprakerg.csv"));
             //importPunkte();
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -196,6 +196,9 @@ public class ImporterImpl implements Importer {
                 klausurNr = sb.toString();
             }
             Aufgabe aufgabe = new Aufgabe(record.get("aufgaben_nr"), record.get("Punkte"));
+            if (klausurMap.get(klausurNr) == null) {
+                continue;
+            }
             klausurMap.get(klausurNr).addAufgabe(aufgabe);
         }
     }

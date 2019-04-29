@@ -36,7 +36,7 @@ public class Veranstaltung {
         this.jahr = Year.parse(jahr);
         this.semester = semester;
         this.raum = raum;
-        this.zeit = LocalTime.parse(zeit);
+        this.zeit = parseTime(zeit);
         this.tag = convertGerWeekDay(tag);
         this.maxTeilnehmer = Integer.valueOf(maxTeilnehmer);
         this.kennung = kennung;
@@ -58,6 +58,12 @@ public class Veranstaltung {
         return name;
     }
 
+    private LocalTime parseTime(String zeit) {
+        if (zeit.equals("NULL")) {
+            return null;
+        }
+        return LocalTime.parse(zeit);
+    }
     private DayOfWeek convertGerWeekDay(String tag) {
         DayOfWeek day;
         switch (tag) {
