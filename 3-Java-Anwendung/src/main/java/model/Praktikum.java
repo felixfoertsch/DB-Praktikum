@@ -1,5 +1,5 @@
 package model;
 
 public class Praktikum extends Veranstaltung {
-    Integer veranstaltungId;
+    private Integer veranstaltungId;
 }

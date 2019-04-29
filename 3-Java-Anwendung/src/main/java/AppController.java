@@ -11,7 +11,6 @@ import java.util.Map;
 public class AppController {
     public Button importButton = null;
     private ImporterImpl importer;
-    private DataSource dataSource;
     private Universitaet universitaet;
 
     public AppController() {
@@ -22,7 +21,7 @@ public class AppController {
     @FXML
     public void importButtonClicked(Event e) {
         Map<String, File> files = importer.importCSVtoMemory();
-        importer.parseCSVandImportToDataSource(files, dataSource);
+        importer.parseCSVandCreateModel(files);
     }
 
 }
