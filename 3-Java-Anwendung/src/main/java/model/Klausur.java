@@ -19,8 +19,8 @@ public class Klausur {
     private Double gesamtpunktzahl;
     private Double punktzahl100;
     private String vaKennung;
-    String typ;
-    String klausurNr;
+    private String typ;
+    private String klausurNr;
     private Collection<Mitarbeiter> aufsichten;
     private Collection<Raum> orte;
     private Map<Integer, Aufgabe> aufgaben;
@@ -46,7 +46,7 @@ public class Klausur {
     }
 
     public void addAufgabe(Aufgabe aufgabe) {
-        aufgaben.put(aufgabe.aufgabenNr, aufgabe);
+        aufgaben.put(aufgabe.getAufgabenNr(), aufgabe);
     }
 
     public void addKlausurTeilnahme(KlausurTeilnahme kt) {
@@ -54,6 +54,18 @@ public class Klausur {
     }
 
     public String generateKey() {
+        return klausurNr;
+    }
+
+    public Aufgabe getAufgabeByIndex(Integer index) {
+        return aufgaben.get(index);
+    }
+
+    public String getTyp() {
+        return typ;
+    }
+
+    public String getKlausurNr() {
         return klausurNr;
     }
 }

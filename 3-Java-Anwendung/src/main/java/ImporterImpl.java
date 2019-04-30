@@ -81,7 +81,7 @@ public class ImporterImpl implements Importer {
             importVeranstaltungen(files.get("veranstaltungen.csv"), universitaet.getVeranstaltungen(), universitaet.getMitarbeiter(), universitaet.getRaeume());
             importKlausurErg(files.get("klausurerg.csv"), universitaet.getKlausuren(), universitaet.getStudenten());
             importSemPrakErg(files.get("semprakerg.csv"), universitaet.getVeranstaltungen(), universitaet.getStudenten());
-            importPunkte(klausurpunkte);
+            importPunkte(klausurpunkte, universitaet.getKlausuren(), universitaet.getStudenten());
         } catch (Exception e) {
             System.out.println(e.toString());
             System.out.println("Import failed!");
@@ -212,12 +212,13 @@ public class ImporterImpl implements Importer {
             System.out.println(record.toString());
             String klausurNr = record.get("KlausurNr");
             // klausur_aufgaben has an unnecessary extra underscore on the third column for Zwischenklausuren (15_ws_dbs1_zk)
+            // we remove this underscore here
             if (klausurNr.contains("zk")) {
                 StringBuilder sb = new StringBuilder(klausurNr);
                 sb.deleteCharAt(2);
                 klausurNr = sb.toString();
             }
-            Aufgabe aufgabe = new Aufgabe(record.get("aufgaben_nr"), record.get("Punkte"));
+            Aufgabe aufgabe = new Aufgabe(record.get("KlausurNr"), record.get("aufgaben_nr"), record.get("Punkte"));
             if (klausurMap.get(klausurNr) == null) {
                 continue;
             }
@@ -348,19 +349,50 @@ public class ImporterImpl implements Importer {
         ).withSkipHeaderRecord().parse(in);
         for (CSVRecord record : semprakergCSV) {
             System.out.println(record.toString());
-            Veranstaltung v = veranstaltungMap.get(record.get("VKennung"));
-            if (v instanceof Praktikum) {
-                Praktikum p = (Praktikum) v;
-                Student s = studentMap.get(record.get("Matrikelnr"));
-                if (s == null) { continue; }
-                PraktikumTeilnahme pt = new PraktikumTeilnahme(p, s, record.get("Note"));
-                p.addPraktikumTeilnahme(pt);
-                s.addPraktikumTeilnahme(pt);
+            Veranstaltung veranstaltung = veranstaltungMap.get(record.get("VKennung"));
+            if (veranstaltung instanceof Praktikum) {
+                Praktikum praktikum = (Praktikum) veranstaltung;
+                Student student = studentMap.get(record.get("Matrikelnr"));
+                if (student == null) { continue; }
+                PraktikumTeilnahme praktikumTeilnahme = new PraktikumTeilnahme(praktikum, student, record.get("Note"));
+                praktikum.addPraktikumTeilnahme(praktikumTeilnahme);
+                student.addPraktikumTeilnahme(praktikumTeilnahme);
             }
         }
     }
 
-    private void importPunkte(Map<String, File> klausurpunkteFolder) throws Exception {
+    /**
+     * Iterates over the klausurpunkte folder, creates AufgabenBearbeitung objects and puts them into their corresponding
+     * Student and Aufgabe objects. The Aufgabe objects are fetched from their corresponding Klausur.
+     * @param klausurpunkteFolder the provided data folder of CSV files
+     * @param klausurMap the map of the Klausuren of the Universitaet
+     * @param studentMap the map of the Student of the Universitaet
+     * @throws Exception
+     */
+    private void importPunkte(Map<String, File> klausurpunkteFolder, Map<String, Klausur> klausurMap, Map<String, Student> studentMap) throws Exception {
+        for (Map.Entry<String, File> entry : klausurpunkteFolder.entrySet()) {
+            Reader in = new FileReader(entry.getValue());
+            Iterable<CSVRecord> punkteCSV = CSVFormat.RFC4180.withHeader(
+                    "Matrikel",
+                    "KlausurNr",
+                    "Punkte"
+            ).withSkipHeaderRecord().parse(in);
+            // This for-loop is the actual CSV file that is going to be parsed. Punkte is a sorted List of items (eg [6,3,7,6,0.5,0,0])
+            // that has to be split.
+            for (CSVRecord record : punkteCSV) {
+                System.out.println(record.toString());
+                Klausur klausur = klausurMap.get(record.get("KlausurNr"));
+                Student student = studentMap.get(record.get("Matrikel"));
+                if (klausur == null || student == null) { continue; }
+                int index = 1;
+                for (String string : splitString(record.get("Punkte"))) {
+                    Aufgabe aufgabe = klausur.getAufgabeByIndex(index);
+                    AufgabenBearbeitung ab = new AufgabenBearbeitung(aufgabe, student, string);
+                    aufgabe.addAufgabenBearbeitung(ab);
+                    student.addAufgabenBearbeitung(ab);
+                }
+            }
+        }
     }
 
     /**
