@@ -31,17 +31,16 @@ public class ImporterImpl implements Importer {
             assert listOfFiles != null;
             for (File listOfFile : listOfFiles) {
                 if (listOfFile.isFile()) {
-                    System.out.println("Add file " + listOfFile.getName());
+                    System.out.println("Received file " + listOfFile.getName());
                     csvFiles.put(listOfFile.getName(), listOfFile);
                 } else if (listOfFile.isDirectory()) {
-                    System.out.println("Add directory " + listOfFile.getName());
+                    System.out.println("Received directory " + listOfFile.getName());
                     csvFiles.put(listOfFile.getName(), listOfFile);
                 }
             }
         } else {
             System.out.println("Path is null.");
         }
-        System.out.println(Arrays.toString(csvFiles.entrySet().toArray()));
         return csvFiles;
     }
 
@@ -56,11 +55,11 @@ public class ImporterImpl implements Importer {
         assert listOfFiles != null;
         for (File listOfFile : listOfFiles) {
             if (listOfFile.isFile()) {
-                System.out.println("Add file " + listOfFile.getName());
+                //System.out.println("Add file " + listOfFile.getName());
                 punkte.put(listOfFile.getName(), listOfFile);
             }
         }
-        System.out.println(Arrays.toString(punkte.entrySet().toArray()));
+        System.out.println("Received files in folder " + folder.getName());
         return punkte;
     }
 
@@ -105,14 +104,16 @@ public class ImporterImpl implements Importer {
                 "raum",
                 "mail"
         ).withSkipHeaderRecord().parse(in);
+        int i = 0;
         for (CSVRecord record : staffCSV) {
-            System.out.println(record.toString());
             Raum raum = new Raum(record.get("raum"));
             // Vorname und Nachname sind im Datensatz vertauscht
             raeumeMap.put(record.get("raum"), raum);
             Mitarbeiter m = new Mitarbeiter(record.get("nachname"), record.get("vorname"), record.get("mail"), record.get("titel"), raum);
             mitarbeiterMap.put(m.getNachname(), m);
+            i++;
         }
+        System.out.println("importStaff imported " + i + " entities.");
     }
 
     /**
@@ -135,13 +136,15 @@ public class ImporterImpl implements Importer {
                 "Exma",
                 "Semester"
         ).withSkipHeaderRecord().parse(in);
+        int i = 0;
         for (CSVRecord record : studentCSV) {
-            System.out.println(record.toString());
             Studiengang studiengang = new Studiengang(record.get("Studiengang"), record.get("Abschluss"), record.get("Regelstudienzeit"));
             Studium studium = new Studium(record.get("Imma"), record.get("Exma"), record.get("Semester"), studiengang);
             Student s = new Student(record.get("Matrikel"), record.get("Vorname"), record.get("Nachname"), record.get("Email"), studium);
             studentMap.put(s.getMatrikelNr(), s);
+            i++;
         }
+        System.out.println("importStudent imported " + i + " entities.");
     }
 
     /**
@@ -167,7 +170,7 @@ public class ImporterImpl implements Importer {
                 "Typ",
                 "KlausurNr"
         ).withSkipHeaderRecord().parse(in);
-
+        int i = 0;
         for (CSVRecord record : klausurenCSV) {
             Klausur k;
             switch (record.get("Typ")){
@@ -187,12 +190,13 @@ public class ImporterImpl implements Importer {
                     k = new Klausur();
                     k.setTyp("ak");
             }
-            System.out.println(record.toString());
             Collection<Mitarbeiter> mitarbeiter = getMitarbeiterByLastName(record.get("Aufsicht"), mitarbeiterMap);
             Collection<Raum> raeume = getRaumeByName(record.get("ort"), raumMap);
             k.setData(record.get("name"), record.get("datum"), record.get("uhrzeitVon"), record.get("Gesamtpunktzahl"), record.get("Punktzahl100"), record.get("VeranstKennung"), record.get("KlausurNr"), mitarbeiter, raeume);
             klausurMap.put(k.generateKey(), k);
+            i++;
         }
+        System.out.println("importKlausuren imported " + i + " entities.");
     }
 
     /**
@@ -208,8 +212,8 @@ public class ImporterImpl implements Importer {
                 "aufgaben_nr",
                 "Punkte"
         ).withSkipHeaderRecord().withDelimiter(';').parse(in);
+        int i = 0;
         for (CSVRecord record : klausur_aufgabenCSV) {
-            System.out.println(record.toString());
             String klausurNr = record.get("KlausurNr");
             // klausur_aufgaben has an unnecessary extra underscore on the third column for Zwischenklausuren (15_ws_dbs1_zk)
             // we remove this underscore here
@@ -223,7 +227,9 @@ public class ImporterImpl implements Importer {
                 continue;
             }
             klausurMap.get(klausurNr).addAufgabe(aufgabe);
+            i++;
         }
+        System.out.println("importKlausurAufgaben imported " + i + " entities.");
     }
 
     /**
@@ -249,8 +255,8 @@ public class ImporterImpl implements Importer {
                 "tag",
                 "kennung"
         ).withSkipHeaderRecord().parse(in);
+        int i = 0;
         for (CSVRecord record : veranstaltungenCSV) {
-            System.out.println(record.toString());
             Veranstaltung v;
             switch (record.get("typ")) {
                 case "V":
@@ -291,7 +297,9 @@ public class ImporterImpl implements Importer {
                 veranstaltungMap.get(v.getKennung());
             }
             veranstaltungMap.put(v.generateKey(), v);
+            i++;
         }
+        System.out.println("importVeranstaltungen imported " + i + " entities.");
     }
 
     /**
@@ -312,8 +320,8 @@ public class ImporterImpl implements Importer {
                 "Punkte",
                 "Note"
         ).withSkipHeaderRecord().parse(in);
+        int i = 0;
         for (CSVRecord record : klausurergCSV) {
-            System.out.println(record.toString());
             Klausur k = klausurMap.get(record.get("KlausurNr"));
             Student s = studentMap.get(record.get("Matrikelnr"));
             if (k == null || s == null) {
@@ -330,7 +338,9 @@ public class ImporterImpl implements Importer {
             );
             k.addKlausurTeilnahme(kt);
             s.addKlausurTeilnahme(kt);
+            i++;
         }
+        System.out.println("importKlausurErg imported " + i + " entities.");
     }
 
     /**
@@ -347,8 +357,8 @@ public class ImporterImpl implements Importer {
                 "Matrikelnr",
                 "Note"
         ).withSkipHeaderRecord().parse(in);
+        int i = 0;
         for (CSVRecord record : semprakergCSV) {
-            System.out.println(record.toString());
             Veranstaltung veranstaltung = veranstaltungMap.get(record.get("VKennung"));
             if (veranstaltung instanceof Praktikum) {
                 Praktikum praktikum = (Praktikum) veranstaltung;
@@ -358,7 +368,9 @@ public class ImporterImpl implements Importer {
                 praktikum.addPraktikumTeilnahme(praktikumTeilnahme);
                 student.addPraktikumTeilnahme(praktikumTeilnahme);
             }
+            i++;
         }
+        System.out.println("importSemPrakErg imported " + i + " entities.");
     }
 
     /**
@@ -370,6 +382,7 @@ public class ImporterImpl implements Importer {
      * @throws Exception
      */
     private void importPunkte(Map<String, File> klausurpunkteFolder, Map<String, Klausur> klausurMap, Map<String, Student> studentMap) throws Exception {
+        int i = 0;
         for (Map.Entry<String, File> entry : klausurpunkteFolder.entrySet()) {
             Reader in = new FileReader(entry.getValue());
             Iterable<CSVRecord> punkteCSV = CSVFormat.RFC4180.withHeader(
@@ -380,7 +393,6 @@ public class ImporterImpl implements Importer {
             // This for-loop is the actual CSV file that is going to be parsed. Punkte is a sorted List of items (eg [6,3,7,6,0.5,0,0])
             // that has to be split.
             for (CSVRecord record : punkteCSV) {
-                System.out.println(record.toString());
                 Klausur klausur = klausurMap.get(record.get("KlausurNr"));
                 Student student = studentMap.get(record.get("Matrikel"));
                 if (klausur == null || student == null) { continue; }
@@ -391,8 +403,11 @@ public class ImporterImpl implements Importer {
                     aufgabe.addAufgabenBearbeitung(ab);
                     student.addAufgabenBearbeitung(ab);
                 }
+
             }
+            i++;
         }
+        System.out.println("importPunkte imported " + i + " entities.");
     }
 
     /**

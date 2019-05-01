@@ -40,7 +40,7 @@ public class PersisterImpl {
                     "(matrikelNr, vorname, nachname, uniMail) " +
                     "VALUES ('%s', '%s', '%s', '%s');", s.getMatrikelNr(), s.getVorname(), s.getNachname(), s.getUniMail());
             stmt.addBatch(sql);
-            System.out.println(sql);
+            //System.out.println(sql);
         }
         stmt.executeBatch();
         c.commit();
