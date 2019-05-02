@@ -113,7 +113,7 @@ public class ImporterImpl implements Importer {
             mitarbeiterMap.put(m.getNachname(), m);
             i++;
         }
-        System.out.println("importStaff imported " + i + " entities.");
+        System.out.println("importStaff imported " + i + "/21 entities.");
     }
 
     /**
@@ -144,7 +144,7 @@ public class ImporterImpl implements Importer {
             studentMap.put(s.getMatrikelNr(), s);
             i++;
         }
-        System.out.println("importStudent imported " + i + " entities.");
+        System.out.println("importStudent imported " + i + "/861 entities.");
     }
 
     /**
@@ -196,7 +196,7 @@ public class ImporterImpl implements Importer {
             klausurMap.put(k.generateKey(), k);
             i++;
         }
-        System.out.println("importKlausuren imported " + i + " entities.");
+        System.out.println("importKlausuren imported " + i + "/57 entities.");
     }
 
     /**
@@ -223,13 +223,35 @@ public class ImporterImpl implements Importer {
                 klausurNr = sb.toString();
             }
             Aufgabe aufgabe = new Aufgabe(record.get("KlausurNr"), record.get("aufgaben_nr"), record.get("Punkte"));
+            if (klausurNr.equals("18ws_idbs2_wh")){
+                aufgabe.setKlausurNr("18ws_idbs2");
+                klausurMap.get("18ws_idbs2").addAufgabe(aufgabe);
+                System.out.println("Modified klausurNr of Aufgabe 18ws_idbs2_wh to 18ws_idbs2");
+                i++;
+                continue;
+            }
+            if (klausurNr.equals("18ws_cdm")){
+                aufgabe.setKlausurNr("18ws_dm");
+                klausurMap.get("18ws_dm").addAufgabe(aufgabe);
+                System.out.println("Modified klausurNr of Aufgabe 18ws_cdm to 18ws_dm");
+                i++;
+                continue;
+            }
+            if (klausurNr.equals("16ws_idbs2_wh")){
+                aufgabe.setKlausurNr("15ws_idbs2_wh");
+                klausurMap.get("15ws_idbs2_wh").addAufgabe(aufgabe);
+                System.out.println("Modified klausurNr of Aufgabe 16ws_idbs2_wh to 15ws_idbs2_wh");
+                i++;
+                continue;
+            }
             if (klausurMap.get(klausurNr) == null) {
+                System.out.println("No Klausur with klausurNr " + klausurNr);
                 continue;
             }
             klausurMap.get(klausurNr).addAufgabe(aufgabe);
             i++;
         }
-        System.out.println("importKlausurAufgaben imported " + i + " entities.");
+        System.out.println("importKlausurAufgaben imported " + i + "/387 entities.");
     }
 
     /**
@@ -299,7 +321,7 @@ public class ImporterImpl implements Importer {
             veranstaltungMap.put(v.generateKey(), v);
             i++;
         }
-        System.out.println("importVeranstaltungen imported " + i + " entities.");
+        System.out.println("importVeranstaltungen imported " + i + "/83 entities.");
     }
 
     /**
@@ -340,7 +362,7 @@ public class ImporterImpl implements Importer {
             s.addKlausurTeilnahme(kt);
             i++;
         }
-        System.out.println("importKlausurErg imported " + i + " entities.");
+        System.out.println("importKlausurErg imported " + i + "/1866 entities.");
     }
 
     /**
@@ -370,7 +392,7 @@ public class ImporterImpl implements Importer {
             }
             i++;
         }
-        System.out.println("importSemPrakErg imported " + i + " entities.");
+        System.out.println("importSemPrakErg imported " + i + "/353 entities.");
     }
 
     /**
@@ -407,7 +429,7 @@ public class ImporterImpl implements Importer {
             }
             i++;
         }
-        System.out.println("importPunkte imported " + i + " entities.");
+        System.out.println("importPunkte imported " + i + "/42 entities.");
     }
 
     /**
@@ -455,7 +477,7 @@ public class ImporterImpl implements Importer {
     private String[] splitString(String toSplit) {
         if (toSplit.contains(",")) {
             // "Junghanns, Christen" -> Split up String and fetch seperate object for each string
-            String withoutWhitespace = toSplit.replace(" ", "");
+            String withoutWhitespace = toSplit.replace(" ", "").replace(".Christen", ",Christen");
             return withoutWhitespace.split(",");
         } else {
             return new String[]{toSplit};

@@ -27,6 +27,10 @@ public class Aufgabe {
 
     public void addAufgabenBearbeitung(AufgabenBearbeitung ab) { this.aufgabenBearbeitungen.put(ab.generateKey(), ab); }
 
+    public void setKlausurNr(String klausurNr) {
+        this.klausurNr = klausurNr;
+    }
+
     public Integer getAufgabenNr() {
         return aufgabenNr;
     }
