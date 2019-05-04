@@ -1,8 +1,25 @@
 package model;
 
+import compositeKeys.KlausurTeilnahmeKey;
+
+import javax.persistence.*;
+
+@Entity
 public class KlausurTeilnahme {
+
+    @EmbeddedId
+    private KlausurTeilnahmeKey klausurTeilnahmeKey;
+
+    @ManyToOne
+    @MapsId("id")
+    @JoinColumn(name = "id")
     private Klausur klausur;
+
     private String typ;
+
+    @ManyToOne
+    @MapsId("id")
+    @JoinColumn(name = "id")
     private Student student;
     private Boolean nichtErschienen;
     private Boolean entschuldigt;

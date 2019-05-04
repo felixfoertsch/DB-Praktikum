@@ -1,8 +1,11 @@
 package model;
 
+import javax.persistence.Id;
 import java.time.Year;
 
 public class Studium {
+
+    @Id
     Integer studiengangId;
     Integer studentId;
     private Year imma;

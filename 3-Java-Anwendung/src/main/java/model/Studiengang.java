@@ -1,6 +1,10 @@
 package model;
 
+import javax.persistence.Id;
+
 public class Studiengang {
+
+    @Id
     private Integer id;
     private String name;
     private String abschluss;

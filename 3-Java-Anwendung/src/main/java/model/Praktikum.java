@@ -1,9 +1,12 @@
 package model;
 
+import javax.persistence.Id;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Praktikum extends Veranstaltung {
+
+    @Id
     private Integer veranstaltungId;
     private Map<String, PraktikumTeilnahme> praktikumTeilnahme;
 

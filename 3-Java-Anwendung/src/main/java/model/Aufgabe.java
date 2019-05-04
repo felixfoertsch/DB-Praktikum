@@ -1,17 +1,25 @@
 package model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+@Entity
 public class Aufgabe {
+
+    @Id
     private Integer id;
     private Integer klausurId;
     private Integer rang;
     private String klausurNr;
     private Integer aufgabenNr;
     private Double maxPunkte;
+
+    @OneToMany(mappedBy = "aufgabe")
     private Map<String, AufgabenBearbeitung> aufgabenBearbeitungen;
 
     public Aufgabe(String klausurNr, String aufgabenNr, String maxPunkte) {

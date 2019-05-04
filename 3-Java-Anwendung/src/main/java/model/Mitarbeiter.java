@@ -1,6 +1,10 @@
 package model;
 
+import javax.persistence.Id;
+
 public class Mitarbeiter {
+
+    @Id
     private Integer id;
     private String vorname;
     private String nachname;

@@ -1,5 +1,6 @@
 package model;
 
+import javax.persistence.Id;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.time.Year;
@@ -7,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Veranstaltung {
+
+    @Id
     private Integer id;
     private String typ;
     private String name;

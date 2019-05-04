@@ -1,5 +1,9 @@
 package model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.MapKey;
+import javax.persistence.OneToMany;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -9,7 +13,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+@Entity
 public class Klausur {
+
+    @Id
     private Integer id;
     private Integer spezialvorlesungId;
     private Integer grundvorlesungId;
@@ -23,7 +30,11 @@ public class Klausur {
     private String klausurNr;
     private Collection<Mitarbeiter> aufsichten;
     private Collection<Raum> orte;
+
+    @MapKey(name = "id")
     private Map<Integer, Aufgabe> aufgaben;
+
+    @OneToMany(mappedBy = "klausur")
     private Map<String, KlausurTeilnahme> klausurTeilnahmen;
 
     public void setData(String name, String datum, String uhrzeitVon, String gesamtpunktzahl, String punktzahl100, String vaKennung, String klausurNr, Collection<Mitarbeiter> aufsichten, Collection<Raum> orte){
