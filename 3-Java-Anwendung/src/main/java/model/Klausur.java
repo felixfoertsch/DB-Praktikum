@@ -11,16 +11,23 @@ import java.util.Map;
 
 public class Klausur {
     private Integer id;
-    private Integer spezialvorlesungId;
-    private Integer grundvorlesungId;
-    private String name;
+
+
+    //Im Schema
     private LocalDate datum;
     private LocalTime uhrzeitVon;
     private Double gesamtpunktzahl;
+
+    //Nicht im Schema
+    private String name;
     private Double punktzahl100;
     private String vaKennung;
-    private String typ;
     private String klausurNr;
+
+    private String typ;
+
+    private Integer spezialvorlesungId;
+    private Integer grundvorlesungId;
     private Collection<Mitarbeiter> aufsichten;
     private Collection<Raum> orte;
     private Map<Integer, Aufgabe> aufgaben;

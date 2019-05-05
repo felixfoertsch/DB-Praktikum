@@ -9,12 +9,13 @@ public class Student {
     private String vorname;
     private String nachname;
     private String uniMail;
-    private Studium studium;
+    //Maybe change to List
+    private Map<String, Studium> studiumMap;
     private Map<String, KlausurTeilnahme> klausurTeilnahmen;
     private Map<String, PraktikumTeilnahme> praktikumTeilnahme;
     private Map<String, AufgabenBearbeitung> aufgabenBearbeitungen;
 
-    public Student(String matrikelNr, String vorname, String nachname, String uniMail, Studium studium) {
+    public Student(String matrikelNr, String vorname, String nachname, String uniMail, Map<String, Studium> studiumMap) {
         this.klausurTeilnahmen = new HashMap<>();
         this.praktikumTeilnahme = new HashMap<>();
         this.aufgabenBearbeitungen = new HashMap<>();
@@ -22,7 +23,7 @@ public class Student {
         this.vorname = vorname;
         this.nachname = nachname;
         this.uniMail = uniMail;
-        this.studium = studium;
+        this.studiumMap = studiumMap;
     }
 
     public String getMatrikelNr() {

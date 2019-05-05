@@ -139,7 +139,9 @@ public class ImporterImpl implements Importer {
             System.out.println(record.toString());
             Studiengang studiengang = new Studiengang(record.get("Studiengang"), record.get("Abschluss"), record.get("Regelstudienzeit"));
             Studium studium = new Studium(record.get("Imma"), record.get("Exma"), record.get("Semester"), studiengang);
-            Student s = new Student(record.get("Matrikel"), record.get("Vorname"), record.get("Nachname"), record.get("Email"), studium);
+            Map<String, Studium> studiumMap = new HashMap<>();
+            studiumMap.put("", studium);
+            Student s = new Student(record.get("Matrikel"), record.get("Vorname"), record.get("Nachname"), record.get("Email"), studiumMap);
             studentMap.put(s.getMatrikelNr(), s);
         }
     }

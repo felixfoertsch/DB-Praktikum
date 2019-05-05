@@ -1,12 +1,20 @@
 package model;
 
+import java.util.Map;
+
 public class Mitarbeiter {
     private Integer id;
+
     private String vorname;
     private String nachname;
     private String email;
-    private String titel;
+
     private Raum raum;
+
+    //?
+    private String titel;
+
+    private Map<String, Klausur> klausurMap;
 
     public Mitarbeiter(String vorname, String nachname, String email, String titel, Raum raum) {
         this.vorname = vorname;

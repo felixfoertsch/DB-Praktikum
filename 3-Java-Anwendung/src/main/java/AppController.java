@@ -22,6 +22,7 @@ public class AppController {
     public void importButtonClicked(Event e) {
         Map<String, File> files = importer.importCSVtoMemory();
         importer.parseCSVandCreateModel(files);
+        System.out.println("Import successful!");
     }
 
 }
