@@ -336,7 +336,7 @@ public class ImporterImpl implements Importer {
     }
 
     /**
-     * Creates PraktikumTeilnahme and puts them into its correspondig Praktikum as well as Student.
+     * Creates SemPrakTeilnahme and puts them into its correspondig Praktikum as well as Student.
      * @param csv semprakerg.csv
      * @param veranstaltungMap the Map of the Veranstaltungen of the Universitaet
      * @param studentMap the map of the Student of the Universitaet
@@ -351,14 +351,30 @@ public class ImporterImpl implements Importer {
         ).withSkipHeaderRecord().parse(in);
         for (CSVRecord record : semprakergCSV) {
             System.out.println(record.toString());
-            Veranstaltung veranstaltung = veranstaltungMap.get(record.get("VKennung"));
+            Veranstaltung veranstaltung;
+            if (record.get("VKennung").endsWith("sem")) {
+                veranstaltung = veranstaltungMap.get(record.get("VKennung").replace("_sem", "_ps"));
+            } else {
+                veranstaltung = veranstaltungMap.get(record.get("VKennung"));
+            }
+
+            Student student = studentMap.get(record.get("Matrikelnr"));
+            if (student == null) { continue; }
             if (veranstaltung instanceof Praktikum) {
+                System.out.println("Added Praktikum");
                 Praktikum praktikum = (Praktikum) veranstaltung;
-                Student student = studentMap.get(record.get("Matrikelnr"));
-                if (student == null) { continue; }
-                PraktikumTeilnahme praktikumTeilnahme = new PraktikumTeilnahme(praktikum, student, record.get("Note"));
-                praktikum.addPraktikumTeilnahme(praktikumTeilnahme);
-                student.addPraktikumTeilnahme(praktikumTeilnahme);
+                SemPrakTeilnahme semPrakTeilnahme= new SemPrakTeilnahme(praktikum, student, record.get("Note"));
+                praktikum.addPrakTeilnahme(semPrakTeilnahme);
+                student.addPrakTeilnahme(semPrakTeilnahme);
+
+            } else if (veranstaltung instanceof Problemseminar){
+                System.out.println("Added Seminar");
+                Seminar seminar = (Seminar) veranstaltung;
+                SemPrakTeilnahme semPrakTeilnahme = new SemPrakTeilnahme(seminar, student, record.get("Note"));
+                seminar.addSemTeilnahme(semPrakTeilnahme);
+                student.addSemTeilnahme(semPrakTeilnahme);
+            } else {
+                System.out.println("Found unknown class that is neither a Seminar nor a Praktikum:" + veranstaltung.getClass());
             }
         }
     }

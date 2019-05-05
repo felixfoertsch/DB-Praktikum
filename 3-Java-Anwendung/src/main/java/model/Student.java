@@ -12,12 +12,12 @@ public class Student {
     //Maybe change to List
     private Map<String, Studium> studiumMap;
     private Map<String, KlausurTeilnahme> klausurTeilnahmen;
-    private Map<String, PraktikumTeilnahme> praktikumTeilnahme;
+    private Map<String, SemPrakTeilnahme> semPrakTeilnahme;
     private Map<String, AufgabenBearbeitung> aufgabenBearbeitungen;
 
     public Student(String matrikelNr, String vorname, String nachname, String uniMail, Map<String, Studium> studiumMap) {
         this.klausurTeilnahmen = new HashMap<>();
-        this.praktikumTeilnahme = new HashMap<>();
+        this.semPrakTeilnahme = new HashMap<>();
         this.aufgabenBearbeitungen = new HashMap<>();
         this.matrikelNr = matrikelNr;
         this.vorname = vorname;
@@ -34,8 +34,12 @@ public class Student {
         this.klausurTeilnahmen.put(kt.generateKey(), kt);
     }
 
-    public void addPraktikumTeilnahme(PraktikumTeilnahme pt) {
-        this.praktikumTeilnahme.put(pt.generateKey(), pt);
+    public void addPrakTeilnahme(SemPrakTeilnahme pt) {
+        this.semPrakTeilnahme.put(pt.generatePrakKey(), pt);
+    }
+
+    public void addSemTeilnahme(SemPrakTeilnahme pt) {
+        this.semPrakTeilnahme.put(pt.generateSemKey(), pt);
     }
 
     public void addAufgabenBearbeitung(AufgabenBearbeitung ab) { this.aufgabenBearbeitungen.put(ab.generateKey(), ab); }
