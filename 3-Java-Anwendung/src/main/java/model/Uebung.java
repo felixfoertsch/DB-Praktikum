@@ -1,12 +1,10 @@
 package model;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Entity
 public class Uebung extends Veranstaltung {
 
-    @Id
     private Integer veranstaltungId;
 
 
