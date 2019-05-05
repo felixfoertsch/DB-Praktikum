@@ -18,4 +18,7 @@ public class VeranstaltungAbhaltung {
         this.tag = tag;
         this.raum = raum;
     }
+
+    public VeranstaltungAbhaltung() {
+    }
 }

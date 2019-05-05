@@ -27,6 +27,9 @@ public class KlausurTeilnahme {
         }
     }
 
+    public KlausurTeilnahme() {
+    }
+
     public String generateKey() {
         return klausur.generateKey() + "_" + student.getMatrikelNr();
     }

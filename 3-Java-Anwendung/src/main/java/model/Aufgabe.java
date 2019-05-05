@@ -1,7 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,11 +19,16 @@ public class Aufgabe {
         this.maxPunkte = Double.valueOf(maxPunkte);
     }
 
+    public Aufgabe() {
+    }
+
     public String generateKey() {
         return klausurNr + "_" + aufgabenNr;
     }
 
-    public void addAufgabenBearbeitung(AufgabenBearbeitung ab) { this.aufgabenBearbeitungen.put(ab.generateKey(), ab); }
+    public void addAufgabenBearbeitung(AufgabenBearbeitung ab) {
+        this.aufgabenBearbeitungen.put(ab.generateKey(), ab);
+    }
 
     public Integer getAufgabenNr() {
         return aufgabenNr;

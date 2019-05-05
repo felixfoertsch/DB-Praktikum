@@ -3,8 +3,8 @@ package model;
 import java.util.Map;
 
 public class Raum {
-    Integer id;
-    String bezeichnung;
+    private Integer id;
+    private String bezeichnung;
 
     private Map<String, Mitarbeiter> mitarbeiterMap;
 
@@ -14,5 +14,8 @@ public class Raum {
 
     public Raum(String bezeichnung) {
         this.bezeichnung = bezeichnung;
+    }
+
+    public Raum() {
     }
 }

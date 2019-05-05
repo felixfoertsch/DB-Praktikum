@@ -1,8 +1,11 @@
 package model;
 
 public class Uebung extends Veranstaltung {
-    Integer veranstaltungId;
-    Integer grundvorlesungId;
+    private Integer veranstaltungId;
+    private Integer grundvorlesungId;
+
+    public Uebung() {
+    }
 
     @Override
     public String generateKey() {

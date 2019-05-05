@@ -24,6 +24,9 @@ public class Mitarbeiter {
         this.raum = raum;
     }
 
+    public Mitarbeiter() {
+    }
+
     public void setVorname(String vorname) {
         this.vorname = vorname;
     }

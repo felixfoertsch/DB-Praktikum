@@ -16,6 +16,9 @@ public class Studium {
         this.studiengang = studiengang;
     }
 
+    public Studium() {
+    }
+
     private Year parseExma(String exma) {
         if (exma.equals("NA")) {
             return null;

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Student {
-    Integer id;
+    private Integer id;
     private String matrikelNr;
     private String vorname;
     private String nachname;
@@ -24,6 +24,9 @@ public class Student {
         this.nachname = nachname;
         this.uniMail = uniMail;
         this.studiumMap = studiumMap;
+    }
+
+    public Student() {
     }
 
     public String getMatrikelNr() {

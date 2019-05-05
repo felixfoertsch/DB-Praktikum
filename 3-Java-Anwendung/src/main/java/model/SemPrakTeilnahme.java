@@ -26,6 +26,9 @@ public class SemPrakTeilnahme {
         }
     }
 
+    public SemPrakTeilnahme() {
+    }
+
     public String generatePrakKey() {
         return praktikum.generateKey() + "_" + student.getMatrikelNr();
     }

@@ -1,7 +1,10 @@
 package model;
 
 public class Zwischenklausur extends Klausur {
-    Integer klausurId;
+    private Integer klausurId;
+
+    public Zwischenklausur() {
+    }
 
     @Override
     public String generateKey() {

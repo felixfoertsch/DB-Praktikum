@@ -14,6 +14,9 @@ public class Studiengang {
         this.regelstudienzeit = Integer.valueOf(regelstudienzeit);
     }
 
+    public Studiengang() {
+    }
+
     public String getName() {
         return name;
     }

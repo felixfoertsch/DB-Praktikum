@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Map;
+
 public class Spezialvorlesung extends Veranstaltung {
-    Integer veranstaltungId;
+    private Integer veranstaltungId;
+    private Map<String, Klausur> klausurMap;
 }

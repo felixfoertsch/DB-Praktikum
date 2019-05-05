@@ -18,21 +18,24 @@ public class Klausur {
     private LocalTime uhrzeitVon;
     private Double gesamtpunktzahl;
 
+    //Foreign key, Vererbung
+    private String typ;
+
     //Nicht im Schema
     private String name;
     private Double punktzahl100;
     private String vaKennung;
     private String klausurNr;
 
-    private String typ;
-
-    private Integer spezialvorlesungId;
-    private Integer grundvorlesungId;
+    private Spezialvorlesung spezialvorlesung;
+    private Grundvorlesung grundvorlesung;
     private Collection<Mitarbeiter> aufsichten;
     private Collection<Raum> orte;
     private Map<Integer, Aufgabe> aufgaben;
     private Map<String, KlausurTeilnahme> klausurTeilnahmen;
 
+    public Klausur() {
+    }
 
     public void setData(String name, String datum, String uhrzeitVon, String gesamtpunktzahl, String punktzahl100, String vaKennung, String klausurNr, Collection<Mitarbeiter> aufsichten, Collection<Raum> orte){
         this.aufgaben = new HashMap<>();
