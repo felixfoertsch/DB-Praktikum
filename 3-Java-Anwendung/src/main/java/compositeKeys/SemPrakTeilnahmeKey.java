@@ -6,30 +6,30 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class PraktikumTeilnahmeKey implements Serializable {
+public class SemPrakTeilnahmeKey implements Serializable {
 
     @Column(name = "studentId")
-    Long studentId;
+    Integer studentId;
 
     @Column(name = "klausurId")
-    Long klausurId;
+    Integer klausurId;
 
-    public PraktikumTeilnahmeKey() {
+    public SemPrakTeilnahmeKey() {
     }
 
-    public Long getStudentId() {
+    public Integer getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(Long studentId) {
+    public void setStudentId(Integer studentId) {
         this.studentId = studentId;
     }
 
-    public Long getKlausurId() {
+    public Integer getKlausurId() {
         return klausurId;
     }
 
-    public void setKlausurId(Long klausurId) {
+    public void setKlausurId(Integer klausurId) {
         this.klausurId = klausurId;
     }
 
@@ -37,7 +37,7 @@ public class PraktikumTeilnahmeKey implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PraktikumTeilnahmeKey that = (PraktikumTeilnahmeKey) o;
+        SemPrakTeilnahmeKey that = (SemPrakTeilnahmeKey) o;
         return studentId.equals(that.studentId) &&
                 klausurId.equals(that.klausurId);
     }

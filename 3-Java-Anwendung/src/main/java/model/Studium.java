@@ -1,11 +1,18 @@
 package model;
 
+import compositeKeys.StudiumKey;
+
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.Year;
 
+@Entity
 public class Studium {
-    @Id
-    private Integer id;
+
+    @EmbeddedId
+    private StudiumKey studiumKey;
+
     private Student student;
     private Studiengang studiengang;
     private Year imma;

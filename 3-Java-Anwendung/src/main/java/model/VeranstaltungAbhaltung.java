@@ -1,11 +1,17 @@
 package model;
 
+import compositeKeys.VeranstaltungAbhaltungKey;
+
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
+@Entity
 public class VeranstaltungAbhaltung {
 
-    private Integer id;
+    @EmbeddedId
+    private VeranstaltungAbhaltungKey veranstaltungAbhaltungKey;
 
     private LocalTime zeit;
     private DayOfWeek tag;

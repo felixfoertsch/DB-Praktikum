@@ -2,19 +2,18 @@ package compositeKeys;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class KlausurTeilnahmeKey implements Serializable {
+public class StudiumKey {
 
     @Column(name = "studentId")
     Integer studentId;
 
-    @Column(name = "klausurId")
-    Integer klausurId;
+    @Column(name = "studiengangId")
+    Integer studiengangId;
 
-    public KlausurTeilnahmeKey() {
+    public StudiumKey() {
     }
 
     public Integer getStudentId() {
@@ -25,25 +24,25 @@ public class KlausurTeilnahmeKey implements Serializable {
         this.studentId = studentId;
     }
 
-    public Integer getKlausurId() {
-        return klausurId;
+    public Integer getStudiengangId() {
+        return studiengangId;
     }
 
-    public void setKlausurId(Integer klausurId) {
-        this.klausurId = klausurId;
+    public void setStudiengangId(Integer studiengangId) {
+        this.studiengangId = studiengangId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        KlausurTeilnahmeKey that = (KlausurTeilnahmeKey) o;
+        StudiumKey that = (StudiumKey) o;
         return studentId.equals(that.studentId) &&
-                klausurId.equals(that.klausurId);
+                studiengangId.equals(that.studiengangId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentId, klausurId);
+        return Objects.hash(studentId, studiengangId);
     }
 }

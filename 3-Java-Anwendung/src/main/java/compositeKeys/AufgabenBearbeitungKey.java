@@ -9,27 +9,27 @@ import java.util.Objects;
 public class AufgabenBearbeitungKey implements Serializable {
 
     @Column(name = "studentId")
-    Long studentId;
+    Integer studentId;
 
     @Column(name = "aufgabeId")
-    Long aufgabeId;
+    Integer aufgabeId;
 
     public AufgabenBearbeitungKey() {
     }
 
-    public Long getStudentId() {
+    public Integer getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(Long studentId) {
+    public void setStudentId(Integer studentId) {
         this.studentId = studentId;
     }
 
-    public Long getAufgabeId() {
+    public Integer getAufgabeId() {
         return aufgabeId;
     }
 
-    public void setAufgabeId(Long aufgabeId) {
+    public void setAufgabeId(Integer aufgabeId) {
         this.aufgabeId = aufgabeId;
     }
 

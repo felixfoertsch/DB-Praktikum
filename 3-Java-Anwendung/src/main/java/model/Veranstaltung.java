@@ -1,5 +1,6 @@
 package model;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -9,6 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+@Entity
 public class Veranstaltung {
 
     @Id

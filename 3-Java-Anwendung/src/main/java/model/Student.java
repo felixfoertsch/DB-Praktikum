@@ -21,7 +21,7 @@ public class Student {
     private Map<String, KlausurTeilnahme> klausurTeilnahmen;
 
 //    @OneToMany(mappedBy = "student")
-//    @MapKey(name = "praktikumTeilnahmeKey")
+//    @MapKey(name = "semPrakTeilnahmeKey")
 //    private Map<String, PraktikumTeilnahme> praktikumTeilnahme;
     private Map<String, SemPrakTeilnahme> semPrakTeilnahme;
 

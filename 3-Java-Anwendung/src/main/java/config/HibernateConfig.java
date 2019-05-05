@@ -32,28 +32,28 @@ public class HibernateConfig {
 
                 c.setProperties(p);
 
-                //c.addAnnotatedClass(Abschlussklausur.class);
+                c.addAnnotatedClass(Abschlussklausur.class);
                 c.addAnnotatedClass(Aufgabe.class);
                 c.addAnnotatedClass(AufgabenBearbeitung.class);
-                //c.addAnnotatedClass(Grundvorlesung.class);
+                c.addAnnotatedClass(Grundvorlesung.class);
                 c.addAnnotatedClass(Klausur.class);
                 c.addAnnotatedClass(KlausurTeilnahme.class);
-                //c.addAnnotatedClass(Mitarbeiter.class);
-                //c.addAnnotatedClass(Oberseminar.class);
-                //c.addAnnotatedClass(Praktikum.class);
-                c.addAnnotatedClass(PraktikumTeilnahme.class);
-                //c.addAnnotatedClass(Problemseminar.class);
-                //c.addAnnotatedClass(Raum.class);
-                //c.addAnnotatedClass(Seminar.class);
-                //c.addAnnotatedClass(Spezialvorlesung.class);
+                c.addAnnotatedClass(Mitarbeiter.class);
+                c.addAnnotatedClass(Oberseminar.class);
+                c.addAnnotatedClass(Praktikum.class);
+                c.addAnnotatedClass(Problemseminar.class);
+                c.addAnnotatedClass(Raum.class);
+                c.addAnnotatedClass(Seminar.class);
+                c.addAnnotatedClass(SemPrakTeilnahme.class);
+                c.addAnnotatedClass(Spezialvorlesung.class);
                 c.addAnnotatedClass(Student.class);
-                //c.addAnnotatedClass(Studiengang.class);
-                //c.addAnnotatedClass(Studium.class);
-                //c.addAnnotatedClass(Uebung.class);
-                //c.addAnnotatedClass(Universitaet.class);
-                //c.addAnnotatedClass(Veranstaltung.class);
-                //c.addAnnotatedClass(Wiederholungsklausur.class);
-                //c.addAnnotatedClass(Zwischenklausur.class);
+                c.addAnnotatedClass(Studiengang.class);
+                c.addAnnotatedClass(Studium.class);
+                c.addAnnotatedClass(Uebung.class);
+                c.addAnnotatedClass(Universitaet.class);
+                c.addAnnotatedClass(Veranstaltung.class);
+                c.addAnnotatedClass(Wiederholungsklausur.class);
+                c.addAnnotatedClass(Zwischenklausur.class);
 
                 ServiceRegistry sr = new StandardServiceRegistryBuilder().applySettings(c.getProperties()).build();
 
