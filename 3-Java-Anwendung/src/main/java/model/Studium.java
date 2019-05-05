@@ -4,14 +4,13 @@ import javax.persistence.Id;
 import java.time.Year;
 
 public class Studium {
-
     @Id
-    Integer studiengangId;
-    Integer studentId;
+    private Integer id;
+    private Student student;
+    private Studiengang studiengang;
     private Year imma;
     private Year exma;
     private Integer semester;
-    private Studiengang studiengang;
 
     public Studium(String imma, String exma, String semester, Studiengang studiengang) {
         this.imma = Year.parse(imma);
@@ -20,10 +19,17 @@ public class Studium {
         this.studiengang = studiengang;
     }
 
+    public Studium() {
+    }
+
     private Year parseExma(String exma) {
         if (exma.equals("NA")) {
             return null;
         }
         return Year.parse(exma);
+    }
+
+    public String generateKey(){
+        return student.getMatrikelNr() + "_" + studiengang.getName();
     }
 }

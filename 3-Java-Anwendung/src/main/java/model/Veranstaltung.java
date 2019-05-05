@@ -6,21 +6,30 @@ import java.time.LocalTime;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Veranstaltung {
 
     @Id
     private Integer id;
-    private String typ;
+
+    //In Schema
     private String name;
     private Year jahr;
     private String semester;
-    private Raum raum;
     private Integer maxTeilnehmer;
+
+    //Change to abhaltungMap, or change to Collection
+    private Map<String, VeranstaltungAbhaltung> abhaltungMap;
+    //Table betreut
     private Collection<Mitarbeiter> dozenten;
-    private LocalTime zeit;
-    private DayOfWeek tag;
+
+    //?
     private String kennung;
+
+    //Vererbung
+    private String typ;
 
     public Veranstaltung() {
         this.dozenten = new ArrayList<>();
@@ -38,9 +47,8 @@ public class Veranstaltung {
         this.name = name;
         this.jahr = Year.parse(jahr);
         this.semester = semester;
-        this.raum = raum;
-        this.zeit = parseTime(zeit);
-        this.tag = convertGerWeekDay(tag);
+        this.abhaltungMap = new HashMap<>();
+        this.abhaltungMap.put("", new VeranstaltungAbhaltung(parseTime(zeit), convertGerWeekDay(tag), raum));
         this.maxTeilnehmer = Integer.valueOf(maxTeilnehmer);
         this.kennung = kennung;
     }

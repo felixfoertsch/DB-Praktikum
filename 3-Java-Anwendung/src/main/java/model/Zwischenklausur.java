@@ -3,9 +3,11 @@ package model;
 import javax.persistence.Id;
 
 public class Zwischenklausur extends Klausur {
-
     @Id
-    Integer klausurId;
+    private Integer klausurId;
+
+    public Zwischenklausur() {
+    }
 
     @Override
     public String generateKey() {

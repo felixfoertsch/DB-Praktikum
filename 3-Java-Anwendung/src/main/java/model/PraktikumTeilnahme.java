@@ -29,6 +29,9 @@ public class PraktikumTeilnahme {
         }
     }
 
+    public PraktikumTeilnahme() {
+    }
+
     public String generateKey() {
         return praktikum.generateKey() + "_" + student.getMatrikelNr();
     }

@@ -28,6 +28,9 @@ public class AufgabenBearbeitung {
         this.punkte = Double.valueOf(punkte);
     }
 
+    public AufgabenBearbeitung() {
+    }
+
     public String generateKey() {
         return student.getMatrikelNr() + "_" + aufgabe.generateKey();
     }

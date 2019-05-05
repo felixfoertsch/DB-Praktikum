@@ -8,13 +8,13 @@ public class Praktikum extends Veranstaltung {
 
     @Id
     private Integer veranstaltungId;
-    private Map<String, PraktikumTeilnahme> praktikumTeilnahme;
+    private Map<String, SemPrakTeilnahme> semPrakTeilnahmeMap;
 
     public Praktikum() {
-        this.praktikumTeilnahme = new HashMap<>();
+        this.semPrakTeilnahmeMap = new HashMap<>();
     }
 
-    public void addPraktikumTeilnahme(PraktikumTeilnahme pt) {
-        this.praktikumTeilnahme.put(pt.generateKey(), pt);
+    public void addPrakTeilnahme(SemPrakTeilnahme pt) {
+        this.semPrakTeilnahmeMap.put(pt.generatePrakKey(), pt);
     }
 }

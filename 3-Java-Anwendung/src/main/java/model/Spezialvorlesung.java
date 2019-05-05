@@ -1,9 +1,13 @@
 package model;
 
 import javax.persistence.Id;
+import java.util.Map;
 
 public class Spezialvorlesung extends Veranstaltung {
-
     @Id
-    Integer veranstaltungId;
+    private Integer veranstaltungId;
+    private Map<String, Klausur> klausurMap;
+
+    public Spezialvorlesung() {
+    }
 }

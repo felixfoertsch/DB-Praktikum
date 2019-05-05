@@ -10,34 +10,38 @@ public class Student {
 
     @Id
     @GeneratedValue
-    Integer id;
+    private Integer id;
     private String matrikelNr;
     private String vorname;
     private String nachname;
     private String uniMail;
-    private Studium studium;
 
     @OneToMany(mappedBy = "student")
     @MapKey(name = "klausurTeilnahmeKey")
     private Map<String, KlausurTeilnahme> klausurTeilnahmen;
 
-    @OneToMany(mappedBy = "student")
-    @MapKey(name = "praktikumTeilnahmeKey")
-    private Map<String, PraktikumTeilnahme> praktikumTeilnahme;
+//    @OneToMany(mappedBy = "student")
+//    @MapKey(name = "praktikumTeilnahmeKey")
+//    private Map<String, PraktikumTeilnahme> praktikumTeilnahme;
+    private Map<String, SemPrakTeilnahme> semPrakTeilnahme;
 
     @OneToMany(mappedBy = "student")
     @MapKey(name = "aufgabenBearbeitungKey")
+
+    //Maybe change to List
+    private Map<String, Studium> studiumMap;
+
     private Map<String, AufgabenBearbeitung> aufgabenBearbeitungen;
 
-    public Student(String matrikelNr, String vorname, String nachname, String uniMail, Studium studium) {
+    public Student(String matrikelNr, String vorname, String nachname, String uniMail, Map<String, Studium> studiumMap) {
         this.klausurTeilnahmen = new HashMap<>();
-        this.praktikumTeilnahme = new HashMap<>();
+        this.semPrakTeilnahme = new HashMap<>();
         this.aufgabenBearbeitungen = new HashMap<>();
         this.matrikelNr = matrikelNr;
         this.vorname = vorname;
         this.nachname = nachname;
         this.uniMail = uniMail;
-        this.studium = studium;
+        this.studiumMap = studiumMap;
     }
 
     public Student() {
@@ -83,12 +87,12 @@ public class Student {
         this.uniMail = uniMail;
     }
 
-    public Studium getStudium() {
-        return studium;
+    public Map<String, Studium> getStudiumMap() {
+        return studiumMap;
     }
 
-    public void setStudium(Studium studium) {
-        this.studium = studium;
+    public void setStudiumMap(Map<String, Studium> studiumMap) {
+        this.studiumMap = studiumMap;
     }
 
     public Map<String, KlausurTeilnahme> getKlausurTeilnahmen() {
@@ -99,12 +103,12 @@ public class Student {
         this.klausurTeilnahmen = klausurTeilnahmen;
     }
 
-    public Map<String, PraktikumTeilnahme> getPraktikumTeilnahme() {
-        return praktikumTeilnahme;
+    public Map<String, SemPrakTeilnahme> getSemPrakTeilnahme() {
+        return semPrakTeilnahme;
     }
 
-    public void setPraktikumTeilnahme(Map<String, PraktikumTeilnahme> praktikumTeilnahme) {
-        this.praktikumTeilnahme = praktikumTeilnahme;
+    public void setSemPrakTeilnahme(Map<String, SemPrakTeilnahme> semPrakTeilnahme) {
+        this.semPrakTeilnahme = semPrakTeilnahme;
     }
 
     public Map<String, AufgabenBearbeitung> getAufgabenBearbeitungen() {
@@ -119,8 +123,12 @@ public class Student {
         this.klausurTeilnahmen.put(kt.generateKey(), kt);
     }
 
-    public void addPraktikumTeilnahme(PraktikumTeilnahme pt) {
-        this.praktikumTeilnahme.put(pt.generateKey(), pt);
+    public void addPrakTeilnahme(SemPrakTeilnahme pt) {
+        this.semPrakTeilnahme.put(pt.generatePrakKey(), pt);
+    }
+
+    public void addSemTeilnahme(SemPrakTeilnahme pt) {
+        this.semPrakTeilnahme.put(pt.generateSemKey(), pt);
     }
 
     public void addAufgabenBearbeitung(AufgabenBearbeitung ab) {
@@ -135,9 +143,9 @@ public class Student {
                 ", vorname='" + vorname + '\'' +
                 ", nachname='" + nachname + '\'' +
                 ", uniMail='" + uniMail + '\'' +
-                ", studium=" + studium +
+                ", studiumMap=" + studiumMap +
                 ", klausurTeilnahmen=" + klausurTeilnahmen +
-                ", praktikumTeilnahme=" + praktikumTeilnahme +
+                ", semPrakTeilnahme=" + semPrakTeilnahme +
                 ", aufgabenBearbeitungen=" + aufgabenBearbeitungen +
                 '}';
     }

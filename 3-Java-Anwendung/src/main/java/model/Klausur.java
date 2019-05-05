@@ -18,16 +18,24 @@ public class Klausur {
 
     @Id
     private Integer id;
-    private Integer spezialvorlesungId;
-    private Integer grundvorlesungId;
-    private String name;
+
+
+    //Im Schema
     private LocalDate datum;
     private LocalTime uhrzeitVon;
     private Double gesamtpunktzahl;
+
+    //Foreign key, Vererbung
+    private String typ;
+
+    //Nicht im Schema
+    private String name;
     private Double punktzahl100;
     private String vaKennung;
-    private String typ;
     private String klausurNr;
+
+    private Spezialvorlesung spezialvorlesung;
+    private Grundvorlesung grundvorlesung;
     private Collection<Mitarbeiter> aufsichten;
     private Collection<Raum> orte;
 
@@ -36,6 +44,9 @@ public class Klausur {
 
     @OneToMany(mappedBy = "klausur")
     private Map<String, KlausurTeilnahme> klausurTeilnahmen;
+
+    public Klausur() {
+    }
 
     public void setData(String name, String datum, String uhrzeitVon, String gesamtpunktzahl, String punktzahl100, String vaKennung, String klausurNr, Collection<Mitarbeiter> aufsichten, Collection<Raum> orte){
         this.aufgaben = new HashMap<>();

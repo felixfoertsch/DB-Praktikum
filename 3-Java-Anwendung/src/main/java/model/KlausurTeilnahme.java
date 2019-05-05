@@ -21,7 +21,7 @@ public class KlausurTeilnahme {
     @MapsId("id")
     @JoinColumn(name = "id")
     private Student student;
-    private Boolean nichtErschienen;
+    private Boolean erschienen;
     private Boolean entschuldigt;
     private Double punkte;
     private Double note;
@@ -30,7 +30,7 @@ public class KlausurTeilnahme {
         this.klausur = klausur;
         this.typ = typ;
         this.student = student;
-        this.nichtErschienen = Boolean.valueOf(nichtErschienen);
+        this.erschienen = !Boolean.valueOf(nichtErschienen);
         this.entschuldigt = Boolean.valueOf(entschuldigt);
         if (punkte.equals("NA")) {
             this.punkte = 0.0;
@@ -42,6 +42,9 @@ public class KlausurTeilnahme {
         } else {
             this.note = Double.valueOf(note);
         }
+    }
+
+    public KlausurTeilnahme() {
     }
 
     public String generateKey() {
