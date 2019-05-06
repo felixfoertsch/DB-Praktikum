@@ -12,6 +12,7 @@ import java.util.Map;
 
 @Entity
 @Table(name = "klausur")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Klausur {
 
     @Id

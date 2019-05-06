@@ -1,8 +1,6 @@
 package model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.time.Year;
@@ -13,6 +11,7 @@ import java.util.Map;
 
 @Entity
 @Table(name = "veranstaltung")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Veranstaltung {
 
     @Id
