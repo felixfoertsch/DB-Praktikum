@@ -2,10 +2,11 @@ package compositeKeys;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class StudiumKey {
+public class StudiumKey implements Serializable {
 
     @Column(name = "studentId")
     Integer studentId;

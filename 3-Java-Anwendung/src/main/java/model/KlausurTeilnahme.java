@@ -5,6 +5,7 @@ import compositeKeys.KlausurTeilnahmeKey;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "studentTeilnahmeKlausur")
 public class KlausurTeilnahme {
 
     @EmbeddedId

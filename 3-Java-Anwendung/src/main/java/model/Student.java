@@ -25,12 +25,11 @@ public class Student {
 //    private Map<String, PraktikumTeilnahme> praktikumTeilnahme;
     private Map<String, SemPrakTeilnahme> semPrakTeilnahme;
 
-    @OneToMany(mappedBy = "student")
-    @MapKey(name = "aufgabenBearbeitungKey")
-
     //Maybe change to List
     private Map<String, Studium> studiumMap;
 
+    @OneToMany(mappedBy = "student")
+    @MapKey(name = "aufgabenBearbeitungKey")
     private Map<String, AufgabenBearbeitung> aufgabenBearbeitungen;
 
     public Student(String matrikelNr, String vorname, String nachname, String uniMail, Map<String, Studium> studiumMap) {

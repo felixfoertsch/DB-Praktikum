@@ -2,9 +2,11 @@ package model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Map;
 
 @Entity
+@Table(name = "mitarbeiter")
 public class Mitarbeiter {
 
     @Id

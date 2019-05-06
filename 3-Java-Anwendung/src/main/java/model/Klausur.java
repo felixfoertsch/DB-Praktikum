@@ -1,9 +1,6 @@
 package model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.MapKey;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -14,6 +11,7 @@ import java.util.Locale;
 import java.util.Map;
 
 @Entity
+@Table(name = "klausur")
 public class Klausur {
 
     @Id

@@ -1,13 +1,12 @@
 package compositeKeys;
 
-import model.SemPrakTeilnahme;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class VeranstaltungAbhaltungKey {
+public class VeranstaltungAbhaltungKey implements Serializable {
 
     @Column(name = "raumId")
     Integer raumId;

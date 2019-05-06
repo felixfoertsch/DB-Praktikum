@@ -3,10 +3,12 @@ package model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.HashMap;
 import java.util.Map;
 
 @Entity
+@Table(name = "aufgabe")
 public class Aufgabe {
 
     @Id

@@ -2,6 +2,7 @@ package model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.time.Year;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Entity
+@Table(name = "veranstaltung")
 public class Veranstaltung {
 
     @Id

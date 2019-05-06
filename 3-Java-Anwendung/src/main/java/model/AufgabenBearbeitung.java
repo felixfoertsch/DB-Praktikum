@@ -5,6 +5,7 @@ import compositeKeys.AufgabenBearbeitungKey;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "bearbeitung")
 public class AufgabenBearbeitung {
 
     @EmbeddedId

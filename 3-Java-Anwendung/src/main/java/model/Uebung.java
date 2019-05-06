@@ -1,8 +1,10 @@
 package model;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "uebung")
 public class Uebung extends Veranstaltung {
 
     private Integer veranstaltungId;
