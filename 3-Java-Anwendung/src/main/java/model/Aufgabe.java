@@ -1,9 +1,6 @@
 package model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,11 +12,18 @@ public class Aufgabe {
     private Integer id;
     private Integer klausurId;
     private Integer rang;
+
+    //Remove if not needed
     private String klausurNr;
+
     private Integer aufgabenNr;
     private Double maxPunkte;
 
-    @OneToMany(mappedBy = "aufgabe")
+    @ManyToOne
+    @JoinColumn(name = "klausurId")
+    private Klausur klausur;
+
+    @OneToMany(mappedBy = "aufgabenBearbeitung")
     private Map<String, AufgabenBearbeitung> aufgabenBearbeitungen;
 
     public Aufgabe(String klausurNr, String aufgabenNr, String maxPunkte) {

@@ -28,7 +28,8 @@ public class Student {
     //Maybe change to List
     private Map<String, Studium> studiumMap;
 
-    @OneToMany(mappedBy = "student")
+    //@OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "aufgabenBearbeitung")
     @MapKey(name = "aufgabenBearbeitungKey")
     private Map<String, AufgabenBearbeitung> aufgabenBearbeitungen;
 

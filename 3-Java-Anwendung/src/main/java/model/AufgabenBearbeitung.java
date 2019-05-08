@@ -13,12 +13,12 @@ public class AufgabenBearbeitung {
 
     @ManyToOne
     @MapsId("id")
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "aufgabeId")
     private Aufgabe aufgabe;
 
     @ManyToOne
     @MapsId("id")
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "studentId")
     private Student student;
 
     private Double punkte;

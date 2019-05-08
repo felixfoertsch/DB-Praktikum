@@ -28,10 +28,12 @@ public class Veranstaltung {
     //Table betreut
     private Collection<Mitarbeiter> dozenten;
 
-    //?
+    //@Transient makes Hibernate not map the field
+    @Transient
     private String kennung;
 
     //Vererbung
+    @Transient
     private String typ;
 
     public Veranstaltung() {

@@ -28,9 +28,13 @@ public class Klausur {
     private String typ;
 
     //Nicht im Schema
+    @Transient
     private String name;
+    @Transient
     private Double punktzahl100;
+    @Transient
     private String vaKennung;
+    @Transient
     private String klausurNr;
 
     private Spezialvorlesung spezialvorlesung;

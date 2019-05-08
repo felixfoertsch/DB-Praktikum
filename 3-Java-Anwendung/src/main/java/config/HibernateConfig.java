@@ -28,7 +28,8 @@ public class HibernateConfig {
 
                 p.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
 
-                p.put(Environment.HBM2DDL_AUTO, "create-drop");
+                //p.put(Environment.HBM2DDL_AUTO, "create-drop");
+                p.put(Environment.HBM2DDL_AUTO, "none");
 
                 c.setProperties(p);
 
