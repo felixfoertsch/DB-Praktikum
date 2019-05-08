@@ -86,6 +86,7 @@ public class ImporterImpl implements Importer {
             System.out.println(e.toString());
             System.out.println("Import failed!");
         }
+        Student s = universitaet.getStudenten().get("2926916");
         return universitaet;
     }
 
@@ -362,13 +363,21 @@ public class ImporterImpl implements Importer {
         int count = 0;
         for (CSVRecord record : semprakergCSV) {
             Veranstaltung veranstaltung = veranstaltungMap.get(record.get("VKennung"));
-            if (veranstaltung instanceof Praktikum) {
+            Student student = studentMap.get(record.get("Matrikelnr"));
+            if (student == null) {
+                System.out.println("Student mit " + record.get("Matrikelnr") + "konnte nicht gefunden werden.");
+                continue;
+            }
+            if (record.get("VKennung").contains("prak")) {
                 Praktikum praktikum = (Praktikum) veranstaltung;
-                Student student = studentMap.get(record.get("Matrikelnr"));
-                if (student == null) { continue; }
                 PraktikumTeilnahme praktikumTeilnahme = new PraktikumTeilnahme(praktikum, student, record.get("Note"));
                 praktikum.addPraktikumTeilnahme(praktikumTeilnahme);
                 student.addPraktikumTeilnahme(praktikumTeilnahme);
+            } else if (record.get("VKennung").contains("sem")) {
+                Seminar seminar = (Seminar) veranstaltung;
+                SeminarTeilnahme seminarTeilnahme = new SeminarTeilnahme(seminar, student, record.get("Note"));
+                seminar.addSeminarTeilnahme(seminarTeilnahme);
+                student.addSeminarTeilnahme(seminarTeilnahme);
             }
             count++;
         }
