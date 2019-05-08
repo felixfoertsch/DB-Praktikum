@@ -105,14 +105,16 @@ public class ImporterImpl implements Importer {
                 "raum",
                 "mail"
         ).withSkipHeaderRecord().parse(in);
+        int count = 0;
         for (CSVRecord record : staffCSV) {
-            System.out.println(record.toString());
             Raum raum = new Raum(record.get("raum"));
             // Vorname und Nachname sind im Datensatz vertauscht
             raeumeMap.put(record.get("raum"), raum);
             Mitarbeiter m = new Mitarbeiter(record.get("nachname"), record.get("vorname"), record.get("mail"), record.get("titel"), raum);
             mitarbeiterMap.put(m.getNachname(), m);
+            count++;
         }
+        System.out.println("Mitarbeiter:" + count + "/21");
     }
 
     /**
@@ -135,13 +137,15 @@ public class ImporterImpl implements Importer {
                 "Exma",
                 "Semester"
         ).withSkipHeaderRecord().parse(in);
+        int count = 0;
         for (CSVRecord record : studentCSV) {
-            System.out.println(record.toString());
             Studiengang studiengang = new Studiengang(record.get("Studiengang"), record.get("Abschluss"), record.get("Regelstudienzeit"));
             Studium studium = new Studium(record.get("Imma"), record.get("Exma"), record.get("Semester"), studiengang);
             Student s = new Student(record.get("Matrikel"), record.get("Vorname"), record.get("Nachname"), record.get("Email"), studium);
             studentMap.put(s.getMatrikelNr(), s);
+            count++;
         }
+        System.out.println("Studenten:" + count + "/861");
     }
 
     /**
@@ -168,6 +172,7 @@ public class ImporterImpl implements Importer {
                 "KlausurNr"
         ).withSkipHeaderRecord().parse(in);
 
+        int count = 0;
         for (CSVRecord record : klausurenCSV) {
             Klausur k;
             switch (record.get("Typ")){
@@ -187,12 +192,13 @@ public class ImporterImpl implements Importer {
                     k = new Klausur();
                     k.setTyp("ak");
             }
-            System.out.println(record.toString());
             Collection<Mitarbeiter> mitarbeiter = getMitarbeiterByLastName(record.get("Aufsicht"), mitarbeiterMap);
             Collection<Raum> raeume = getRaumeByName(record.get("ort"), raumMap);
             k.setData(record.get("name"), record.get("datum"), record.get("uhrzeitVon"), record.get("Gesamtpunktzahl"), record.get("Punktzahl100"), record.get("VeranstKennung"), record.get("KlausurNr"), mitarbeiter, raeume);
             klausurMap.put(k.generateKey(), k);
+            count++;
         }
+        System.out.println("Klausuren:" + count + "/57");
     }
 
     /**
@@ -208,8 +214,8 @@ public class ImporterImpl implements Importer {
                 "aufgaben_nr",
                 "Punkte"
         ).withSkipHeaderRecord().withDelimiter(';').parse(in);
+        int count = 0;
         for (CSVRecord record : klausur_aufgabenCSV) {
-            System.out.println(record.toString());
             String klausurNr = record.get("KlausurNr");
             // klausur_aufgaben has an unnecessary extra underscore on the third column for Zwischenklausuren (15_ws_dbs1_zk)
             // we remove this underscore here
@@ -223,7 +229,9 @@ public class ImporterImpl implements Importer {
                 continue;
             }
             klausurMap.get(klausurNr).addAufgabe(aufgabe);
+            count++;
         }
+        System.out.println("Klausuren:" + count + "/387");
     }
 
     /**
@@ -249,8 +257,8 @@ public class ImporterImpl implements Importer {
                 "tag",
                 "kennung"
         ).withSkipHeaderRecord().parse(in);
+        int count = 0;
         for (CSVRecord record : veranstaltungenCSV) {
-            System.out.println(record.toString());
             Veranstaltung v;
             switch (record.get("typ")) {
                 case "V":
@@ -291,7 +299,9 @@ public class ImporterImpl implements Importer {
                 veranstaltungMap.get(v.getKennung());
             }
             veranstaltungMap.put(v.generateKey(), v);
+            count++;
         }
+        System.out.println("Veranstaltungen:" + count + "/83");
     }
 
     /**
@@ -312,8 +322,8 @@ public class ImporterImpl implements Importer {
                 "Punkte",
                 "Note"
         ).withSkipHeaderRecord().parse(in);
+        int count = 0;
         for (CSVRecord record : klausurergCSV) {
-            System.out.println(record.toString());
             Klausur k = klausurMap.get(record.get("KlausurNr"));
             Student s = studentMap.get(record.get("Matrikelnr"));
             if (k == null || s == null) {
@@ -330,7 +340,9 @@ public class ImporterImpl implements Importer {
             );
             k.addKlausurTeilnahme(kt);
             s.addKlausurTeilnahme(kt);
+            count++;
         }
+        System.out.println("Klausurergebnisse:" + count + "/1866");
     }
 
     /**
@@ -347,8 +359,8 @@ public class ImporterImpl implements Importer {
                 "Matrikelnr",
                 "Note"
         ).withSkipHeaderRecord().parse(in);
+        int count = 0;
         for (CSVRecord record : semprakergCSV) {
-            System.out.println(record.toString());
             Veranstaltung veranstaltung = veranstaltungMap.get(record.get("VKennung"));
             if (veranstaltung instanceof Praktikum) {
                 Praktikum praktikum = (Praktikum) veranstaltung;
@@ -358,7 +370,9 @@ public class ImporterImpl implements Importer {
                 praktikum.addPraktikumTeilnahme(praktikumTeilnahme);
                 student.addPraktikumTeilnahme(praktikumTeilnahme);
             }
+            count++;
         }
+        System.out.println("Semprak-Ergebnisse:" + count + "/353");
     }
 
     /**
@@ -380,7 +394,6 @@ public class ImporterImpl implements Importer {
             // This for-loop is the actual CSV file that is going to be parsed. Punkte is a sorted List of items (eg [6,3,7,6,0.5,0,0])
             // that has to be split.
             for (CSVRecord record : punkteCSV) {
-                System.out.println(record.toString());
                 Klausur klausur = klausurMap.get(record.get("KlausurNr"));
                 Student student = studentMap.get(record.get("Matrikel"));
                 if (klausur == null || student == null) { continue; }
@@ -438,6 +451,9 @@ public class ImporterImpl implements Importer {
      * @return
      */
     private String[] splitString(String toSplit) {
+        if (toSplit.contains("Groß. Christen")) {
+            toSplit = toSplit.replace(".", ",");
+        }
         if (toSplit.contains(",")) {
             // "Junghanns, Christen" -> Split up String and fetch seperate object for each string
             String withoutWhitespace = toSplit.replace(" ", "");

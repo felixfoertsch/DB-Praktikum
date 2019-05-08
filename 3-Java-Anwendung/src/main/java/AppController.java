@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class AppController {
     public Button importButton = null;
-    private ImporterImpl importer;
+    private Importer importer;
     private Universitaet universitaet;
 
     public AppController() {
