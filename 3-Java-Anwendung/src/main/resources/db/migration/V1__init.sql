@@ -27,7 +27,7 @@ CREATE TABLE veranstaltung
 (
     id            SERIAL PRIMARY KEY,
     name          VARCHAR(100),
-    jahr          DATE,
+    jahr          INTEGER,
     semester      VARCHAR(100),
     maxTeilnehmer INTEGER
 );
@@ -39,12 +39,12 @@ CREATE TABLE seminar
 
 CREATE TABLE oberseminar
 (
-    seminarId INTEGER REFERENCES seminar ON DELETE CASCADE PRIMARY KEY
+    veranstaltungId INTEGER REFERENCES seminar ON DELETE CASCADE PRIMARY KEY
 );
 
 CREATE TABLE problemseminar
 (
-    seminarId INTEGER REFERENCES seminar ON DELETE CASCADE PRIMARY KEY
+    veranstaltungId INTEGER REFERENCES seminar ON DELETE CASCADE PRIMARY KEY
 );
 
 CREATE TABLE praktikum

@@ -10,7 +10,7 @@ public class Veranstaltung {
     private Integer id;
     private String typ;
     private String name;
-    private Year jahr;
+    private Integer jahr;
     private String semester;
     private Raum raum;
     private Integer maxTeilnehmer;
@@ -24,6 +24,7 @@ public class Veranstaltung {
     }
 
     public void setData(
+            String typ,
             String name,
             String jahr,
             String semester,
@@ -32,8 +33,9 @@ public class Veranstaltung {
             String zeit,
             String tag,
             String kennung) {
+        this.typ = typ;
         this.name = name;
-        this.jahr = Year.parse(jahr);
+        this.jahr = Integer.valueOf(jahr);
         this.semester = semester;
         this.raum = raum;
         this.zeit = parseTime(zeit);
@@ -79,4 +81,27 @@ public class Veranstaltung {
         return day;
     }
 
+    public Integer getJahr() {
+        return jahr;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public Integer getMaxTeilnehmer() {
+        return maxTeilnehmer;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getTyp() {
+        return typ;
+    }
 }

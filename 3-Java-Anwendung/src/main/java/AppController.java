@@ -23,7 +23,6 @@ public class AppController {
         Map<String, File> files = importer.importCSVtoMemory();
         this.universitaet = importer.parseCSVandCreateModel(files);
         importer.persistModel(this.universitaet);
-        Universitaet uni = this.universitaet;
     }
 
 }

@@ -307,6 +307,7 @@ public class ImporterImpl implements Importer {
                     v = new Veranstaltung();
             }
             v.setData(
+                    record.get("typ"),
                     record.get("name"),
                     record.get("jahr"),
                     record.get("semester"),
@@ -510,13 +511,14 @@ public class ImporterImpl implements Importer {
             Class.forName("org.postgresql.Driver");
             c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/dbp", "dbp", "dbp");
             c.setAutoCommit(false);
-            System.out.println("Opened database successfully");
+            System.out.println("Opened database connection successfully");
 
             persistKlausuren(universitaet, c);
+            persistVeranstaltungen(universitaet, c);
 
             c.commit();
             c.close();
-            System.out.println("Closed database successfully");
+            System.out.println("Closed database connection successfully");
         } catch (Exception e) {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
             System.exit(0);
@@ -558,6 +560,70 @@ public class ImporterImpl implements Importer {
             }
         }
         insertKlausur.close();
+    }
+
+    private void persistVeranstaltungen(Universitaet universitaet, Connection c) throws Exception {
+        Map<String, Veranstaltung> veranstaltungMap = universitaet.getVeranstaltungen();
+        String insert = "INSERT INTO veranstaltung (name, jahr, semester, maxTeilnehmer) VALUES (?, ?, ?, ?)";
+        PreparedStatement insertVeranstaltung = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
+
+        ArrayList<Uebung> uebungen = new ArrayList<>();
+
+        for (Veranstaltung veranstaltung : veranstaltungMap.values()) {
+            insertVeranstaltung.setObject(1, veranstaltung.getName());
+            insertVeranstaltung.setObject(2, veranstaltung.getJahr());
+            insertVeranstaltung.setObject(3, veranstaltung.getSemester());
+            insertVeranstaltung.setObject(4, veranstaltung.getMaxTeilnehmer());
+            insertVeranstaltung.executeUpdate();
+            ResultSet rs = insertVeranstaltung.getGeneratedKeys();
+            rs.next();
+            veranstaltung.setId(rs.getInt(1));
+
+            String typ;
+            if (veranstaltung.getTyp().equals("V")) {
+                typ = "INSERT INTO grundvorlesung (veranstaltungId) VALUES (?)";
+                PreparedStatement insertVATyp = c.prepareStatement(typ);
+                insertVATyp.setObject(1, veranstaltung.getId());
+                insertVATyp.executeUpdate();
+                insertVATyp.close();
+            } else if (veranstaltung.getTyp().equals("SV")) {
+                typ = "INSERT INTO spezialvorlesung (veranstaltungId) VALUES (?)";
+                PreparedStatement insertVATyp = c.prepareStatement(typ);
+                insertVATyp.setObject(1, veranstaltung.getId());
+                insertVATyp.executeUpdate();
+                insertVATyp.close();
+            } else if (veranstaltung.getTyp().equals("P")) {
+                typ = "INSERT INTO praktikum (veranstaltungId) VALUES (?)";
+                PreparedStatement insertVATyp = c.prepareStatement(typ);
+                insertVATyp.setObject(1, veranstaltung.getId());
+                insertVATyp.executeUpdate();
+                insertVATyp.close();
+            } else if (veranstaltung.getTyp().equals("OS") || veranstaltung.getTyp().equals("PS")) {
+                typ = "INSERT INTO seminar (veranstaltungId) VALUES (?)";
+                PreparedStatement insertVATyp = c.prepareStatement(typ);
+                insertVATyp.setObject(1, veranstaltung.getId());
+                insertVATyp.executeUpdate();
+                insertVATyp.close();
+                if (veranstaltung.getTyp().equals("OS")) {
+                    typ = "INSERT INTO oberseminar (veranstaltungId) VALUES (?)";
+                    PreparedStatement insertSeminarTyp = c.prepareStatement(typ);
+                    insertSeminarTyp.setObject(1, veranstaltung.getId());
+                    insertSeminarTyp.executeUpdate();
+                    insertSeminarTyp.close();
+                } else {
+                    typ = "INSERT INTO problemseminar (veranstaltungId) VALUES (?)";
+                    PreparedStatement insertSeminarTyp = c.prepareStatement(typ);
+                    insertSeminarTyp.setObject(1, veranstaltung.getId());
+                    insertSeminarTyp.executeUpdate();
+                    insertSeminarTyp.close();
+                }
+            } else if (veranstaltung.getTyp().equals("Ü")) {
+                uebungen.add((Uebung) veranstaltung);
+            }
+
+        }
+        System.out.println(uebungen);
+        insertVeranstaltung.close();
     }
 
 }
