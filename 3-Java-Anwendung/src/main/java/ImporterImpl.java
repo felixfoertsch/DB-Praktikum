@@ -620,10 +620,20 @@ public class ImporterImpl implements Importer {
             } else if (veranstaltung.getTyp().equals("Ü")) {
                 uebungen.add((Uebung) veranstaltung);
             }
-
         }
-        System.out.println(uebungen);
+
+        for (Uebung uebung : uebungen) {
+            Veranstaltung zugehoerigeGV = veranstaltungMap.get(uebung.getKennung());
+            String typ = "INSERT INTO uebung (veranstaltungId, grundvorlesungid) VALUES (?, ?)";
+            PreparedStatement insertUebung = c.prepareStatement(typ);
+            insertUebung.setObject(1, uebung.getId());
+            insertUebung.setObject(2, zugehoerigeGV.getId());
+            insertUebung.executeUpdate();
+            insertUebung.close();
+        }
         insertVeranstaltung.close();
     }
+
+
 
 }
