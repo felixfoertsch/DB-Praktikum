@@ -7,4 +7,5 @@ import java.util.Map;
 public interface Importer {
     Map<String, File> importCSVtoMemory();
     Universitaet parseCSVandCreateModel(Map<String, File> csv);
+    void persistModel(Universitaet universitaet);
 }

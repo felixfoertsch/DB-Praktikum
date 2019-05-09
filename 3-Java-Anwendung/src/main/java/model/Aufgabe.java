@@ -30,4 +30,8 @@ public class Aufgabe {
     public Integer getAufgabenNr() {
         return aufgabenNr;
     }
+
+    public void setKlausurNr(String klausurNr) {
+        this.klausurNr = klausurNr;
+    }
 }

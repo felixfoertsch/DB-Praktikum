@@ -68,4 +68,17 @@ public class Klausur {
     public String getKlausurNr() {
         return klausurNr;
     }
+
+    public LocalDate getDatum() {
+        return datum;
+    }
+
+    public LocalTime getUhrzeitVon() {
+        return uhrzeitVon;
+    }
+
+    public Double getGesamtpunktzahl() {
+        return gesamtpunktzahl;
+    }
+
 }

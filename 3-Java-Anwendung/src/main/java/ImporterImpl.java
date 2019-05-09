@@ -7,6 +7,9 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -82,6 +85,8 @@ public class ImporterImpl implements Importer {
             importKlausurErg(files.get("klausurerg.csv"), universitaet.getKlausuren(), universitaet.getStudenten());
             importSemPrakErg(files.get("semprakerg.csv"), universitaet.getVeranstaltungen(), universitaet.getStudenten());
             importPunkte(klausurpunkte, universitaet.getKlausuren(), universitaet.getStudenten());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
         } catch (Exception e) {
             System.out.println(e.toString());
             System.out.println("Import failed!");
@@ -226,13 +231,34 @@ public class ImporterImpl implements Importer {
                 klausurNr = sb.toString();
             }
             Aufgabe aufgabe = new Aufgabe(record.get("KlausurNr"), record.get("aufgaben_nr"), record.get("Punkte"));
-            if (klausurMap.get(klausurNr) == null) {
+            if (klausurNr.equals("18ws_idbs2_wh")){
+                aufgabe.setKlausurNr("18ws_idbs2");
+                klausurMap.get("18ws_idbs2").addAufgabe(aufgabe);
+                System.out.println("Modified klausurNr of Aufgabe 18ws_idbs2_wh to 18ws_idbs2");
+                count++;
                 continue;
+            }
+            if (klausurNr.equals("18ws_cdm")){
+                aufgabe.setKlausurNr("18ws_dm");
+                klausurMap.get("18ws_dm").addAufgabe(aufgabe);
+                System.out.println("Modified klausurNr of Aufgabe 18ws_cdm to 18ws_dm");
+                count++;
+                continue;
+            }
+            if (klausurNr.equals("16ws_idbs2_wh")){
+                aufgabe.setKlausurNr("15ws_idbs2_wh");
+                klausurMap.get("15ws_idbs2_wh").addAufgabe(aufgabe);
+                System.out.println("Modified klausurNr of Aufgabe 16ws_idbs2_wh to 15ws_idbs2_wh");
+                count++;
+                continue;
+            }
+            if (klausurMap.get(klausurNr) == null) {
+                System.out.println("No Klausur with klausurNr " + klausurNr);
             }
             klausurMap.get(klausurNr).addAufgabe(aufgabe);
             count++;
         }
-        System.out.println("Klausuren:" + count + "/387");
+        System.out.println("Klausuraufgaben:" + count + "/387");
     }
 
     /**
@@ -470,5 +496,42 @@ public class ImporterImpl implements Importer {
         } else {
             return new String[]{toSplit};
         }
+    }
+
+    public void persistModel(Universitaet universitaet) {
+        persistKlausuren(universitaet);
+    }
+
+    private void persistKlausuren(Universitaet universitaet) {
+        Map<String, Klausur> klausurMap = universitaet.getKlausuren();
+
+        for (Klausur klausur : klausurMap.values()) {
+            Connection c = null;
+            Statement stmt = null;
+            try {
+                Class.forName("org.postgresql.Driver");
+                c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/dbp","dbp","dbp");
+                c.setAutoCommit(false);
+                System.out.println("Opened database successfully");
+
+                stmt = c.createStatement();
+
+                String sql = String.format("INSERT INTO klausur" +
+                        "(datum, uhrzeitvon, gesamtpunktzahl) " +
+                        "VALUES (%s, %s, %s);", klausur.getDatum(), klausur.getUhrzeitVon(), klausur.getGesamtpunktzahl());
+                stmt.executeUpdate(sql);
+
+                stmt.close();
+                c.commit();
+                c.close();
+
+            } catch (Exception e) {
+                System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+                System.exit(0);
+            }
+            System.out.println("Klausur eingefügt: " + klausur.generateKey());
+        }
+
+
     }
 }
