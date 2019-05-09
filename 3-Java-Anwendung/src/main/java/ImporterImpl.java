@@ -515,6 +515,7 @@ public class ImporterImpl implements Importer {
 
             persistKlausuren(universitaet, c);
             persistVeranstaltungen(universitaet, c);
+            persistMitarbeiter(universitaet, c);
 
             c.commit();
             c.close();
@@ -634,6 +635,21 @@ public class ImporterImpl implements Importer {
         insertVeranstaltung.close();
     }
 
+    private void persistMitarbeiter(Universitaet universitaet, Connection c) throws Exception {
+        Map<String, Mitarbeiter> mitarbeiterMap = universitaet.getMitarbeiter();
+        String insert = "INSERT INTO mitarbeiter (vorname, nachname, email) VALUES (?, ?, ?)";
+        PreparedStatement insertMitarbeiter = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
 
+        for (Mitarbeiter mitarbeiter : mitarbeiterMap.values()) {
+            insertMitarbeiter.setObject(1, mitarbeiter.getVorname());
+            insertMitarbeiter.setObject(2, mitarbeiter.getNachname());
+            insertMitarbeiter.setObject(3, mitarbeiter.getEmail());
+            insertMitarbeiter.executeUpdate();
+            ResultSet rs = insertMitarbeiter.getGeneratedKeys();
+            rs.next();
+            mitarbeiter.setId(rs.getInt(1));
+        }
+
+    }
 
 }

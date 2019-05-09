@@ -39,4 +39,8 @@ public class Mitarbeiter {
     public String getEmail() {
         return email;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
