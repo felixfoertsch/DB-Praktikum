@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.Collection;
 import java.util.HashMap;
@@ -507,39 +508,40 @@ public class ImporterImpl implements Importer {
     }
 
     public void persistModel(Universitaet universitaet) {
-        persistKlausuren(universitaet);
+        Connection c = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/dbp", "dbp", "dbp");
+            c.setAutoCommit(false);
+            System.out.println("Opened database successfully");
+
+            persistKlausuren(universitaet, c);
+
+            c.commit();
+            c.close();
+            System.out.println("Closed database successfully");
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+
     }
 
-    private void persistKlausuren(Universitaet universitaet) {
+    private void persistKlausuren(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Klausur> klausurMap = universitaet.getKlausuren();
+        PreparedStatement stmt = c.prepareStatement("INSERT INTO klausur (datum, uhrzeitVon, gesamtpunktzahl) VALUES (?, ?, ?)");
 
         for (Klausur klausur : klausurMap.values()) {
-            Connection c = null;
-            Statement stmt = null;
-            try {
-                Class.forName("org.postgresql.Driver");
-                c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/dbp","dbp","dbp");
-                c.setAutoCommit(false);
-                System.out.println("Opened database successfully");
-
-                stmt = c.createStatement();
-
-                String sql = String.format("INSERT INTO klausur" +
-                        "(datum, uhrzeitvon, gesamtpunktzahl) " +
-                        "VALUES (%s, %s, %s);", klausur.getDatum(), klausur.getUhrzeitVon(), klausur.getGesamtpunktzahl());
-                stmt.executeUpdate(sql);
-
-                stmt.close();
-                c.commit();
-                c.close();
-
-            } catch (Exception e) {
-                System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-                System.exit(0);
-            }
+            stmt.setObject(1, klausur.getDatum());
+            stmt.setObject(2, klausur.getUhrzeitVon());
+            stmt.setObject(3, klausur.getGesamtpunktzahl());
+            stmt.executeUpdate();
             System.out.println("Klausur eingefügt: " + klausur.generateKey());
         }
 
+        stmt.close();
 
     }
+
 }
