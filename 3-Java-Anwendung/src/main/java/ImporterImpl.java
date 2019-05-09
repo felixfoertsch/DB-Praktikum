@@ -396,11 +396,19 @@ public class ImporterImpl implements Importer {
             }
             if (record.get("VKennung").contains("prak")) {
                 Praktikum praktikum = (Praktikum) veranstaltung;
+                if (praktikum == null) {
+                    System.out.println("Praktikum " + record.get("VKennung") + "konnte nicht gefunden werden.");
+                    continue;
+                }
                 PraktikumTeilnahme praktikumTeilnahme = new PraktikumTeilnahme(praktikum, student, record.get("Note"));
                 praktikum.addPraktikumTeilnahme(praktikumTeilnahme);
                 student.addPraktikumTeilnahme(praktikumTeilnahme);
             } else if (record.get("VKennung").contains("sem")) {
                 Seminar seminar = (Seminar) veranstaltung;
+                if (seminar == null) {
+                    System.out.println("Seminar " + record.get("VKennung") + "konnte nicht gefunden werden.");
+                    continue;
+                }
                 SeminarTeilnahme seminarTeilnahme = new SeminarTeilnahme(seminar, student, record.get("Note"));
                 seminar.addSeminarTeilnahme(seminarTeilnahme);
                 student.addSeminarTeilnahme(seminarTeilnahme);
