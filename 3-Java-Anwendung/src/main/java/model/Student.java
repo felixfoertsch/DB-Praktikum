@@ -44,4 +44,20 @@ public class Student {
     }
 
     public void addAufgabenBearbeitung(AufgabenBearbeitung ab) { this.aufgabenBearbeitungen.put(ab.generateKey(), ab); }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getVorname() {
+        return vorname;
+    }
+
+    public String getNachname() {
+        return nachname;
+    }
+
+    public String getUniMail() {
+        return uniMail;
+    }
 }

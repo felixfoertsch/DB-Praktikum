@@ -4,23 +4,6 @@ CREATE TABLE klausur
     grundvorlesungId   INTEGER,
 );
 
-CREATE TABLE mitarbeiter
-(
-    id       SERIAL PRIMARY KEY,
-    vorname  VARCHAR(100),
-    nachname VARCHAR(100),
-    email    VARCHAR(100)
-);
-
-CREATE TABLE student
-(
-    id         SERIAL PRIMARY KEY,
-    matrikelNr VARCHAR(100),
-    vorname    VARCHAR(100),
-    nachname   VARCHAR(100),
-    uniMail    VARCHAR(100)
-);
-
 CREATE TABLE aufgabe
 (
     id        SERIAL PRIMARY KEY,
