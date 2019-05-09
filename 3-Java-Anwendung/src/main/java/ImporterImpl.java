@@ -527,21 +527,37 @@ public class ImporterImpl implements Importer {
     private void persistKlausuren(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Klausur> klausurMap = universitaet.getKlausuren();
         String insert = "INSERT INTO klausur (datum, uhrzeitVon, gesamtpunktzahl) VALUES (?, ?, ?)";
-        PreparedStatement stmt = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement insertKlausur = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
 
         for (Klausur klausur : klausurMap.values()) {
-            stmt.setObject(1, klausur.getDatum());
-            stmt.setObject(2, klausur.getUhrzeitVon());
-            stmt.setObject(3, klausur.getGesamtpunktzahl());
-            stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
+            insertKlausur.setObject(1, klausur.getDatum());
+            insertKlausur.setObject(2, klausur.getUhrzeitVon());
+            insertKlausur.setObject(3, klausur.getGesamtpunktzahl());
+            insertKlausur.executeUpdate();
+            ResultSet rs = insertKlausur.getGeneratedKeys();
             rs.next();
             klausur.setId(rs.getInt(1));
-            System.out.println(klausur.getId());
+
+            String typ;
+            if (klausur.getTyp().equals("zk")) {
+                typ = "INSERT INTO zwischenklausur (klausurId) VALUES (?)";
+            } else {
+                typ = "INSERT INTO abschlussklausur (klausurId) VALUES (?)";
+            }
+            PreparedStatement insertKlausurTyp = c.prepareStatement(typ);
+            insertKlausurTyp.setObject(1, klausur.getId());
+            insertKlausurTyp.executeUpdate();
+            insertKlausurTyp.close();
+
+            if (klausur.getTyp().equals("wh")) {
+                typ = "INSERT INTO wiederholungsklausur (klausurId) VALUES (?)";
+                PreparedStatement insertWdh = c.prepareStatement(typ);
+                insertWdh.setObject(1, klausur.getId());
+                insertWdh.executeUpdate();
+                insertWdh.close();
+            }
         }
-
-        stmt.close();
-
+        insertKlausur.close();
     }
 
 }
