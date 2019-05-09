@@ -4,44 +4,6 @@ CREATE TABLE klausur
     grundvorlesungId   INTEGER,
 );
 
-
-CREATE TABLE seminar
-(
-    veranstaltungId INTEGER REFERENCES veranstaltung ON DELETE CASCADE PRIMARY KEY
-);
-
-CREATE TABLE oberseminar
-(
-    seminarId INTEGER REFERENCES seminar ON DELETE CASCADE PRIMARY KEY
-);
-
-CREATE TABLE problemseminar
-(
-    seminarId INTEGER REFERENCES seminar ON DELETE CASCADE PRIMARY KEY
-);
-
-CREATE TABLE praktikum
-(
-    veranstaltungId INTEGER REFERENCES veranstaltung ON DELETE CASCADE PRIMARY KEY
-);
-
-CREATE TABLE grundvorlesung
-(
-    veranstaltungId INTEGER REFERENCES veranstaltung ON DELETE CASCADE PRIMARY KEY
-
-);
-
-CREATE TABLE spezialvorlesung
-(
-    veranstaltungId INTEGER REFERENCES veranstaltung ON DELETE CASCADE PRIMARY KEY
-);
-
-CREATE TABLE uebung
-(
-    veranstaltungId  INTEGER REFERENCES veranstaltung ON DELETE CASCADE PRIMARY KEY,
-    grundvorlesungId INTEGER REFERENCES grundvorlesung ON DELETE CASCADE
-);
-
 CREATE TABLE mitarbeiter
 (
     id       SERIAL PRIMARY KEY,
