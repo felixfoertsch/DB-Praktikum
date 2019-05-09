@@ -7,10 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -92,7 +89,6 @@ public class ImporterImpl implements Importer {
             System.out.println(e.toString());
             System.out.println("Import failed!");
         }
-        Student s = universitaet.getStudenten().get("2926916");
         return universitaet;
     }
 
@@ -530,14 +526,18 @@ public class ImporterImpl implements Importer {
 
     private void persistKlausuren(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Klausur> klausurMap = universitaet.getKlausuren();
-        PreparedStatement stmt = c.prepareStatement("INSERT INTO klausur (datum, uhrzeitVon, gesamtpunktzahl) VALUES (?, ?, ?)");
+        String insert = "INSERT INTO klausur (datum, uhrzeitVon, gesamtpunktzahl) VALUES (?, ?, ?)";
+        PreparedStatement stmt = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
 
         for (Klausur klausur : klausurMap.values()) {
             stmt.setObject(1, klausur.getDatum());
             stmt.setObject(2, klausur.getUhrzeitVon());
             stmt.setObject(3, klausur.getGesamtpunktzahl());
             stmt.executeUpdate();
-            System.out.println("Klausur eingefügt: " + klausur.generateKey());
+            ResultSet rs = stmt.getGeneratedKeys();
+            rs.next();
+            klausur.setId(rs.getInt(1));
+            System.out.println(klausur.getId());
         }
 
         stmt.close();
