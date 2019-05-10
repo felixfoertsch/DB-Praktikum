@@ -1,3 +1,4 @@
+import com.sun.javafx.binding.StringFormatter;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import model.*;
@@ -515,6 +516,7 @@ public class ImporterImpl implements Importer {
 
             persistKlausuren(universitaet, c);
             persistVeranstaltungen(universitaet, c);
+            persistRaum(universitaet, c);
             persistMitarbeiter(universitaet, c);
             persistStudent(universitaet, c);
 
@@ -636,6 +638,20 @@ public class ImporterImpl implements Importer {
         insertVeranstaltung.close();
     }
 
+    private void persistRaum(Universitaet universitaet, Connection c) throws Exception {
+        Map<String, Raum> raumMap = universitaet.getRaeume();
+        String insert = "INSERT INTO raum (bezeichnung) VALUES (?)";
+        PreparedStatement insertRaum = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
+        for (Raum raum : raumMap.values()) {
+            insertRaum.setObject(1, raum.getBezeichnung());
+            insertRaum.executeUpdate();
+            ResultSet rs = insertRaum.getGeneratedKeys();
+            rs.next();
+            raum.setId(rs.getInt(1));
+        }
+        insertRaum.close();
+    }
+
     private void persistMitarbeiter(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Mitarbeiter> mitarbeiterMap = universitaet.getMitarbeiter();
         String insert = "INSERT INTO mitarbeiter (vorname, nachname, email) VALUES (?, ?, ?)";
@@ -649,7 +665,15 @@ public class ImporterImpl implements Importer {
             ResultSet rs = insertMitarbeiter.getGeneratedKeys();
             rs.next();
             mitarbeiter.setId(rs.getInt(1));
+
+            String insertRaum = "UPDATE raum SET mitarbeiterid = ? WHERE id = ?";
+            PreparedStatement insertMitarbeiterInRaum = c.prepareStatement(insertRaum);
+            insertMitarbeiterInRaum.setObject(1, mitarbeiter.getId());
+            insertMitarbeiterInRaum.setObject(2, mitarbeiter.getRaum().getId());
+            insertMitarbeiterInRaum.executeUpdate();
+            insertMitarbeiterInRaum.close();
         }
+        insertMitarbeiter.close();
     }
 
     private void persistStudent(Universitaet universitaet, Connection c) throws Exception {
@@ -667,6 +691,7 @@ public class ImporterImpl implements Importer {
             rs.next();
             student.setId(rs.getInt(1));
         }
+        insertStudent.close();
     }
 
 }

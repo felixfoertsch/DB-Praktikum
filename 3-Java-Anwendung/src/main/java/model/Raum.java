@@ -8,4 +8,16 @@ public class Raum {
     public Raum(String bezeichnung) {
         this.bezeichnung = bezeichnung;
     }
+
+    public String getBezeichnung() {
+        return bezeichnung;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
 }
