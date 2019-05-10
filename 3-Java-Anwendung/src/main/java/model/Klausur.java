@@ -89,4 +89,7 @@ public class Klausur {
         return gesamtpunktzahl;
     }
 
+    public Map<Integer, Aufgabe> getAufgaben() {
+        return aufgaben;
+    }
 }

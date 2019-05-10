@@ -542,6 +542,7 @@ public class ImporterImpl implements Importer {
             persistRaum(universitaet, c);
             persistMitarbeiter(universitaet, c);
             persistStudent(universitaet, c);
+            persistKlausurAufgaben(universitaet, c);
 
             c.commit();
             c.close();
@@ -678,7 +679,7 @@ public class ImporterImpl implements Importer {
     private void persistMitarbeiter(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Mitarbeiter> mitarbeiterMap = universitaet.getMitarbeiter();
 
-
+        // TODO: pull out prepared Statement
         for (Mitarbeiter mitarbeiter : mitarbeiterMap.values()) {
             String insert = "INSERT INTO mitarbeiter (vorname, nachname, email, raumId) VALUES (?, ?, ?, ?)";
             PreparedStatement insertMitarbeiter = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
@@ -718,6 +719,25 @@ public class ImporterImpl implements Importer {
             student.setId(rs.getInt(1));
         }
         insertStudent.close();
+    }
+
+    private void persistKlausurAufgaben(Universitaet universitaet, Connection c) throws Exception {
+        Map<String, Klausur> klausurMap = universitaet.getKlausuren();
+        String insert = "INSERT INTO aufgabe (klausurid, rang, maxpunkte) VALUES (?, ?, ?)";
+        PreparedStatement insertAufgabe = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
+
+        for (Klausur klausur : klausurMap.values()) {
+            for (Aufgabe aufgabe : klausur.getAufgaben().values()) {
+                insertAufgabe.setObject(1, klausur.getId());
+                insertAufgabe.setObject(2, aufgabe.getAufgabenNr());
+                insertAufgabe.setObject(3, aufgabe.getMaxPunkte());
+                insertAufgabe.executeUpdate();
+                ResultSet rs = insertAufgabe.getGeneratedKeys();
+                rs.next();
+                aufgabe.setId(rs.getInt(1));
+            }
+        }
+        insertAufgabe.close();
     }
 
 }

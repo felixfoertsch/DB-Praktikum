@@ -12,13 +12,6 @@ CREATE TABLE aufgabe
     maxPunkte NUMERIC(3, 1)
 );
 
-CREATE TABLE raum
-(
-    id            SERIAL PRIMARY KEY,
-    mitarbeiterId INTEGER REFERENCES mitarbeiter ON DELETE SET NULL,
-    bezeichnung   VARCHAR(100)
-);
-
 CREATE TABLE studiengang
 (
     id               SERIAL PRIMARY KEY,

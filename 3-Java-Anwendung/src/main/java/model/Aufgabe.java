@@ -34,4 +34,12 @@ public class Aufgabe {
     public void setKlausurNr(String klausurNr) {
         this.klausurNr = klausurNr;
     }
+
+    public Double getMaxPunkte() {
+        return maxPunkte;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
