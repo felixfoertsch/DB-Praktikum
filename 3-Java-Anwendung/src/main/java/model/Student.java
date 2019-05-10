@@ -60,4 +60,8 @@ public class Student {
     public String getUniMail() {
         return uniMail;
     }
+
+    public Studium getStudium() {
+        return studium;
+    }
 }

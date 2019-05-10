@@ -23,4 +23,8 @@ public class Studium {
         }
         return Year.parse(exma);
     }
+
+    public Studiengang getStudiengang() {
+        return studiengang;
+    }
 }

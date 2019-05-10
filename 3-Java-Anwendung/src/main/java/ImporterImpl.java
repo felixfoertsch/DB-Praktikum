@@ -93,6 +93,7 @@ public class ImporterImpl implements Importer {
             System.out.println(e.toString());
             System.out.println("Import failed!");
         }
+        universitaet.setStudiengaenge(universitaet.populateStudiengaenge(universitaet.getStudenten()));
         return universitaet;
     }
 
@@ -543,6 +544,7 @@ public class ImporterImpl implements Importer {
             persistMitarbeiter(universitaet, c);
             persistStudent(universitaet, c);
             persistKlausurAufgaben(universitaet, c);
+            persistStudiengang(universitaet, c);
 
             c.commit();
             c.close();
@@ -737,6 +739,23 @@ public class ImporterImpl implements Importer {
             }
         }
         insertAufgabe.close();
+    }
+
+    private void persistStudiengang(Universitaet universitaet, Connection c) throws Exception {
+        Map<String, Studiengang> studiengangMap = universitaet.getStudiengaenge();
+        String insert = "INSERT INTO studiengang (name, abschluss, regelstudienzeit) VALUES (?, ?, ?)";
+        PreparedStatement insertStudiengang = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
+
+        for (Studiengang sg : studiengangMap.values()) {
+            insertStudiengang.setObject(1, sg.getName());
+            insertStudiengang.setObject(2, sg.getAbschluss());
+            insertStudiengang.setObject(3, sg.getRegelstudienzeit());
+            insertStudiengang.executeUpdate();
+            ResultSet rs = insertStudiengang.getGeneratedKeys();
+            rs.next();
+            sg.setId(rs.getInt(1));
+        }
+        insertStudiengang.close();
     }
 
 }

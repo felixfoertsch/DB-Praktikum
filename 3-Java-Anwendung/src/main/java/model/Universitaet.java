@@ -9,6 +9,7 @@ public class Universitaet {
     private Map<String, Veranstaltung> veranstaltungen;
     private Map<String, Klausur> klausuren;
     private Map<String, Raum> raeume;
+    private Map<String, Studiengang> studiengaenge;
 
     public Universitaet() {
         this.studenten = new HashMap<>();
@@ -54,5 +55,22 @@ public class Universitaet {
 
     public void setRaeume(Map<String, Raum> raeume) {
         this.raeume = raeume;
+    }
+
+    public void setStudiengaenge(Map<String, Studiengang> studiengaenge) {
+        this.studiengaenge = studiengaenge;
+    }
+
+    public Map<String, Studiengang> getStudiengaenge() {
+        return studiengaenge;
+    }
+
+    public Map<String, Studiengang> populateStudiengaenge(Map<String, Student> studenten) {
+        Map<String, Studiengang> studiengangMap = new HashMap<>();
+        for (Student student : studenten.values()) {
+            Studiengang sg = student.getStudium().getStudiengang();
+            studiengangMap.put(sg.getName() + " " + sg.getAbschluss() + " " + sg.getRegelstudienzeit(), sg);
+        }
+        return studiengangMap;
     }
 }
