@@ -20,6 +20,7 @@ public class ImporterImpl implements Importer {
     /**
      * Interaction method. Displays a JavaFX directory chooser and loads all the CSV files into a Map with the file
      * name as the key.
+     *
      * @return HashMap<K: Filename, V: CSV file>
      */
     public Map<String, File> importCSVtoMemory() {
@@ -49,6 +50,7 @@ public class ImporterImpl implements Importer {
 
     /**
      * Retrieves the klausurpunkte folder as a Map from the directory chooser.
+     *
      * @param folder klausurpunkte folder
      * @return <K: Filename, V: CSV file>
      */
@@ -68,6 +70,7 @@ public class ImporterImpl implements Importer {
 
     /**
      * Main method of the Importer. Imports a folder of CSV files into an University object that contains all the data.
+     *
      * @param files folder containing the CSV files to be imported
      * @return Universitaet object that contains all of the imported data, ready to be persisted
      */
@@ -95,9 +98,10 @@ public class ImporterImpl implements Importer {
 
     /**
      * A Mitarbeiter contains his associated Raum object.
-     * @param csv staff.csv
+     *
+     * @param csv            staff.csv
      * @param mitarbeiterMap the map of the Mitarbeiter of the Universitaet
-     * @param raeumeMap the map of the Raum of the Universitaet
+     * @param raeumeMap      the map of the Raum of the Universitaet
      * @throws Exception rethrows FileNotFoundException
      */
     private void importStaff(File csv, Map<String, Mitarbeiter> mitarbeiterMap, Map<String, Raum> raeumeMap) throws Exception {
@@ -111,9 +115,14 @@ public class ImporterImpl implements Importer {
         ).withSkipHeaderRecord().parse(in);
         int count = 0;
         for (CSVRecord record : staffCSV) {
-            Raum raum = new Raum(record.get("raum"));
+            Raum raum;
+            if (raeumeMap.containsKey(record.get("raum"))) {
+                raum = raeumeMap.get(record.get("raum"));
+            } else {
+                raum = new Raum(record.get("raum"));
+                raeumeMap.put(record.get("raum"), raum);
+            }
             // Vorname und Nachname sind im Datensatz vertauscht
-            raeumeMap.put(record.get("raum"), raum);
             Mitarbeiter m = new Mitarbeiter(record.get("nachname"), record.get("vorname"), record.get("mail"), record.get("titel"), raum);
             mitarbeiterMap.put(m.getNachname(), m);
             count++;
@@ -123,7 +132,8 @@ public class ImporterImpl implements Importer {
 
     /**
      * A Student contains his associated Studiengang and Studium objects.
-     * @param csv student.csv
+     *
+     * @param csv        student.csv
      * @param studentMap the map of the Student of the Universitaet
      * @throws Exception rethrows FileNotFoundException
      */
@@ -155,10 +165,11 @@ public class ImporterImpl implements Importer {
     /**
      * Creates all the necessary Raum during operation and puts them into the provided Map<String, Raum>.
      * Uses the provided Map<String, Mitarbeiter> to associate the Klausur with the Mitarbeiter.
-     * @param csv klausuren.csv
+     *
+     * @param csv            klausuren.csv
      * @param mitarbeiterMap the map of the Mitarbeiter of the Universitaet
-     * @param raumMap the map of the Raum of the Universitaet
-     * @param klausurMap the map of the Klausuren of the Universitaet
+     * @param raumMap        the map of the Raum of the Universitaet
+     * @param klausurMap     the map of the Klausuren of the Universitaet
      * @throws Exception rethrows FileNotFoundException
      */
     private void importKlausuren(File csv, Map<String, Mitarbeiter> mitarbeiterMap, Map<String, Raum> raumMap, Map<String, Klausur> klausurMap) throws Exception {
@@ -179,7 +190,7 @@ public class ImporterImpl implements Importer {
         int count = 0;
         for (CSVRecord record : klausurenCSV) {
             Klausur k;
-            switch (record.get("Typ")){
+            switch (record.get("Typ")) {
                 case "AK":
                     k = new Abschlussklausur();
                     k.setTyp("ak");
@@ -207,7 +218,8 @@ public class ImporterImpl implements Importer {
 
     /**
      * Puts the Aufgabe into the Map of Klausur. Requires that klausuren.csv has already been imported.
-     * @param csv klausur_aufgaben.csv
+     *
+     * @param csv        klausur_aufgaben.csv
      * @param klausurMap the map of the Klausuren of the Universitaet
      * @throws Exception rethrows FileNotFoundException
      */
@@ -229,21 +241,21 @@ public class ImporterImpl implements Importer {
                 klausurNr = sb.toString();
             }
             Aufgabe aufgabe = new Aufgabe(record.get("KlausurNr"), record.get("aufgaben_nr"), record.get("Punkte"));
-            if (klausurNr.equals("18ws_idbs2_wh")){
+            if (klausurNr.equals("18ws_idbs2_wh")) {
                 aufgabe.setKlausurNr("18ws_idbs2");
                 klausurMap.get("18ws_idbs2").addAufgabe(aufgabe);
                 System.out.println("Modified klausurNr of Aufgabe 18ws_idbs2_wh to 18ws_idbs2");
                 count++;
                 continue;
             }
-            if (klausurNr.equals("18ws_cdm")){
+            if (klausurNr.equals("18ws_cdm")) {
                 aufgabe.setKlausurNr("18ws_dm");
                 klausurMap.get("18ws_dm").addAufgabe(aufgabe);
                 System.out.println("Modified klausurNr of Aufgabe 18ws_cdm to 18ws_dm");
                 count++;
                 continue;
             }
-            if (klausurNr.equals("16ws_idbs2_wh")){
+            if (klausurNr.equals("16ws_idbs2_wh")) {
                 aufgabe.setKlausurNr("15ws_idbs2_wh");
                 klausurMap.get("15ws_idbs2_wh").addAufgabe(aufgabe);
                 System.out.println("Modified klausurNr of Aufgabe 16ws_idbs2_wh to 15ws_idbs2_wh");
@@ -262,10 +274,11 @@ public class ImporterImpl implements Importer {
     /**
      * Creates all Veranstaltung and puts them into the corresponding Map. Associates all Mitarbeiter and Raum
      * with the Veranstaltung. If a Veranstaltung is a Uebung, it gets associated with its corresponding Grundvorlesung.
-     * @param csv veranstaltungen.csv
+     *
+     * @param csv              veranstaltungen.csv
      * @param veranstaltungMap the Map of the Veranstaltungen of the Universitaet
-     * @param mitarbeiterMap the map of the Mitarbeiter of the Universitaet
-     * @param raumMap the map of the Raum of the Universitaet
+     * @param mitarbeiterMap   the map of the Mitarbeiter of the Universitaet
+     * @param raumMap          the map of the Raum of the Universitaet
      * @throws Exception rethrows FileNotFoundException
      */
     private void importVeranstaltungen(File csv, Map<String, Veranstaltung> veranstaltungMap, Map<String, Mitarbeiter> mitarbeiterMap, Map<String, Raum> raumMap) throws Exception {
@@ -332,7 +345,8 @@ public class ImporterImpl implements Importer {
 
     /**
      * Creates KlausurTeilnahme and puts them into its correspondig Klausur as well as Student.
-     * @param csv klausurerg.csv
+     *
+     * @param csv        klausurerg.csv
      * @param klausurMap the map of the Klausuren of the Universitaet
      * @param studentMap the map of the Student of the Universitaet
      * @throws Exception rethrows FileNotFoundException
@@ -373,9 +387,10 @@ public class ImporterImpl implements Importer {
 
     /**
      * Creates PraktikumTeilnahme and puts them into its correspondig Praktikum as well as Student.
-     * @param csv semprakerg.csv
+     *
+     * @param csv              semprakerg.csv
      * @param veranstaltungMap the Map of the Veranstaltungen of the Universitaet
-     * @param studentMap the map of the Student of the Universitaet
+     * @param studentMap       the map of the Student of the Universitaet
      * @throws Exception rethrows FileNotFoundException
      */
     private void importSemPrakErg(File csv, Map<String, Veranstaltung> veranstaltungMap, Map<String, Student> studentMap) throws Exception {
@@ -420,9 +435,10 @@ public class ImporterImpl implements Importer {
     /**
      * Iterates over the klausurpunkte folder, creates AufgabenBearbeitung objects and puts them into their corresponding
      * Student and Aufgabe objects. The Aufgabe objects are fetched from their corresponding Klausur.
+     *
      * @param klausurpunkteFolder the provided data folder of CSV files
-     * @param klausurMap the map of the Klausuren of the Universitaet
-     * @param studentMap the map of the Student of the Universitaet
+     * @param klausurMap          the map of the Klausuren of the Universitaet
+     * @param studentMap          the map of the Student of the Universitaet
      * @throws Exception
      */
     private void importPunkte(Map<String, File> klausurpunkteFolder, Map<String, Klausur> klausurMap, Map<String, Student> studentMap) throws Exception {
@@ -438,7 +454,9 @@ public class ImporterImpl implements Importer {
             for (CSVRecord record : punkteCSV) {
                 Klausur klausur = klausurMap.get(record.get("KlausurNr"));
                 Student student = studentMap.get(record.get("Matrikel"));
-                if (klausur == null || student == null) { continue; }
+                if (klausur == null || student == null) {
+                    continue;
+                }
                 int index = 1;
                 for (String string : splitString(record.get("Punkte"))) {
                     Aufgabe aufgabe = klausur.getAufgabeByIndex(index);
@@ -453,6 +471,7 @@ public class ImporterImpl implements Importer {
     /**
      * Helper method. Takes a String that may contain multiple Mitarbeiter, splits it and gets the Mitarbeiter from the
      * provided map, if it exists. Requires that staff.csv is already imported.
+     *
      * @param toSplit
      * @param map
      * @return
@@ -460,7 +479,9 @@ public class ImporterImpl implements Importer {
     private Collection<Mitarbeiter> getMitarbeiterByLastName(String toSplit, Map<String, Mitarbeiter> map) {
         Collection<Mitarbeiter> mitarbeiter = new ArrayList<>();
         for (String string : splitString(toSplit)) {
-            if (string.equals("NULL")) { break; }
+            if (string.equals("NULL")) {
+                break;
+            }
             if (map.get(string) == null) {
                 System.out.println(string + " not found in MitarbeiterMap");
             } else {
@@ -474,6 +495,7 @@ public class ImporterImpl implements Importer {
      * Helper method. Takes a String that may contain multiple Raum, splits it and gets the Raum from the provided map.
      * Uses Map.putIfAbsent to create the Raum if it doesn't exists, since Raum is a simple object and is only
      * identified by Raum.bezeichnung.
+     *
      * @param toSplit
      * @param map
      * @return
@@ -489,6 +511,7 @@ public class ImporterImpl implements Importer {
     /**
      * Helper method. The data has some strings that have to be split into parts; this method takes such a string,
      * removes all white space and returns the split String as an Array.
+     *
      * @param toSplit
      * @return
      */
@@ -524,7 +547,7 @@ public class ImporterImpl implements Importer {
             c.close();
             System.out.println("Closed database connection successfully");
         } catch (Exception e) {
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
 
@@ -654,26 +677,29 @@ public class ImporterImpl implements Importer {
 
     private void persistMitarbeiter(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Mitarbeiter> mitarbeiterMap = universitaet.getMitarbeiter();
-        String insert = "INSERT INTO mitarbeiter (vorname, nachname, email) VALUES (?, ?, ?)";
-        PreparedStatement insertMitarbeiter = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
+
 
         for (Mitarbeiter mitarbeiter : mitarbeiterMap.values()) {
+            String insert = "INSERT INTO mitarbeiter (vorname, nachname, email, raumId) VALUES (?, ?, ?, ?)";
+            PreparedStatement insertMitarbeiter = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
             insertMitarbeiter.setObject(1, mitarbeiter.getVorname());
             insertMitarbeiter.setObject(2, mitarbeiter.getNachname());
             insertMitarbeiter.setObject(3, mitarbeiter.getEmail());
+            insertMitarbeiter.setObject(4, mitarbeiter.getRaum().getId());
             insertMitarbeiter.executeUpdate();
             ResultSet rs = insertMitarbeiter.getGeneratedKeys();
             rs.next();
             mitarbeiter.setId(rs.getInt(1));
+            insertMitarbeiter.close();
 
-            String insertRaum = "UPDATE raum SET mitarbeiterid = ? WHERE id = ?";
-            PreparedStatement insertMitarbeiterInRaum = c.prepareStatement(insertRaum);
-            insertMitarbeiterInRaum.setObject(1, mitarbeiter.getId());
-            insertMitarbeiterInRaum.setObject(2, mitarbeiter.getRaum().getId());
-            insertMitarbeiterInRaum.executeUpdate();
-            insertMitarbeiterInRaum.close();
+//            String insertRaum = "UPDATE raum SET mitarbeiterid = ? WHERE id = ?";
+//            PreparedStatement insertMitarbeiterInRaum = c.prepareStatement(insertRaum);
+//            insertMitarbeiterInRaum.setObject(1, mitarbeiter.getId());
+//            insertMitarbeiterInRaum.setObject(2, mitarbeiter.getRaum().getId());
+//            insertMitarbeiterInRaum.executeUpdate();
+//            insertMitarbeiterInRaum.close();
         }
-        insertMitarbeiter.close();
+
     }
 
     private void persistStudent(Universitaet universitaet, Connection c) throws Exception {
