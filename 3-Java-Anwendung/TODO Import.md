@@ -4,14 +4,6 @@ CREATE TABLE klausur
     grundvorlesungId   INTEGER,
 );
 
-CREATE TABLE aufgabe
-(
-    id        SERIAL PRIMARY KEY,
-    klausurId INTEGER REFERENCES klausur ON DELETE CASCADE,
-    rang      INTEGER,
-    maxPunkte NUMERIC(3, 1)
-);
-
 CREATE TABLE studiengang
 (
     id               SERIAL PRIMARY KEY,

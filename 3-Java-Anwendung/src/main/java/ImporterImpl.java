@@ -678,11 +678,10 @@ public class ImporterImpl implements Importer {
 
     private void persistMitarbeiter(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Mitarbeiter> mitarbeiterMap = universitaet.getMitarbeiter();
+        String insert = "INSERT INTO mitarbeiter (vorname, nachname, email, raumId) VALUES (?, ?, ?, ?)";
+        PreparedStatement insertMitarbeiter = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
 
-        // TODO: pull out prepared Statement
         for (Mitarbeiter mitarbeiter : mitarbeiterMap.values()) {
-            String insert = "INSERT INTO mitarbeiter (vorname, nachname, email, raumId) VALUES (?, ?, ?, ?)";
-            PreparedStatement insertMitarbeiter = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
             insertMitarbeiter.setObject(1, mitarbeiter.getVorname());
             insertMitarbeiter.setObject(2, mitarbeiter.getNachname());
             insertMitarbeiter.setObject(3, mitarbeiter.getEmail());
@@ -691,7 +690,7 @@ public class ImporterImpl implements Importer {
             ResultSet rs = insertMitarbeiter.getGeneratedKeys();
             rs.next();
             mitarbeiter.setId(rs.getInt(1));
-            insertMitarbeiter.close();
+
 
 //            String insertRaum = "UPDATE raum SET mitarbeiterid = ? WHERE id = ?";
 //            PreparedStatement insertMitarbeiterInRaum = c.prepareStatement(insertRaum);
@@ -700,7 +699,7 @@ public class ImporterImpl implements Importer {
 //            insertMitarbeiterInRaum.executeUpdate();
 //            insertMitarbeiterInRaum.close();
         }
-
+        insertMitarbeiter.close();
     }
 
     private void persistStudent(Universitaet universitaet, Connection c) throws Exception {
