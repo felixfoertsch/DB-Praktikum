@@ -6,7 +6,7 @@ public class Uebung extends Veranstaltung {
 
     @Override
     public String generateKey() {
-        return super.getKennung() + "_" + extractGroupID();
+        return super.generateKey() + "_" + extractGroupID();
     }
 
     private String extractGroupID() {

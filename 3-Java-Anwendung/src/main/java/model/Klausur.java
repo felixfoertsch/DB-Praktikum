@@ -92,4 +92,8 @@ public class Klausur {
     public Map<Integer, Aufgabe> getAufgaben() {
         return aufgaben;
     }
+
+    public String getVaKennung() {
+        return vaKennung;
+    }
 }

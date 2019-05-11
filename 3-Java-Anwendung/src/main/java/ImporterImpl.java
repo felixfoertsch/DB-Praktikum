@@ -296,7 +296,6 @@ public class ImporterImpl implements Importer {
                 "tag",
                 "kennung"
         ).withSkipHeaderRecord().parse(in);
-        int count = 0;
         for (CSVRecord record : veranstaltungenCSV) {
             Veranstaltung v;
             switch (record.get("typ")) {
@@ -336,12 +335,11 @@ public class ImporterImpl implements Importer {
                 v.addDozent(m);
             }
             if (v instanceof Uebung) {
-                veranstaltungMap.get(v.getKennung());
+                veranstaltungMap.get(v.generateKey());
             }
             veranstaltungMap.put(v.generateKey(), v);
-            count++;
         }
-        System.out.println("Veranstaltungen:" + count + "/83");
+        System.out.println("Veranstaltungen:" + veranstaltungMap.values().size() + "/83");
     }
 
     /**
@@ -540,6 +538,7 @@ public class ImporterImpl implements Importer {
 
             persistKlausuren(universitaet, c);
             persistVeranstaltungen(universitaet, c);
+            persistKlausurVeranstaltungLink(universitaet, c);
             persistRaum(universitaet, c);
             persistMitarbeiter(universitaet, c);
             persistStudent(universitaet, c);
@@ -664,6 +663,50 @@ public class ImporterImpl implements Importer {
         insertVeranstaltung.close();
     }
 
+    private void persistKlausurVeranstaltungLink(Universitaet universitaet, Connection c) throws Exception {
+        Map<String, Klausur> klausurMap = universitaet.getKlausuren();
+        Map<String, Veranstaltung> veranstaltungMap = universitaet.getVeranstaltungen();
+        String insertSV = "UPDATE klausur SET spezialvorlesungId = ? WHERE id = ?";
+        String insertGV = "UPDATE klausur SET grundvorlesungId = ? WHERE id = ?";
+        PreparedStatement insertSVId = c.prepareStatement(insertSV);
+        PreparedStatement insertGVId = c.prepareStatement(insertGV);
+
+        for (Veranstaltung va : veranstaltungMap.values()) {
+            for (Klausur klausur : klausurMap.values()) {
+                if (va.getKennung().equals(klausur.getVaKennung())) {
+                    if (va.getTyp().equals("SV")) {
+                        insertGVId.setObject(1, 0);
+                        insertGVId.setObject(2, klausur.getId());
+                        insertGVId.executeUpdate();
+
+                        insertSVId.setObject(1, va.getId());
+                        insertSVId.setObject(2, klausur.getId());
+                        insertSVId.executeUpdate();
+                    } else if (va.getTyp().equals("V")) {
+                        insertGVId.setObject(1, va.getId());
+                        insertGVId.setObject(2, klausur.getId());
+                        insertGVId.executeUpdate();
+
+                        insertSVId.setObject(1, 0);
+                        insertSVId.setObject(2, klausur.getId());
+                        insertSVId.executeUpdate();
+                    } else {
+                        insertGVId.setObject(1, 0);
+                        insertGVId.setObject(2, klausur.getId());
+                        insertGVId.executeUpdate();
+
+                        insertSVId.setObject(1, 0);
+                        insertSVId.setObject(2, klausur.getId());
+                        insertSVId.executeUpdate();
+
+                    }
+                }
+            }
+        }
+        insertSVId.close();
+        insertGVId.close();
+    }
+
     private void persistRaum(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Raum> raumMap = universitaet.getRaeume();
         String insert = "INSERT INTO raum (bezeichnung) VALUES (?)";
@@ -692,14 +735,6 @@ public class ImporterImpl implements Importer {
             ResultSet rs = insertMitarbeiter.getGeneratedKeys();
             rs.next();
             mitarbeiter.setId(rs.getInt(1));
-
-
-//            String insertRaum = "UPDATE raum SET mitarbeiterid = ? WHERE id = ?";
-//            PreparedStatement insertMitarbeiterInRaum = c.prepareStatement(insertRaum);
-//            insertMitarbeiterInRaum.setObject(1, mitarbeiter.getId());
-//            insertMitarbeiterInRaum.setObject(2, mitarbeiter.getRaum().getId());
-//            insertMitarbeiterInRaum.executeUpdate();
-//            insertMitarbeiterInRaum.close();
         }
         insertMitarbeiter.close();
     }

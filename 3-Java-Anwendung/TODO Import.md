@@ -4,14 +4,6 @@ CREATE TABLE klausur
     grundvorlesungId   INTEGER,
 );
 
-CREATE TABLE studiengang
-(
-    id               SERIAL PRIMARY KEY,
-    name             VARCHAR(100),
-    abschluss        VARCHAR(100),
-    regelstudienzeit INTEGER
-);
-
 CREATE TABLE abhaltung
 (
     raumId          INTEGER REFERENCES raum ON DELETE RESTRICT         NOT NULL,

@@ -69,13 +69,13 @@ public class Veranstaltung {
     private DayOfWeek convertGerWeekDay(String tag) {
         DayOfWeek day;
         switch (tag) {
-            case "Montag": day = DayOfWeek.MONDAY; break;
-            case "Dienstag": day = DayOfWeek.TUESDAY; break;
-            case "Mittwoch": day = DayOfWeek.WEDNESDAY; break;
+            case "Montag"    : day = DayOfWeek.MONDAY; break;
+            case "Dienstag"  : day = DayOfWeek.TUESDAY; break;
+            case "Mittwoch"  : day = DayOfWeek.WEDNESDAY; break;
             case "Donnerstag": day = DayOfWeek.THURSDAY; break;
-            case "Freitag": day = DayOfWeek.FRIDAY; break;
-            case "Samstag": day = DayOfWeek.SATURDAY; break;
-            case "Sonntag": day = DayOfWeek.SUNDAY; break;
+            case "Freitag"   : day = DayOfWeek.FRIDAY; break;
+            case "Samstag"   : day = DayOfWeek.SATURDAY; break;
+            case "Sonntag"   : day = DayOfWeek.SUNDAY; break;
             default: day = null;
         }
         return day;
