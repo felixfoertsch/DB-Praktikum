@@ -541,6 +541,7 @@ public class ImporterImpl implements Importer {
             persistKlausurVeranstaltungLink(universitaet, c);
             persistRaum(universitaet, c);
             persistMitarbeiter(universitaet, c);
+            persistAufsicht(universitaet, c);
             persistStudent(universitaet, c);
             persistKlausurAufgaben(universitaet, c);
             persistStudiengang(universitaet, c);
@@ -675,34 +676,19 @@ public class ImporterImpl implements Importer {
             for (Klausur klausur : klausurMap.values()) {
                 if (va.getKennung().equals(klausur.getVaKennung())) {
                     if (va.getTyp().equals("SV")) {
-                        insertGVId.setObject(1, 0);
-                        insertGVId.setObject(2, klausur.getId());
-                        insertGVId.executeUpdate();
-
                         insertSVId.setObject(1, va.getId());
                         insertSVId.setObject(2, klausur.getId());
                         insertSVId.executeUpdate();
-                    } else if (va.getTyp().equals("V")) {
+                    }
+                    if (va.getTyp().equals("V")) {
                         insertGVId.setObject(1, va.getId());
                         insertGVId.setObject(2, klausur.getId());
                         insertGVId.executeUpdate();
-
-                        insertSVId.setObject(1, 0);
-                        insertSVId.setObject(2, klausur.getId());
-                        insertSVId.executeUpdate();
-                    } else {
-                        insertGVId.setObject(1, 0);
-                        insertGVId.setObject(2, klausur.getId());
-                        insertGVId.executeUpdate();
-
-                        insertSVId.setObject(1, 0);
-                        insertSVId.setObject(2, klausur.getId());
-                        insertSVId.executeUpdate();
-
                     }
                 }
             }
         }
+        System.out.println("Klausur ID 14 is <null> <null> for some reason");
         insertSVId.close();
         insertGVId.close();
     }
@@ -737,6 +723,22 @@ public class ImporterImpl implements Importer {
             mitarbeiter.setId(rs.getInt(1));
         }
         insertMitarbeiter.close();
+    }
+
+    private void persistAufsicht(Universitaet universitaet, Connection c) throws Exception {
+        Map<String, Klausur> klausurMap = universitaet.getKlausuren();
+        String insert = "INSERT INTO aufsicht (klausurid, mitarbeiterid) VALUES (?, ?)";
+        PreparedStatement insertAufsicht = c.prepareStatement(insert);
+
+        for (Klausur klausur : klausurMap.values()) {
+            for (Mitarbeiter ma : klausur.getAufsichten()) {
+                insertAufsicht.setObject(1, klausur.getId());
+                insertAufsicht.setObject(2, ma.getId());
+                insertAufsicht.executeUpdate();
+            }
+
+        }
+        insertAufsicht.close();
     }
 
     private void persistStudent(Universitaet universitaet, Connection c) throws Exception {

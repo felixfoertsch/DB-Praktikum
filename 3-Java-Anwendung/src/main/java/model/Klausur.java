@@ -96,4 +96,8 @@ public class Klausur {
     public String getVaKennung() {
         return vaKennung;
     }
+
+    public Collection<Mitarbeiter> getAufsichten() {
+        return aufsichten;
+    }
 }

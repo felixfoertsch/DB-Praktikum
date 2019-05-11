@@ -1,9 +1,3 @@
-CREATE TABLE klausur
-(
-    spezialvorlesungId INTEGER,
-    grundvorlesungId   INTEGER,
-);
-
 CREATE TABLE abhaltung
 (
     raumId          INTEGER REFERENCES raum ON DELETE RESTRICT         NOT NULL,
@@ -11,13 +5,6 @@ CREATE TABLE abhaltung
     wochentag       VARCHAR(100),
     zeit            TIME,
     PRIMARY KEY (raumId, veranstaltungId)
-);
-
-CREATE TABLE aufsicht
-(
-    klausurId     INTEGER REFERENCES klausur ON DELETE CASCADE     NOT NULL,
-    mitarbeiterId INTEGER REFERENCES mitarbeiter ON DELETE CASCADE NOT NULL,
-    PRIMARY KEY (klausurId, mitarbeiterId)
 );
 
 CREATE TABLE bearbeitung
