@@ -28,7 +28,6 @@ public class Veranstaltung {
             String name,
             String jahr,
             String semester,
-            Raum raum,
             String maxTeilnehmer,
             String zeit,
             String tag,
@@ -37,11 +36,14 @@ public class Veranstaltung {
         this.name = name;
         this.jahr = Integer.valueOf(jahr);
         this.semester = semester;
-        this.raum = raum;
         this.zeit = parseTime(zeit);
         this.tag = convertGerWeekDay(tag);
         this.maxTeilnehmer = Integer.valueOf(maxTeilnehmer);
         this.kennung = kennung;
+    }
+
+    public void setRaum(Raum raum) {
+        this.raum = raum;
     }
 
     public void addDozent(Mitarbeiter mitarbeiter) {
@@ -103,5 +105,17 @@ public class Veranstaltung {
 
     public String getTyp() {
         return typ;
+    }
+
+    public Raum getRaum() {
+        return raum;
+    }
+
+    public DayOfWeek getTag() {
+        return tag;
+    }
+
+    public LocalTime getZeit() {
+        return zeit;
     }
 }

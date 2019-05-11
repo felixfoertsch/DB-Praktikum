@@ -325,12 +325,19 @@ public class ImporterImpl implements Importer {
                     record.get("name"),
                     record.get("jahr"),
                     record.get("semester"),
-                    getRaumeByName(record.get("raum"), raumMap).get(0),
                     record.get("maxTeilnehmer"),
                     record.get("zeit"),
                     record.get("tag"),
                     record.get("kennung")
             );
+            Raum raum;
+            if (raumMap.get(record.get("raum")) == null) {
+                raum = new Raum(record.get("raum"));
+                raumMap.put(record.get("raum"), raum);
+            } else {
+                raum = raumMap.get(record.get("raum"));
+            }
+            v.setRaum(raum);
             for (Mitarbeiter m : getMitarbeiterByLastName(record.get("dozent"), mitarbeiterMap)) {
                 v.addDozent(m);
             }
@@ -528,7 +535,7 @@ public class ImporterImpl implements Importer {
     }
 
     public void persistModel(Universitaet universitaet) {
-        Connection c = null;
+        Connection c;
 
         try {
             Class.forName("org.postgresql.Driver");
@@ -536,10 +543,11 @@ public class ImporterImpl implements Importer {
             c.setAutoCommit(false);
             System.out.println("Opened database connection successfully");
 
+            persistRaum(universitaet, c);
             persistKlausuren(universitaet, c);
             persistVeranstaltungen(universitaet, c);
+            persistAbhaltung(universitaet, c);
             persistKlausurVeranstaltungLink(universitaet, c);
-            persistRaum(universitaet, c);
             persistMitarbeiter(universitaet, c);
             persistAufsicht(universitaet, c);
             persistStudent(universitaet, c);
@@ -551,9 +559,24 @@ public class ImporterImpl implements Importer {
             System.out.println("Closed database connection successfully");
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            e.printStackTrace();
             System.exit(0);
         }
 
+    }
+
+    private void persistRaum(Universitaet universitaet, Connection c) throws Exception {
+        Map<String, Raum> raumMap = universitaet.getRaeume();
+        String insert = "INSERT INTO raum (bezeichnung) VALUES (?)";
+        PreparedStatement insertRaum = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
+        for (Raum raum : raumMap.values()) {
+            insertRaum.setObject(1, raum.getBezeichnung());
+            insertRaum.executeUpdate();
+            ResultSet rs = insertRaum.getGeneratedKeys();
+            rs.next();
+            raum.setId(rs.getInt(1));
+        }
+        insertRaum.close();
     }
 
     private void persistKlausuren(Universitaet universitaet, Connection c) throws Exception {
@@ -664,6 +687,28 @@ public class ImporterImpl implements Importer {
         insertVeranstaltung.close();
     }
 
+    private void persistAbhaltung(Universitaet universitaet, Connection c) throws Exception {
+        Map<String, Veranstaltung> veranstaltungMap = universitaet.getVeranstaltungen();
+        String insert = "INSERT INTO abhaltung (raumid, veranstaltungid, wochentag, zeit) VALUES (?, ?, ?, ?)";
+        PreparedStatement insertAbhaltung = c.prepareStatement(insert);
+
+        for (Veranstaltung va : veranstaltungMap.values()) {
+            insertAbhaltung.setObject(1, va.getRaum().getId());
+            insertAbhaltung.setObject(2, va.getId());
+            // Null check is necessary here, because we have to convert getTag() to a String
+            // to match the DB scheme. It is not necessary for getZeit(), because setObject()
+            // sets null if the LocalTime object is null.
+            if (va.getTag() != null) {
+                insertAbhaltung.setObject(3, va.getTag().toString());
+            } else {
+                insertAbhaltung.setObject(3, null);
+            }
+            insertAbhaltung.setObject(4, va.getZeit());
+            insertAbhaltung.executeUpdate();
+        }
+        insertAbhaltung.close();
+    }
+
     private void persistKlausurVeranstaltungLink(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Klausur> klausurMap = universitaet.getKlausuren();
         Map<String, Veranstaltung> veranstaltungMap = universitaet.getVeranstaltungen();
@@ -691,20 +736,6 @@ public class ImporterImpl implements Importer {
         System.out.println("Klausur ID 14 is <null> <null> for some reason");
         insertSVId.close();
         insertGVId.close();
-    }
-
-    private void persistRaum(Universitaet universitaet, Connection c) throws Exception {
-        Map<String, Raum> raumMap = universitaet.getRaeume();
-        String insert = "INSERT INTO raum (bezeichnung) VALUES (?)";
-        PreparedStatement insertRaum = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
-        for (Raum raum : raumMap.values()) {
-            insertRaum.setObject(1, raum.getBezeichnung());
-            insertRaum.executeUpdate();
-            ResultSet rs = insertRaum.getGeneratedKeys();
-            rs.next();
-            raum.setId(rs.getInt(1));
-        }
-        insertRaum.close();
     }
 
     private void persistMitarbeiter(Universitaet universitaet, Connection c) throws Exception {
