@@ -64,4 +64,12 @@ public class Student {
     public Studium getStudium() {
         return studium;
     }
+
+    public Map<String, AufgabenBearbeitung> getAufgabenBearbeitungen() {
+        return aufgabenBearbeitungen;
+    }
+
+    public Integer getId() {
+        return id;
+    }
 }

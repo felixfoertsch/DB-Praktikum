@@ -450,11 +450,11 @@ public class ImporterImpl implements Importer {
     private void importPunkte(Map<String, File> klausurpunkteFolder, Map<String, Klausur> klausurMap, Map<String, Student> studentMap) throws Exception {
         for (Map.Entry<String, File> entry : klausurpunkteFolder.entrySet()) {
             Reader in = new FileReader(entry.getValue());
-            Iterable<CSVRecord> punkteCSV = CSVFormat.RFC4180.withHeader(
+            Iterable<CSVRecord> punkteCSV = CSVFormat.DEFAULT.withHeader(
                     "Matrikel",
                     "KlausurNr",
                     "Punkte"
-            ).withSkipHeaderRecord().parse(in);
+            ).withSkipHeaderRecord().withDelimiter(';').parse(in);
             // This for-loop is the actual CSV file that is going to be parsed. Punkte is a sorted List of items (eg [6,3,7,6,0.5,0,0])
             // that has to be split.
             for (CSVRecord record : punkteCSV) {
@@ -553,6 +553,7 @@ public class ImporterImpl implements Importer {
             persistStudent(universitaet, c);
             persistKlausurAufgaben(universitaet, c);
             persistStudiengang(universitaet, c);
+            persistBearbeitung(universitaet, c);
 
             c.commit();
             c.close();
@@ -826,4 +827,19 @@ public class ImporterImpl implements Importer {
         insertStudiengang.close();
     }
 
+    private void persistBearbeitung(Universitaet universitaet, Connection c) throws Exception {
+        Map<String, Student> studentMap = universitaet.getStudenten();
+        String insert = "INSERT INTO bearbeitung (studentid, aufgabeid, punkte) VALUES (?, ?, ?)";
+        PreparedStatement insertBearbeitung = c.prepareStatement(insert);
+
+        for (Student student : studentMap.values()) {
+            for (AufgabenBearbeitung ab : student.getAufgabenBearbeitungen().values()) {
+                insertBearbeitung.setObject(1, student.getId());
+                insertBearbeitung.setObject(2, ab.getAufgabe().getId());
+                insertBearbeitung.setObject(3, ab.getPunkte());
+                insertBearbeitung.executeUpdate();
+            }
+        }
+        insertBearbeitung.close();
+    }
 }

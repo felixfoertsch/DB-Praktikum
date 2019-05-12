@@ -1,20 +1,3 @@
-CREATE TABLE abhaltung
-(
-    raumId          INTEGER REFERENCES raum ON DELETE RESTRICT         NOT NULL,
-    veranstaltungId INTEGER REFERENCES veranstaltung ON DELETE CASCADE NOT NULL,
-    wochentag       VARCHAR(100),
-    zeit            TIME,
-    PRIMARY KEY (raumId, veranstaltungId)
-);
-
-CREATE TABLE bearbeitung
-(
-    studentId INTEGER REFERENCES student ON DELETE CASCADE NOT NULL,
-    aufgabeId INTEGER REFERENCES aufgabe ON DELETE CASCADE NOT NULL,
-    punkte    NUMERIC(3, 1),
-    PRIMARY KEY (studentId, aufgabeId)
-);
-
 CREATE TABLE betreut
 (
     mitarbeiterId   INTEGER REFERENCES mitarbeiter ON DELETE CASCADE   NOT NULL,

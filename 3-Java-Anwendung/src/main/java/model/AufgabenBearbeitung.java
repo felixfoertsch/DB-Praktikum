@@ -14,4 +14,12 @@ public class AufgabenBearbeitung {
     public String generateKey() {
         return student.getMatrikelNr() + "_" + aufgabe.generateKey();
     }
+
+    public Aufgabe getAufgabe() {
+        return aufgabe;
+    }
+
+    public Double getPunkte() {
+        return punkte;
+    }
 }
