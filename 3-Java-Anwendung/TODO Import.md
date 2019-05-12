@@ -1,17 +1,3 @@
-CREATE TABLE betreut
-(
-    mitarbeiterId   INTEGER REFERENCES mitarbeiter ON DELETE CASCADE   NOT NULL,
-    veranstaltungId INTEGER REFERENCES veranstaltung ON DELETE CASCADE NOT NULL,
-    PRIMARY KEY (mitarbeiterId, veranstaltungId)
-);
-
-CREATE TABLE ort
-(
-    klausurId INTEGER REFERENCES klausur ON DELETE CASCADE NOT NULL,
-    raumId    INTEGER REFERENCES raum ON DELETE CASCADE    NOT NULL,
-    PRIMARY KEY (klausurId, raumId)
-);
-
 CREATE TABLE studium
 (
     studiengangId INTEGER REFERENCES studiengang ON DELETE RESTRICT NOT NULL,

@@ -503,13 +503,21 @@ public class ImporterImpl implements Importer {
      * identified by Raum.bezeichnung.
      *
      * @param toSplit
-     * @param map
+     * @param raumMap
      * @return
      */
-    private ArrayList<Raum> getRaumeByName(String toSplit, Map<String, Raum> map) {
+    private ArrayList<Raum> getRaumeByName(String toSplit, Map<String, Raum> raumMap) {
         ArrayList<Raum> raeume = new ArrayList<>();
+
         for (String string : splitString(toSplit)) {
-            raeume.add(map.putIfAbsent(string, new Raum(string)));
+            Raum raum;
+            if (raumMap.get(string) == null) {
+                raum = new Raum(string);
+                raumMap.put(string, raum);
+            } else {
+                raum = raumMap.get(string);
+            }
+            raeume.add(raum);
         }
         return raeume;
     }
@@ -555,6 +563,7 @@ public class ImporterImpl implements Importer {
             persistStudiengang(universitaet, c);
             persistBearbeitung(universitaet, c);
             persistBetreut(universitaet, c);
+            persistOrt(universitaet, c);
 
             c.commit();
             c.close();
@@ -857,5 +866,20 @@ public class ImporterImpl implements Importer {
             }
         }
         insertBetreut.close();
+    }
+
+    private void persistOrt(Universitaet universitaet, Connection c) throws Exception {
+        Map<String, Klausur> klausurMap = universitaet.getKlausuren();
+        String insert = "INSERT INTO ort (klausurid, raumid) VALUES (?, ?)";
+        PreparedStatement insertOrt = c.prepareStatement(insert);
+
+        for (Klausur k : klausurMap.values()) {
+                for (Raum r : k.getOrte()) {
+                    insertOrt.setObject(1, k.getId());
+                    insertOrt.setObject(2, r.getId());
+                    insertOrt.executeUpdate();
+                }
+        }
+        insertOrt.close();
     }
 }

@@ -100,4 +100,8 @@ public class Klausur {
     public Collection<Mitarbeiter> getAufsichten() {
         return aufsichten;
     }
+
+    public Collection<Raum> getOrte() {
+        return orte;
+    }
 }
