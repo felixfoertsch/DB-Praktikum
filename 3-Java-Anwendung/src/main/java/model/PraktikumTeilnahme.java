@@ -18,4 +18,12 @@ public class PraktikumTeilnahme {
     public String generateKey() {
         return praktikum.generateKey() + "_" + student.getMatrikelNr();
     }
+
+    public Praktikum getPraktikum() {
+        return praktikum;
+    }
+
+    public Double getNote() {
+        return note;
+    }
 }

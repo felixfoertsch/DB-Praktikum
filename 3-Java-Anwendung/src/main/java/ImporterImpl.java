@@ -567,6 +567,7 @@ public class ImporterImpl implements Importer {
             persistBetreut(universitaet, c);
             persistOrt(universitaet, c);
             persistStudium(universitaet, c);
+            persistStudentTeilnahmeKlausurVeranstaltung(universitaet, c);
 
             c.commit();
             c.close();
@@ -911,5 +912,42 @@ public class ImporterImpl implements Importer {
             insertStudium.executeUpdate();
         }
         insertStudium.close();
+    }
+
+    private void persistStudentTeilnahmeKlausurVeranstaltung(Universitaet universitaet, Connection c) throws Exception {
+        Map<String, Student> studentMap = universitaet.getStudenten();
+        String insertTK = "INSERT INTO studentTeilnahmeKlausur (studentid, klausurid, erschienen, entschuldigt, punkte, note) VALUES (?, ?, ?, ?, ?, ?)";
+        String insertTV = "INSERT INTO studentTeilnahmeVeranstaltung (studentid, veranstaltungid, note)  VALUES (?, ?, ?)";
+        PreparedStatement insertTKstmt = c.prepareStatement(insertTK);
+        PreparedStatement insertTVstmt = c.prepareStatement(insertTV);
+
+        for (Student student : studentMap.values()) {
+            for (KlausurTeilnahme kt : student.getKlausurTeilnahmen().values()) {
+                insertTKstmt.setObject(1, student.getId());
+                insertTKstmt.setObject(2, kt.getKlausur().getId());
+                insertTKstmt.setObject(3, kt.getErschienen());
+                insertTKstmt.setObject(4, kt.getEntschuldigt());
+                insertTKstmt.setObject(5, kt.getPunkte());
+                insertTKstmt.setObject(6, kt.getNote());
+                insertTKstmt.executeUpdate();
+            }
+
+
+            for (PraktikumTeilnahme pt : student.getPraktikumTeilnahme().values()) {
+                insertTVstmt.setObject(1, student.getId());
+                insertTVstmt.setObject(2, pt.getPraktikum().getId());
+                insertTVstmt.setObject(3, pt.getNote());
+                insertTVstmt.executeUpdate();
+            }
+            for (SeminarTeilnahme st : student.getSeminarTeilnahme().values()) {
+                insertTVstmt.setObject(1, student.getId());
+                insertTVstmt.setObject(2, st.getSeminar().getId());
+                insertTVstmt.setObject(3, st.getNote());
+                insertTVstmt.executeUpdate();
+            }
+
+        }
+        insertTKstmt.close();
+        insertTVstmt.close();
     }
 }

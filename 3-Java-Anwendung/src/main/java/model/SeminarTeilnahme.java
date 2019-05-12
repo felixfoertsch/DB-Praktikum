@@ -18,4 +18,12 @@ public class SeminarTeilnahme {
     public String generateKey() {
         return seminar.generateKey() + "_" + student.getMatrikelNr();
     }
+
+    public Seminar getSeminar() {
+        return seminar;
+    }
+
+    public Double getNote() {
+        return note;
+    }
 }

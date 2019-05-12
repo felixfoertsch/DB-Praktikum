@@ -72,4 +72,16 @@ public class Student {
     public Integer getId() {
         return id;
     }
+
+    public Map<String, KlausurTeilnahme> getKlausurTeilnahmen() {
+        return klausurTeilnahmen;
+    }
+
+    public Map<String, PraktikumTeilnahme> getPraktikumTeilnahme() {
+        return praktikumTeilnahme;
+    }
+
+    public Map<String, SeminarTeilnahme> getSeminarTeilnahme() {
+        return seminarTeilnahme;
+    }
 }
