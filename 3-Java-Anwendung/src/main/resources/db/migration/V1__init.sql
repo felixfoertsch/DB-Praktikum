@@ -151,8 +151,8 @@ CREATE TABLE studium
 (
     studiengangId INTEGER REFERENCES studiengang ON DELETE RESTRICT NOT NULL,
     studentId     INTEGER REFERENCES student ON DELETE CASCADE      NOT NULL,
-    imma          DATE,
-    exma          DATE,
+    imma          INTEGER,
+    exma          INTEGER,
     semester      INTEGER,
     PRIMARY KEY (studiengangId, studentId)
 );

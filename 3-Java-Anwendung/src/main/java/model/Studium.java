@@ -5,26 +5,38 @@ import java.time.Year;
 public class Studium {
     Integer studiengangId;
     Integer studentId;
-    private Year imma;
-    private Year exma;
+    private Integer imma;
+    private Integer exma;
     private Integer semester;
     private Studiengang studiengang;
 
     public Studium(String imma, String exma, String semester, Studiengang studiengang) {
-        this.imma = Year.parse(imma);
+        this.imma = Integer.valueOf(imma);
         this.exma = parseExma(exma);
         this.semester = Integer.valueOf(semester);
         this.studiengang = studiengang;
     }
 
-    private Year parseExma(String exma) {
+    private Integer parseExma(String exma) {
         if (exma.equals("NA")) {
             return null;
         }
-        return Year.parse(exma);
+        return Integer.valueOf(exma);
     }
 
     public Studiengang getStudiengang() {
         return studiengang;
+    }
+
+    public Integer getImma() {
+        return imma;
+    }
+
+    public Integer getExma() {
+        return exma;
+    }
+
+    public Integer getSemester() {
+        return semester;
     }
 }

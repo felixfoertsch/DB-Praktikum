@@ -17,6 +17,7 @@ public class Universitaet {
         this.veranstaltungen = new HashMap<>();
         this.klausuren = new HashMap<>();
         this.raeume = new HashMap<>();
+        this.studiengaenge = new HashMap<>();
     }
 
     public Map<String, Student> getStudenten() {
@@ -65,12 +66,5 @@ public class Universitaet {
         return studiengaenge;
     }
 
-    public Map<String, Studiengang> populateStudiengaenge(Map<String, Student> studenten) {
-        Map<String, Studiengang> studiengangMap = new HashMap<>();
-        for (Student student : studenten.values()) {
-            Studiengang sg = student.getStudium().getStudiengang();
-            studiengangMap.put(sg.getName() + " " + sg.getAbschluss() + " " + sg.getRegelstudienzeit(), sg);
-        }
-        return studiengangMap;
-    }
+
 }

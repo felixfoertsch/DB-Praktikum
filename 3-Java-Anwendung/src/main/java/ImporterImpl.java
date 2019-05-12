@@ -80,7 +80,7 @@ public class ImporterImpl implements Importer {
 
         try {
             importStaff(files.get("staff.csv"), universitaet.getMitarbeiter(), universitaet.getRaeume());
-            importStudent(files.get("student.csv"), universitaet.getStudenten());
+            importStudent(files.get("student.csv"), universitaet.getStudenten(), universitaet.getStudiengaenge());
             importKlausuren(files.get("klausuren.csv"), universitaet.getMitarbeiter(), universitaet.getRaeume(), universitaet.getKlausuren());
             importKlausurAufgaben(files.get("klausur_aufgaben.csv"), universitaet.getKlausuren());
             importVeranstaltungen(files.get("veranstaltungen.csv"), universitaet.getVeranstaltungen(), universitaet.getMitarbeiter(), universitaet.getRaeume());
@@ -93,7 +93,6 @@ public class ImporterImpl implements Importer {
             System.out.println(e.toString());
             System.out.println("Import failed!");
         }
-        universitaet.setStudiengaenge(universitaet.populateStudiengaenge(universitaet.getStudenten()));
         return universitaet;
     }
 
@@ -138,7 +137,7 @@ public class ImporterImpl implements Importer {
      * @param studentMap the map of the Student of the Universitaet
      * @throws Exception rethrows FileNotFoundException
      */
-    private void importStudent(File csv, Map<String, Student> studentMap) throws Exception {
+    private void importStudent(File csv, Map<String, Student> studentMap, Map<String, Studiengang> studiengangMap) throws Exception {
         Reader in = new FileReader(csv);
         Iterable<CSVRecord> studentCSV = CSVFormat.RFC4180.withHeader(
                 "Matrikel",
@@ -152,15 +151,20 @@ public class ImporterImpl implements Importer {
                 "Exma",
                 "Semester"
         ).withSkipHeaderRecord().parse(in);
-        int count = 0;
         for (CSVRecord record : studentCSV) {
-            Studiengang studiengang = new Studiengang(record.get("Studiengang"), record.get("Abschluss"), record.get("Regelstudienzeit"));
+            String studiengangKey = record.get("Studiengang") + record.get("Abschluss") + record.get("Regelstudienzeit");
+            Studiengang studiengang;
+            if (studiengangMap.get(studiengangKey) == null) {
+                studiengang = new Studiengang(record.get("Studiengang"), record.get("Abschluss"), record.get("Regelstudienzeit"));
+                studiengangMap.put(studiengangKey, studiengang);
+            } else {
+                studiengang = studiengangMap.get(studiengangKey);
+            }
             Studium studium = new Studium(record.get("Imma"), record.get("Exma"), record.get("Semester"), studiengang);
             Student s = new Student(record.get("Matrikel"), record.get("Vorname"), record.get("Nachname"), record.get("Email"), studium);
             studentMap.put(s.getMatrikelNr(), s);
-            count++;
         }
-        System.out.println("Studenten:" + count + "/861");
+        System.out.println("Studenten:" + studentMap.size() + "/861");
     }
 
     /**
@@ -188,7 +192,6 @@ public class ImporterImpl implements Importer {
                 "KlausurNr"
         ).withSkipHeaderRecord().parse(in);
 
-        int count = 0;
         for (CSVRecord record : klausurenCSV) {
             Klausur k;
             switch (record.get("Typ")) {
@@ -212,9 +215,8 @@ public class ImporterImpl implements Importer {
             Collection<Raum> raeume = getRaumeByName(record.get("ort"), raumMap);
             k.setData(record.get("name"), record.get("datum"), record.get("uhrzeitVon"), record.get("Gesamtpunktzahl"), record.get("Punktzahl100"), record.get("VeranstKennung"), record.get("KlausurNr"), mitarbeiter, raeume);
             klausurMap.put(k.generateKey(), k);
-            count++;
         }
-        System.out.println("Klausuren:" + count + "/57");
+        System.out.println("Klausuren:" + klausurMap.size() + "/57");
     }
 
     /**
@@ -346,7 +348,7 @@ public class ImporterImpl implements Importer {
             }
             veranstaltungMap.put(v.generateKey(), v);
         }
-        System.out.println("Veranstaltungen:" + veranstaltungMap.values().size() + "/83");
+        System.out.println("Veranstaltungen:" + veranstaltungMap.size() + "/83");
     }
 
     /**
@@ -564,6 +566,7 @@ public class ImporterImpl implements Importer {
             persistBearbeitung(universitaet, c);
             persistBetreut(universitaet, c);
             persistOrt(universitaet, c);
+            persistStudium(universitaet, c);
 
             c.commit();
             c.close();
@@ -881,5 +884,32 @@ public class ImporterImpl implements Importer {
                 }
         }
         insertOrt.close();
+    }
+
+    private void persistStudium(Universitaet universitaet, Connection c) throws Exception {
+        Map<String, Student> studentMap = universitaet.getStudenten();
+        String insert = "INSERT INTO studium (studiengangid, studentid, imma, exma, semester) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement insertStudium = c.prepareStatement(insert);
+
+        for (Student student : studentMap.values()) {
+            if (student.getStudium().getStudiengang().getId() == null) {
+                System.out.println(student.getId());
+                continue;
+            }
+            Studium studium = student.getStudium();
+            Studiengang sg = studium.getStudiengang();
+
+            if (sg.getId() == null) {
+                insertStudium.setObject(1, null);
+            } else {
+                insertStudium.setObject(1, sg.getId());
+            }
+            insertStudium.setObject(2, student.getId());
+            insertStudium.setObject(3, studium.getImma());
+            insertStudium.setObject(4, studium.getExma());
+            insertStudium.setObject(5, studium.getSemester());
+            insertStudium.executeUpdate();
+        }
+        insertStudium.close();
     }
 }
