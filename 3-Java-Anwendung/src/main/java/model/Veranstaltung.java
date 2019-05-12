@@ -118,4 +118,8 @@ public class Veranstaltung {
     public LocalTime getZeit() {
         return zeit;
     }
+
+    public Collection<Mitarbeiter> getDozenten() {
+        return dozenten;
+    }
 }

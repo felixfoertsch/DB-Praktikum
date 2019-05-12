@@ -554,6 +554,7 @@ public class ImporterImpl implements Importer {
             persistKlausurAufgaben(universitaet, c);
             persistStudiengang(universitaet, c);
             persistBearbeitung(universitaet, c);
+            persistBetreut(universitaet, c);
 
             c.commit();
             c.close();
@@ -841,5 +842,20 @@ public class ImporterImpl implements Importer {
             }
         }
         insertBearbeitung.close();
+    }
+
+    private void persistBetreut(Universitaet universitaet, Connection c) throws Exception {
+        Map<String, Veranstaltung> veranstaltungMap = universitaet.getVeranstaltungen();
+        String insert = "INSERT INTO betreut (mitarbeiterid, veranstaltungid) VALUES (?, ?)";
+        PreparedStatement insertBetreut = c.prepareStatement(insert);
+
+        for (Veranstaltung v : veranstaltungMap.values()) {
+            for (Mitarbeiter m : v.getDozenten()) {
+                insertBetreut.setObject(1, m.getId());
+                insertBetreut.setObject(2, v.getId());
+                insertBetreut.executeUpdate();
+            }
+        }
+        insertBetreut.close();
     }
 }
