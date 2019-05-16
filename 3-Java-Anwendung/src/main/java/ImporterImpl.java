@@ -410,7 +410,12 @@ public class ImporterImpl implements Importer {
         ).withSkipHeaderRecord().parse(in);
         int count = 0;
         for (CSVRecord record : semprakergCSV) {
-            Veranstaltung veranstaltung = veranstaltungMap.get(record.get("VKennung"));
+            Veranstaltung veranstaltung;
+            if (record.get("VKennung").endsWith("sem")) {
+                veranstaltung = veranstaltungMap.get(record.get("VKennung").replace("_sem", "_ps"));
+            } else {
+                veranstaltung = veranstaltungMap.get(record.get("VKennung"));
+            }
             Student student = studentMap.get(record.get("Matrikelnr"));
             if (student == null) {
                 System.out.println("Student mit " + record.get("Matrikelnr") + "konnte nicht gefunden werden.");
