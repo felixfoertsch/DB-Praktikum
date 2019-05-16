@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ImporterImpl implements Importer {
 
@@ -113,7 +114,6 @@ public class ImporterImpl implements Importer {
                 "raum",
                 "mail"
         ).withSkipHeaderRecord().parse(in);
-        int count = 0;
         for (CSVRecord record : staffCSV) {
             Raum raum;
             if (raeumeMap.containsKey(record.get("raum"))) {
@@ -125,9 +125,8 @@ public class ImporterImpl implements Importer {
             // Vorname und Nachname sind im Datensatz vertauscht
             Mitarbeiter m = new Mitarbeiter(record.get("nachname"), record.get("vorname"), record.get("mail"), record.get("titel"), raum);
             mitarbeiterMap.put(m.getNachname(), m);
-            count++;
         }
-        System.out.println("Mitarbeiter:" + count + "/21");
+        System.out.println("Mitarbeiter: " + mitarbeiterMap.size() + "/21");
     }
 
     /**
@@ -164,7 +163,7 @@ public class ImporterImpl implements Importer {
             Student s = new Student(record.get("Matrikel"), record.get("Vorname"), record.get("Nachname"), record.get("Email"), studium);
             studentMap.put(s.getMatrikelNr(), s);
         }
-        System.out.println("Studenten:" + studentMap.size() + "/861");
+        System.out.println("Studenten: " + studentMap.size() + "/861");
     }
 
     /**
@@ -216,7 +215,7 @@ public class ImporterImpl implements Importer {
             k.setData(record.get("name"), record.get("datum"), record.get("uhrzeitVon"), record.get("Gesamtpunktzahl"), record.get("Punktzahl100"), record.get("VeranstKennung"), record.get("KlausurNr"), mitarbeiter, raeume);
             klausurMap.put(k.generateKey(), k);
         }
-        System.out.println("Klausuren:" + klausurMap.size() + "/57");
+        System.out.println("Klausuren: " + klausurMap.size() + "/57");
     }
 
     /**
@@ -233,7 +232,6 @@ public class ImporterImpl implements Importer {
                 "aufgaben_nr",
                 "Punkte"
         ).withSkipHeaderRecord().withDelimiter(';').parse(in);
-        int count = 0;
         for (CSVRecord record : klausur_aufgabenCSV) {
             String klausurNr = record.get("KlausurNr");
             // klausur_aufgaben has an unnecessary extra underscore on the third column for Zwischenklausuren (15_ws_dbs1_zk)
@@ -248,30 +246,31 @@ public class ImporterImpl implements Importer {
                 aufgabe.setKlausurNr("18ws_idbs2");
                 klausurMap.get("18ws_idbs2").addAufgabe(aufgabe);
                 System.out.println("Modified klausurNr of Aufgabe 18ws_idbs2_wh to 18ws_idbs2");
-                count++;
                 continue;
             }
             if (klausurNr.equals("18ws_cdm")) {
                 aufgabe.setKlausurNr("18ws_dm");
                 klausurMap.get("18ws_dm").addAufgabe(aufgabe);
                 System.out.println("Modified klausurNr of Aufgabe 18ws_cdm to 18ws_dm");
-                count++;
                 continue;
             }
             if (klausurNr.equals("16ws_idbs2_wh")) {
                 aufgabe.setKlausurNr("15ws_idbs2_wh");
                 klausurMap.get("15ws_idbs2_wh").addAufgabe(aufgabe);
                 System.out.println("Modified klausurNr of Aufgabe 16ws_idbs2_wh to 15ws_idbs2_wh");
-                count++;
                 continue;
             }
             if (klausurMap.get(klausurNr) == null) {
                 System.out.println("No Klausur with klausurNr " + klausurNr);
             }
             klausurMap.get(klausurNr).addAufgabe(aufgabe);
-            count++;
         }
-        System.out.println("Klausuraufgaben:" + count + "/387");
+
+        int count = 0;
+        for (Klausur k : klausurMap.values()) {
+            count += k.getAufgaben().size();
+        }
+        System.out.println("Klausuraufgaben: " + count + "/387");
     }
 
     /**
@@ -348,7 +347,7 @@ public class ImporterImpl implements Importer {
             }
             veranstaltungMap.put(v.generateKey(), v);
         }
-        System.out.println("Veranstaltungen:" + veranstaltungMap.size() + "/83");
+        System.out.println("Veranstaltungen: " + veranstaltungMap.size() + "/83");
     }
 
     /**
@@ -370,7 +369,6 @@ public class ImporterImpl implements Importer {
                 "Punkte",
                 "Note"
         ).withSkipHeaderRecord().parse(in);
-        int count = 0;
         for (CSVRecord record : klausurergCSV) {
             Klausur k = klausurMap.get(record.get("KlausurNr"));
             Student s = studentMap.get(record.get("Matrikelnr"));
@@ -388,9 +386,17 @@ public class ImporterImpl implements Importer {
             );
             k.addKlausurTeilnahme(kt);
             s.addKlausurTeilnahme(kt);
-            count++;
         }
-        System.out.println("Klausurergebnisse:" + count + "/1866");
+
+        int countK = 0;
+        int countS = 0;
+        for (Klausur k : klausurMap.values()) {
+            countK += k.getKlausurTeilnahmen().size();
+        }
+        for (Student s : studentMap.values()) {
+            countS += s.getKlausurTeilnahmen().size();
+        }
+        System.out.println("Klausurergebnisse: " + countK + "/1866 (in Klausuren), " + countS + "/1866 (in Studenten)");
     }
 
     /**
@@ -408,7 +414,6 @@ public class ImporterImpl implements Importer {
                 "Matrikelnr",
                 "Note"
         ).withSkipHeaderRecord().parse(in);
-        int count = 0;
         for (CSVRecord record : semprakergCSV) {
             Veranstaltung veranstaltung;
             if (record.get("VKennung").endsWith("sem")) {
@@ -440,9 +445,24 @@ public class ImporterImpl implements Importer {
                 seminar.addSeminarTeilnahme(seminarTeilnahme);
                 student.addSeminarTeilnahme(seminarTeilnahme);
             }
-            count++;
         }
-        System.out.println("Semprak-Ergebnisse:" + count + "/353");
+
+        int countV = 0;
+        int countS = 0;
+        for (Veranstaltung v : veranstaltungMap.values()) {
+            if (v instanceof Praktikum) {
+                Praktikum p = (Praktikum) v;
+                countV += p.getPraktikumTeilnahme().size();
+            } else if (v instanceof Seminar) {
+                Seminar s = (Seminar) v;
+                countV += s.getSeminarTeilnahme().size();
+            }
+        }
+        for (Student s : studentMap.values()) {
+            countS += s.getSeminarTeilnahme().size();
+        }
+
+        System.out.println("Semprak-Ergebnisse: " + countV + "/353 (in Veranstaltungen), " + countS + "/353 (in Studenten)");
     }
 
     /**
@@ -479,6 +499,19 @@ public class ImporterImpl implements Importer {
                 }
             }
         }
+
+        int countA = 0;
+        int countS = 0;
+        for (Klausur k : klausurMap.values()) {
+            for (Aufgabe a : k.getAufgaben().values()){
+                countA += a.getAufgabenBearbeitungen().size();
+            }
+        }
+        for (Student s : studentMap.values()) {
+            countS += s.getAufgabenBearbeitungen().size();
+        }
+
+        System.out.println("Aufgabenbearbeitungen/Punkte: " + countA + "/1592 (in Aufgaben in Klausuren), " + countS + "/1592 (in Studenten)");
     }
 
     /**
@@ -883,11 +916,11 @@ public class ImporterImpl implements Importer {
         PreparedStatement insertOrt = c.prepareStatement(insert);
 
         for (Klausur k : klausurMap.values()) {
-                for (Raum r : k.getOrte()) {
-                    insertOrt.setObject(1, k.getId());
-                    insertOrt.setObject(2, r.getId());
-                    insertOrt.executeUpdate();
-                }
+            for (Raum r : k.getOrte()) {
+                insertOrt.setObject(1, k.getId());
+                insertOrt.setObject(2, r.getId());
+                insertOrt.executeUpdate();
+            }
         }
         insertOrt.close();
     }

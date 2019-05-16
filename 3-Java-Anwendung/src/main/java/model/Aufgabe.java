@@ -27,6 +27,10 @@ public class Aufgabe {
 
     public void addAufgabenBearbeitung(AufgabenBearbeitung ab) { this.aufgabenBearbeitungen.put(ab.generateKey(), ab); }
 
+    public Map<String, AufgabenBearbeitung> getAufgabenBearbeitungen() {
+        return aufgabenBearbeitungen;
+    }
+
     public Integer getAufgabenNr() {
         return aufgabenNr;
     }

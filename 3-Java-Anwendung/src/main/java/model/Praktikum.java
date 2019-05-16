@@ -14,4 +14,8 @@ public class Praktikum extends Veranstaltung {
     public void addPraktikumTeilnahme(PraktikumTeilnahme pt) {
         this.praktikumTeilnahme.put(pt.generateKey(), pt);
     }
+
+    public Map<String, PraktikumTeilnahme> getPraktikumTeilnahme() {
+        return praktikumTeilnahme;
+    }
 }

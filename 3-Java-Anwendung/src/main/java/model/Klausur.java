@@ -61,6 +61,10 @@ public class Klausur {
         this.klausurTeilnahmen.put(kt.generateKey(), kt);
     }
 
+    public Map<String, KlausurTeilnahme> getKlausurTeilnahmen() {
+        return klausurTeilnahmen;
+    }
+
     public String generateKey() {
         return klausurNr;
     }

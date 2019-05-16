@@ -14,4 +14,8 @@ public class Seminar extends Veranstaltung {
     public void addSeminarTeilnahme(SeminarTeilnahme st) {
         this.seminarTeilnahme.put(st.generateKey(), st);
     }
+
+    public Map<String, SeminarTeilnahme> getSeminarTeilnahme() {
+        return seminarTeilnahme;
+    }
 }
