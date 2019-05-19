@@ -22,6 +22,7 @@ public class AppController {
     public void importButtonClicked(Event e) {
         Map<String, File> files = importer.importCSVtoMemory();
         this.universitaet = importer.parseCSVandCreateModel(files);
+//        this.universitaet = importer.fixDataErrors(this.universitaet);
         importer.persistModel(this.universitaet);
     }
 

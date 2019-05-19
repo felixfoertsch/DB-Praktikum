@@ -24,6 +24,7 @@ public class ImporterImpl implements Importer {
      *
      * @return HashMap<K: Filename, V: CSV file>
      */
+    @Override
     public Map<String, File> importCSVtoMemory() {
         Map<String, File> csvFiles = new HashMap<>();
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -75,6 +76,7 @@ public class ImporterImpl implements Importer {
      * @param files folder containing the CSV files to be imported
      * @return Universitaet object that contains all of the imported data, ready to be persisted
      */
+    @Override
     public Universitaet parseCSVandCreateModel(Map<String, File> files) {
         Universitaet universitaet = new Universitaet();
         Map<String, File> klausurpunkte = retrieveKlausurPunkteFolder(files.get("klausurpunkte"));
@@ -232,7 +234,10 @@ public class ImporterImpl implements Importer {
                 "aufgaben_nr",
                 "Punkte"
         ).withSkipHeaderRecord().withDelimiter(';').parse(in);
+
+        ArrayList<String> klausurNummern = new ArrayList<>();
         for (CSVRecord record : klausur_aufgabenCSV) {
+
             String klausurNr = record.get("KlausurNr");
             // klausur_aufgaben has an unnecessary extra underscore on the third column for Zwischenklausuren (15_ws_dbs1_zk)
             // we remove this underscore here
@@ -259,6 +264,21 @@ public class ImporterImpl implements Importer {
                 klausurMap.get("15ws_idbs2_wh").addAufgabe(aufgabe);
                 System.out.println("Modified klausurNr of Aufgabe 16ws_idbs2_wh to 15ws_idbs2_wh");
                 continue;
+            }
+            if (klausurNr.equals("15ws_dbs2_wh")) {
+                if (klausurMap.get("15ws_dbs2_wh").getAufgabeByIndex(Integer.valueOf(record.get("aufgaben_nr"))) != null) {
+                    System.out.println("Klausuraufgabe already present: " + record.get("aufgaben_nr"));
+                }
+            }
+            if (klausurNr.equals("16ws_dbs2_wh")) {
+                if (klausurMap.get("16ws_dbs2_wh").getAufgabeByIndex(Integer.valueOf(record.get("aufgaben_nr"))) != null) {
+                    System.out.println("Klausuraufgabe already present: " + record.get("aufgaben_nr"));
+                }
+            }
+            if (klausurNr.equals("17ws_dbs2_wh")) {
+                if (klausurMap.get("17ws_dbs2_wh").getAufgabeByIndex(Integer.valueOf(record.get("aufgaben_nr"))) != null) {
+                    System.out.println("Klausuraufgabe already present: " + record.get("aufgaben_nr"));
+                }
             }
             if (klausurMap.get(klausurNr) == null) {
                 System.out.println("No Klausur with klausurNr " + klausurNr);
@@ -444,6 +464,8 @@ public class ImporterImpl implements Importer {
                 SeminarTeilnahme seminarTeilnahme = new SeminarTeilnahme(seminar, student, record.get("Note"));
                 seminar.addSeminarTeilnahme(seminarTeilnahme);
                 student.addSeminarTeilnahme(seminarTeilnahme);
+            } else if (record.get("VKennung").contains("rivo")) {
+                System.out.println("17ss_rivo -> Seminar oder Praktikum?");
             }
         }
 
@@ -453,13 +475,15 @@ public class ImporterImpl implements Importer {
             if (v instanceof Praktikum) {
                 Praktikum p = (Praktikum) v;
                 countV += p.getPraktikumTeilnahme().size();
-            } else if (v instanceof Seminar) {
+            }
+            if (v instanceof Seminar) {
                 Seminar s = (Seminar) v;
                 countV += s.getSeminarTeilnahme().size();
             }
         }
         for (Student s : studentMap.values()) {
             countS += s.getSeminarTeilnahme().size();
+            countS += s.getPraktikumTeilnahme().size();
         }
 
         System.out.println("Semprak-Ergebnisse: " + countV + "/353 (in Veranstaltungen), " + countS + "/353 (in Studenten)");
@@ -472,7 +496,7 @@ public class ImporterImpl implements Importer {
      * @param klausurpunkteFolder the provided data folder of CSV files
      * @param klausurMap          the map of the Klausuren of the Universitaet
      * @param studentMap          the map of the Student of the Universitaet
-     * @throws Exception
+     * @throws Exception          rethrows FileNotFoundException
      */
     private void importPunkte(Map<String, File> klausurpunkteFolder, Map<String, Klausur> klausurMap, Map<String, Student> studentMap) throws Exception {
         for (Map.Entry<String, File> entry : klausurpunkteFolder.entrySet()) {
@@ -503,7 +527,7 @@ public class ImporterImpl implements Importer {
         int countA = 0;
         int countS = 0;
         for (Klausur k : klausurMap.values()) {
-            for (Aufgabe a : k.getAufgaben().values()){
+            for (Aufgabe a : k.getAufgaben().values()) {
                 countA += a.getAufgabenBearbeitungen().size();
             }
         }
@@ -518,9 +542,9 @@ public class ImporterImpl implements Importer {
      * Helper method. Takes a String that may contain multiple Mitarbeiter, splits it and gets the Mitarbeiter from the
      * provided map, if it exists. Requires that staff.csv is already imported.
      *
-     * @param toSplit
-     * @param map
-     * @return
+     * @param toSplit single string of Mitarbeiter, may be separated by comma
+     * @param map the Map of the Mitarbeiter of the Universitaet
+     * @return a Collection of Mitarbeiter
      */
     private Collection<Mitarbeiter> getMitarbeiterByLastName(String toSplit, Map<String, Mitarbeiter> map) {
         Collection<Mitarbeiter> mitarbeiter = new ArrayList<>();
@@ -542,9 +566,9 @@ public class ImporterImpl implements Importer {
      * Uses Map.putIfAbsent to create the Raum if it doesn't exists, since Raum is a simple object and is only
      * identified by Raum.bezeichnung.
      *
-     * @param toSplit
-     * @param raumMap
-     * @return
+     * @param toSplit string containing multiple rooms
+     * @param raumMap the Map of the raeume in the Universitaet
+     * @return the found Raeume in an iterable form
      */
     private ArrayList<Raum> getRaumeByName(String toSplit, Map<String, Raum> raumMap) {
         ArrayList<Raum> raeume = new ArrayList<>();
@@ -566,8 +590,8 @@ public class ImporterImpl implements Importer {
      * Helper method. The data has some strings that have to be split into parts; this method takes such a string,
      * removes all white space and returns the split String as an Array.
      *
-     * @param toSplit
-     * @return
+     * @param toSplit string that should be split
+     * @return String array with the split elements each in one slot
      */
     private String[] splitString(String toSplit) {
         if (toSplit.contains("Groß. Christen")) {
@@ -582,6 +606,7 @@ public class ImporterImpl implements Importer {
         }
     }
 
+    @Override
     public void persistModel(Universitaet universitaet) {
         Connection c;
 
@@ -786,7 +811,6 @@ public class ImporterImpl implements Importer {
                 }
             }
         }
-        System.out.println("Klausur ID 14 is <null> <null> for some reason");
         insertSVId.close();
         insertGVId.close();
     }
@@ -987,5 +1011,13 @@ public class ImporterImpl implements Importer {
         }
         insertTKstmt.close();
         insertTVstmt.close();
+    }
+
+    @Override
+    public Universitaet fixDataErrors(Universitaet universitaet) {
+        // update Gesamtpunktzahl to reflekt the actual gesamtpunktzahl
+
+        // pritn out klausuren with 10 aufgaben
+        return null;
     }
 }
