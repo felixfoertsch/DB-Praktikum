@@ -235,7 +235,6 @@ public class ImporterImpl implements Importer {
                 "Punkte"
         ).withSkipHeaderRecord().withDelimiter(';').parse(in);
 
-
         for (CSVRecord record : klausur_aufgabenCSV) {
 
             String klausurNr = record.get("KlausurNr");
@@ -265,12 +264,21 @@ public class ImporterImpl implements Importer {
                     continue;
                 }
             }
+
             Aufgabe aufgabe = new Aufgabe(record.get("KlausurNr"), record.get("aufgaben_nr"), record.get("Punkte"));
+
             if (klausurMap.get(klausurNr) == null) {
                 System.out.println("No Klausur with klausurNr " + klausurNr);
                 continue;
             }
             klausurMap.get(klausurNr).addAufgabe(aufgabe);
+        }
+
+        Klausur tmp = klausurMap.get("15ws_idbs2_wh");
+        for (int i = 1; i < 9; i++) {
+            Aufgabe aufgabe = new Aufgabe("15ws_idbs2_wh", String.valueOf(i), "0");
+            tmp.addAufgabe(aufgabe);
+            System.out.println("Add Aufgabe " + i + " with 0 maxPoints to 15ws_idbs2_wh");
         }
 
         int count = 0;
@@ -503,15 +511,11 @@ public class ImporterImpl implements Importer {
                 }
                 int index = 1;
                 for (String string : splitString(record.get("Punkte"))) {
-                    if (klausur.getKlausurNr().equals("15ws_idbs2_wh")) {
-                        Aufgabe a = new Aufgabe("15ws_idbs2_wh", String.valueOf(index), "0");
-                        klausur.addAufgabe(a);
-                        System.out.println("Add Aufgabe with 0 maxPoints to 15ws_idbs2_wh");
-                    }
                     Aufgabe aufgabe = klausur.getAufgabeByIndex(index);
                     AufgabenBearbeitung ab = new AufgabenBearbeitung(aufgabe, student, string);
                     aufgabe.addAufgabenBearbeitung(ab);
                     student.addAufgabenBearbeitung(ab);
+                    index++;
                 }
             }
         }

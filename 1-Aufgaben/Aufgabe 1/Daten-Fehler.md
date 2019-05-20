@@ -22,7 +22,7 @@ Folge: Es wird immer der erste Datenblock mit 9 Aufgaben gewählt, da bei den Be
 
 15ws_idbs2_wh
 - Klausur-Aufgaben existieren nicht
-- Klausur selbst existiert: ID 46
+- Klausur selbst existiert
 - Es gibt Klausur-Ergebnisse der studierenden (Klausurpunkte-Datei)
 
 Folge: Es werden Blanko-Aufgaben mit 0 maxPunkten angelegt, um die Klausur-Ergebnisse zu erhalten.
