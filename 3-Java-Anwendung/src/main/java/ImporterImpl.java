@@ -903,7 +903,12 @@ public class ImporterImpl implements Importer {
         for (Student student : studentMap.values()) {
             for (AufgabenBearbeitung ab : student.getAufgabenBearbeitungen().values()) {
                 insertBearbeitung.setObject(1, student.getId());
-                insertBearbeitung.setObject(2, ab.getAufgabe().getId());
+                if (ab.getAufgabe().getId() == null) {
+                    System.out.println(ab.generateKey());
+                    continue;
+                } else {
+                    insertBearbeitung.setObject(2, ab.getAufgabe().getId());
+                }
                 insertBearbeitung.setObject(3, ab.getPunkte());
                 insertBearbeitung.executeUpdate();
             }
