@@ -218,11 +218,6 @@ public class ImporterImpl implements Importer {
             klausurMap.put(k.generateKey(), k);
         }
 
-        Klausur rivo = new Klausur();
-        rivo.setTyp("ak");
-        rivo.setData("ScaDS-Ringvorlesung", "01.01.1970", "00:00:00", "0", "0", "17ss_rivo","17ss_rivo", getMitarbeiterByLastName("Rahm", mitarbeiterMap), getRaumeByName("HS8", raumMap));
-        klausurMap.put(rivo.generateKey(), rivo);
-
         System.out.println("Klausuren: " + klausurMap.size() + "/57");
     }
 
@@ -320,12 +315,17 @@ public class ImporterImpl implements Importer {
         ).withSkipHeaderRecord().parse(in);
         for (CSVRecord record : veranstaltungenCSV) {
             Veranstaltung v;
+
             switch (record.get("typ")) {
                 case "V":
                     v = new Grundvorlesung();
                     break;
                 case "SV":
-                    v = new Spezialvorlesung();
+                    if (record.get("kennung").equals("17ss_rivo")) {
+                        v = new Problemseminar();
+                    } else {
+                        v = new Spezialvorlesung();
+                    }
                     break;
                 case "P":
                     v = new Praktikum();
@@ -456,7 +456,7 @@ public class ImporterImpl implements Importer {
                 PraktikumTeilnahme praktikumTeilnahme = new PraktikumTeilnahme(praktikum, student, record.get("Note"));
                 praktikum.addPraktikumTeilnahme(praktikumTeilnahme);
                 student.addPraktikumTeilnahme(praktikumTeilnahme);
-            } else if (record.get("VKennung").contains("sem")) {
+            } else if (record.get("VKennung").contains("sem") || record.get("VKennung").contains("rivo")) {
                 Seminar seminar = (Seminar) veranstaltung;
                 if (seminar == null) {
                     System.out.println("Seminar " + record.get("VKennung") + "konnte nicht gefunden werden.");
@@ -465,8 +465,6 @@ public class ImporterImpl implements Importer {
                 SeminarTeilnahme seminarTeilnahme = new SeminarTeilnahme(seminar, student, record.get("Note"));
                 seminar.addSeminarTeilnahme(seminarTeilnahme);
                 student.addSeminarTeilnahme(seminarTeilnahme);
-            } else if (record.get("VKennung").contains("rivo")) {
-                System.out.println("17ss_rivo -> Seminar oder Praktikum?");
             }
         }
 

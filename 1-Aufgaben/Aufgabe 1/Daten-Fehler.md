@@ -42,4 +42,4 @@ Folge: Eintrag verwerfen, da er nur ein einziges mal als Betreuer einer Klausur 
 ## Veranstaltungen
 17ss_rivo ist weder Seminar noch Praktikum, sondern eine Ringvorlesung.
 
-Folge: Es wird eine zugehörige Klausur angelegt und die Daten werden dort mit eingetragen 
+Folge: Es wird als Seminar behandelt, um die Ergebnisse zu erhalten.
