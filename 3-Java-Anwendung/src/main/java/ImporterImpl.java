@@ -1018,6 +1018,13 @@ public class ImporterImpl implements Importer {
         // update Gesamtpunktzahl to reflekt the actual gesamtpunktzahl
 
         // pritn out klausuren with 10 aufgaben
-        return null;
+
+        // 17ss_rivo fixen: neue Klausur anlegen, StudisTeilnahmeVA
+        fixRivo(universitaet);
+        return universitaet;
+    }
+
+    private Universitaet fixRivo(Universitaet universitaet) {
+        return universitaet;
     }
 }
