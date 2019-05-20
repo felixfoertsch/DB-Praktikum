@@ -235,7 +235,7 @@ public class ImporterImpl implements Importer {
                 "Punkte"
         ).withSkipHeaderRecord().withDelimiter(';').parse(in);
 
-        ArrayList<String> klausurNummern = new ArrayList<>();
+
         for (CSVRecord record : klausur_aufgabenCSV) {
 
             String klausurNr = record.get("KlausurNr");
@@ -246,42 +246,29 @@ public class ImporterImpl implements Importer {
                 sb.deleteCharAt(2);
                 klausurNr = sb.toString();
             }
-            Aufgabe aufgabe = new Aufgabe(record.get("KlausurNr"), record.get("aufgaben_nr"), record.get("Punkte"));
-            if (klausurNr.equals("18ws_idbs2_wh")) {
-                aufgabe.setKlausurNr("18ws_idbs2");
-                klausurMap.get("18ws_idbs2").addAufgabe(aufgabe);
-                System.out.println("Modified klausurNr of Aufgabe 18ws_idbs2_wh to 18ws_idbs2");
-                continue;
-            }
-            if (klausurNr.equals("18ws_cdm")) {
-                aufgabe.setKlausurNr("18ws_dm");
-                klausurMap.get("18ws_dm").addAufgabe(aufgabe);
-                System.out.println("Modified klausurNr of Aufgabe 18ws_cdm to 18ws_dm");
-                continue;
-            }
-            if (klausurNr.equals("16ws_idbs2_wh")) {
-                aufgabe.setKlausurNr("15ws_idbs2_wh");
-                klausurMap.get("15ws_idbs2_wh").addAufgabe(aufgabe);
-                System.out.println("Modified klausurNr of Aufgabe 16ws_idbs2_wh to 15ws_idbs2_wh");
-                continue;
-            }
+
             if (klausurNr.equals("15ws_dbs2_wh")) {
                 if (klausurMap.get("15ws_dbs2_wh").getAufgabeByIndex(Integer.valueOf(record.get("aufgaben_nr"))) != null) {
-                    System.out.println("Klausuraufgabe already present: " + record.get("aufgaben_nr"));
+                    System.out.println("Discard! Aufgabe " + record.get("aufgaben_nr") + " already present in " + record.get("KlausurNr"));
+                    continue;
                 }
             }
             if (klausurNr.equals("16ws_dbs2_wh")) {
                 if (klausurMap.get("16ws_dbs2_wh").getAufgabeByIndex(Integer.valueOf(record.get("aufgaben_nr"))) != null) {
-                    System.out.println("Klausuraufgabe already present: " + record.get("aufgaben_nr"));
+                    System.out.println("Discard! Aufgabe " + record.get("aufgaben_nr") + " already present in " + record.get("KlausurNr"));
+                    continue;
                 }
             }
             if (klausurNr.equals("17ws_dbs2_wh")) {
                 if (klausurMap.get("17ws_dbs2_wh").getAufgabeByIndex(Integer.valueOf(record.get("aufgaben_nr"))) != null) {
-                    System.out.println("Klausuraufgabe already present: " + record.get("aufgaben_nr"));
+                    System.out.println("Discard! Aufgabe " + record.get("aufgaben_nr") + " already present in " + record.get("KlausurNr"));
+                    continue;
                 }
             }
+            Aufgabe aufgabe = new Aufgabe(record.get("KlausurNr"), record.get("aufgaben_nr"), record.get("Punkte"));
             if (klausurMap.get(klausurNr) == null) {
                 System.out.println("No Klausur with klausurNr " + klausurNr);
+                continue;
             }
             klausurMap.get(klausurNr).addAufgabe(aufgabe);
         }
@@ -516,6 +503,11 @@ public class ImporterImpl implements Importer {
                 }
                 int index = 1;
                 for (String string : splitString(record.get("Punkte"))) {
+                    if (klausur.getKlausurNr().equals("15ws_idbs2_wh")) {
+                        Aufgabe a = new Aufgabe("15ws_idbs2_wh", String.valueOf(index), "0");
+                        klausur.addAufgabe(a);
+                        System.out.println("Add Aufgabe with 0 maxPoints to 15ws_idbs2_wh");
+                    }
                     Aufgabe aufgabe = klausur.getAufgabeByIndex(index);
                     AufgabenBearbeitung ab = new AufgabenBearbeitung(aufgabe, student, string);
                     aufgabe.addAufgabenBearbeitung(ab);

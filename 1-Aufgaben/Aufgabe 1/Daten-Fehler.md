@@ -9,15 +9,23 @@ Die Daten sind teilweise fehlerhaft. In diesem Dokument haben wir zusammengefass
 Nicht vorhandene Klausuren:
 - 18ws_cdm
 - 16ws_idbs2_wh
+- 18ws_idbs2_wh
 
-Es gibt weder Klausur, noch VA, noch Ergebnisse -> verwerfen
+Folge: Es gibt weder Klausur, noch VA, noch Ergebnisse -> verwerfen
 
 Doppelte Klausuraufgaben:
 - 15ws_dbs2_wh
 - 16ws_dbs2_wh
 - 17ws_dbs2_wh
 
-Es wird immer der erste Datenblock mit 9 Aufgaben gewählt, da bei den Bearbeitungen 8 Aufgaben bearbeitet wurden und der zweite Block nur 7 Aufgaben hat.
+Folge: Es wird immer der erste Datenblock mit 9 Aufgaben gewählt, da bei den Bearbeitungen 8 Aufgaben bearbeitet wurden und der zweite Block nur 7 Aufgaben hat.
+
+15ws_idbs2_wh
+- Klausur-Aufgaben existieren nicht
+- Klausur selbst existiert: ID 46
+- Es gibt Klausur-Ergebnisse der studierenden (Klausurpunkte-Datei)
+
+Folge: Es werden Blanko-Aufgaben mit 0 maxPunkten angelegt, um die Klausur-Ergebnisse zu erhalten.
 
 ## Mitarbeiter
 Herr Petermann ist nicht in bei den Mitarbeitern dabei -> Eintrag verwerfen, da er nur ein einziges mal als Betreuer einer Klausur auftaucht.
