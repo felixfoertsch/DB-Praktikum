@@ -217,6 +217,12 @@ public class ImporterImpl implements Importer {
             k.setData(record.get("name"), record.get("datum"), record.get("uhrzeitVon"), record.get("Gesamtpunktzahl"), record.get("Punktzahl100"), record.get("VeranstKennung"), record.get("KlausurNr"), mitarbeiter, raeume);
             klausurMap.put(k.generateKey(), k);
         }
+
+        Klausur rivo = new Klausur();
+        rivo.setTyp("ak");
+        rivo.setData("ScaDS-Ringvorlesung", "01.01.1970", "00:00:00", "0", "0", "17ss_rivo","17ss_rivo", getMitarbeiterByLastName("Rahm", mitarbeiterMap), getRaumeByName("HS8", raumMap));
+        klausurMap.put(rivo.generateKey(), rivo);
+
         System.out.println("Klausuren: " + klausurMap.size() + "/57");
     }
 
