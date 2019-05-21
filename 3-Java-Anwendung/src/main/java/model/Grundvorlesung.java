@@ -10,4 +10,8 @@ public class Grundvorlesung extends Veranstaltung {
     public Grundvorlesung() {
         this.uebungen = new HashMap<>();
     }
+
+    public Map<String, Uebung> getUebungen() {
+        return uebungen;
+    }
 }

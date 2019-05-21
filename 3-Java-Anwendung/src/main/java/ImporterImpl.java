@@ -495,7 +495,7 @@ public class ImporterImpl implements Importer {
      * @param klausurpunkteFolder the provided data folder of CSV files
      * @param klausurMap          the map of the Klausuren of the Universitaet
      * @param studentMap          the map of the Student of the Universitaet
-     * @throws Exception          rethrows FileNotFoundException
+     * @throws Exception rethrows FileNotFoundException
      */
     private void importPunkte(Map<String, File> klausurpunkteFolder, Map<String, Klausur> klausurMap, Map<String, Student> studentMap) throws Exception {
         for (Map.Entry<String, File> entry : klausurpunkteFolder.entrySet()) {
@@ -543,7 +543,7 @@ public class ImporterImpl implements Importer {
      * provided map, if it exists. Requires that staff.csv is already imported.
      *
      * @param toSplit single string of Mitarbeiter, may be separated by comma
-     * @param map the Map of the Mitarbeiter of the Universitaet
+     * @param map     the Map of the Mitarbeiter of the Universitaet
      * @return a Collection of Mitarbeiter
      */
     private Collection<Mitarbeiter> getMitarbeiterByLastName(String toSplit, Map<String, Mitarbeiter> map) {
@@ -1018,18 +1018,34 @@ public class ImporterImpl implements Importer {
         insertTVstmt.close();
     }
 
-    @Override
-    public Universitaet fixDataErrors(Universitaet universitaet) {
-        // update Gesamtpunktzahl to reflekt the actual gesamtpunktzahl
+    public void checkMultiplicities(Universitaet universitaet) {
 
-        // pritn out klausuren with 10 aufgaben
+        //Klausur -> Aufgabe (), Raum
+        String aufgabenViolation = "";
+        String ortViolation = "";
+        for (Klausur k : universitaet.getKlausuren().values()) {
+            if (k.getAufgaben().size() < 6 || k.getAufgaben().size() > 9) {
+                aufgabenViolation = aufgabenViolation.concat(String.format("%-23s%-34s%s%n", "Violation of model: " + k.getAufgaben().size() + " ", "Aufgabe in Klausur " + k.getKlausurNr() + ".", "Should be 6-9."));
+            }
 
-        // 17ss_rivo fixen: neue Klausur anlegen, StudisTeilnahmeVA
-        fixRivo(universitaet);
-        return universitaet;
+            if (k.getOrte().size() < 1 || k.getOrte().size() > 3) {
+                ortViolation = ortViolation.concat(String.format("%-23s%-33s%s%n", "Violation of model: " + k.getOrte().size() + " ", "Orte in Klausur " + k.getKlausurNr() + ".", "Should be 1-3."));
+            }
+        }
+        System.out.printf("%s%s", aufgabenViolation, ortViolation);
+
+        //Grundvorlesung -> Uebungen
+        for (Veranstaltung v : universitaet.getVeranstaltungen().values()) {
+            Grundvorlesung g;
+            if (v instanceof Grundvorlesung) {
+                g = (Grundvorlesung) v;
+            } else {
+                continue;
+            }
+            if (g.getUebungen().size() < 4 || g.getUebungen().size() > 5) {
+                System.out.printf("%-22s%-33s%s%n", "Violation of model: " + g.getUebungen().size() + " ", "Uebungen in Grundvorlesung " + g.getName() + ".", "Should be 4-5.");
+            }
+        }
     }
 
-    private Universitaet fixRivo(Universitaet universitaet) {
-        return universitaet;
-    }
 }
