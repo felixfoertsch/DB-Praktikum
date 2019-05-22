@@ -13,8 +13,8 @@ public class KlausurTeilnahme {
         this.klausur = klausur;
         this.typ = typ;
         this.student = student;
-        this.nichtErschienen = Boolean.valueOf(nichtErschienen);
-        this.entschuldigt = Boolean.valueOf(entschuldigt);
+        this.nichtErschienen = stringToBool(nichtErschienen);
+        this.entschuldigt = stringToBool(entschuldigt);
         if (punkte.equals("NA")) {
             this.punkte = 0.0;
         } else {
@@ -29,5 +29,33 @@ public class KlausurTeilnahme {
 
     public String generateKey() {
         return klausur.generateKey() + "_" + student.getMatrikelNr();
+    }
+
+    public Klausur getKlausur() {
+        return klausur;
+    }
+
+    public Boolean getErschienen() {
+        return !nichtErschienen;
+    }
+
+    public Boolean getEntschuldigt() {
+        return entschuldigt;
+    }
+
+    public Double getPunkte() {
+        return punkte;
+    }
+
+    public Double getNote() {
+        return note;
+    }
+
+    private Boolean stringToBool(String string) {
+        if (string.equals("1")) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
     }
 }

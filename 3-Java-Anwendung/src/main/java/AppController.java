@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class AppController {
     public Button importButton = null;
-    private ImporterImpl importer;
+    private Importer importer;
     private Universitaet universitaet;
 
     public AppController() {
@@ -21,7 +21,9 @@ public class AppController {
     @FXML
     public void importButtonClicked(Event e) {
         Map<String, File> files = importer.importCSVtoMemory();
-        importer.parseCSVandCreateModel(files);
+        this.universitaet = importer.parseCSVandCreateModel(files);
+        importer.checkMultiplicities(this.universitaet);
+        importer.persistModel(this.universitaet);
     }
 
 }

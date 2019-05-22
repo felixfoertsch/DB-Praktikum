@@ -5,6 +5,6 @@ public class Zwischenklausur extends Klausur {
 
     @Override
     public String generateKey() {
-        return this.getKlausurNr() + "_" + this.getTyp();
+        return this.getKlausurNr();
     }
 }

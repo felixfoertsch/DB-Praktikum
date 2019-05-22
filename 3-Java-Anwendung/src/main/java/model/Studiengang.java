@@ -11,4 +11,24 @@ public class Studiengang {
         this.abschluss = abschluss;
         this.regelstudienzeit = Integer.valueOf(regelstudienzeit);
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAbschluss() {
+        return abschluss;
+    }
+
+    public Integer getRegelstudienzeit() {
+        return regelstudienzeit;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
 }

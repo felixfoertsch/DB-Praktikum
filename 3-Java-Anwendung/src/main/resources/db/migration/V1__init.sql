@@ -5,7 +5,7 @@ CREATE TABLE klausur
     grundvorlesungId   INTEGER,
     datum              DATE,
     uhrzeitVon         TIME,
-    gesamtpunktzahl    NUMERIC(3,1)
+    gesamtpunktzahl    NUMERIC(3, 1)
 );
 
 CREATE TABLE abschlussklausur
@@ -26,9 +26,9 @@ CREATE TABLE wiederholungsklausur
 CREATE TABLE veranstaltung
 (
     id            SERIAL PRIMARY KEY,
-    name          VARCHAR(100),
-    jahr          DATE,
-    semester      VARCHAR(100),
+    name          TEXT,
+    jahr          INTEGER,
+    semester      TEXT,
     maxTeilnehmer INTEGER
 );
 
@@ -39,12 +39,12 @@ CREATE TABLE seminar
 
 CREATE TABLE oberseminar
 (
-    seminarId INTEGER REFERENCES seminar ON DELETE CASCADE PRIMARY KEY
+    veranstaltungId INTEGER REFERENCES seminar ON DELETE CASCADE PRIMARY KEY
 );
 
 CREATE TABLE problemseminar
 (
-    seminarId INTEGER REFERENCES seminar ON DELETE CASCADE PRIMARY KEY
+    veranstaltungId INTEGER REFERENCES seminar ON DELETE CASCADE PRIMARY KEY
 );
 
 CREATE TABLE praktikum
@@ -69,21 +69,28 @@ CREATE TABLE uebung
     grundvorlesungId INTEGER REFERENCES grundvorlesung ON DELETE CASCADE
 );
 
+CREATE TABLE raum
+(
+    id          SERIAL PRIMARY KEY,
+    bezeichnung TEXT UNIQUE NOT NULL
+);
+
 CREATE TABLE mitarbeiter
 (
     id       SERIAL PRIMARY KEY,
-    vorname  VARCHAR(100),
-    nachname VARCHAR(100),
-    email    VARCHAR(100)
+    vorname  TEXT,
+    nachname TEXT,
+    email    TEXT,
+    raumId   INTEGER REFERENCES raum
 );
 
 CREATE TABLE student
 (
     id         SERIAL PRIMARY KEY,
-    matrikelNr VARCHAR(100),
-    vorname    VARCHAR(100),
-    nachname   VARCHAR(100),
-    uniMail    VARCHAR(100)
+    matrikelNr TEXT,
+    vorname    TEXT,
+    nachname   TEXT,
+    uniMail    TEXT
 );
 
 CREATE TABLE aufgabe
@@ -94,18 +101,11 @@ CREATE TABLE aufgabe
     maxPunkte NUMERIC(3, 1)
 );
 
-CREATE TABLE raum
-(
-    id            SERIAL PRIMARY KEY,
-    mitarbeiterId INTEGER REFERENCES mitarbeiter ON DELETE SET NULL,
-    bezeichnung   VARCHAR(100)
-);
-
 CREATE TABLE studiengang
 (
     id               SERIAL PRIMARY KEY,
-    name             VARCHAR(100),
-    abschluss        VARCHAR(100),
+    name             TEXT,
+    abschluss        TEXT,
     regelstudienzeit INTEGER
 );
 
@@ -113,7 +113,7 @@ CREATE TABLE abhaltung
 (
     raumId          INTEGER REFERENCES raum ON DELETE RESTRICT         NOT NULL,
     veranstaltungId INTEGER REFERENCES veranstaltung ON DELETE CASCADE NOT NULL,
-    wochentag       VARCHAR(100),
+    wochentag       TEXT,
     zeit            TIME,
     PRIMARY KEY (raumId, veranstaltungId)
 );
@@ -151,8 +151,8 @@ CREATE TABLE studium
 (
     studiengangId INTEGER REFERENCES studiengang ON DELETE RESTRICT NOT NULL,
     studentId     INTEGER REFERENCES student ON DELETE CASCADE      NOT NULL,
-    imma          DATE,
-    exma          DATE,
+    imma          INTEGER,
+    exma          INTEGER,
     semester      INTEGER,
     PRIMARY KEY (studiengangId, studentId)
 );

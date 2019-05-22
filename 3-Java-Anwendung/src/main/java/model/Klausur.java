@@ -41,6 +41,14 @@ public class Klausur {
         this.orte = orte;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
     public void setTyp(String typ) {
         this.typ = typ.toLowerCase();
     }
@@ -51,6 +59,10 @@ public class Klausur {
 
     public void addKlausurTeilnahme(KlausurTeilnahme kt) {
         this.klausurTeilnahmen.put(kt.generateKey(), kt);
+    }
+
+    public Map<String, KlausurTeilnahme> getKlausurTeilnahmen() {
+        return klausurTeilnahmen;
     }
 
     public String generateKey() {
@@ -67,5 +79,33 @@ public class Klausur {
 
     public String getKlausurNr() {
         return klausurNr;
+    }
+
+    public LocalDate getDatum() {
+        return datum;
+    }
+
+    public LocalTime getUhrzeitVon() {
+        return uhrzeitVon;
+    }
+
+    public Double getGesamtpunktzahl() {
+        return gesamtpunktzahl;
+    }
+
+    public Map<Integer, Aufgabe> getAufgaben() {
+        return aufgaben;
+    }
+
+    public String getVaKennung() {
+        return vaKennung;
+    }
+
+    public Collection<Mitarbeiter> getAufsichten() {
+        return aufsichten;
+    }
+
+    public Collection<Raum> getOrte() {
+        return orte;
     }
 }

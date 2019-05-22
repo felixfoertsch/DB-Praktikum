@@ -27,7 +27,27 @@ public class Aufgabe {
 
     public void addAufgabenBearbeitung(AufgabenBearbeitung ab) { this.aufgabenBearbeitungen.put(ab.generateKey(), ab); }
 
+    public Map<String, AufgabenBearbeitung> getAufgabenBearbeitungen() {
+        return aufgabenBearbeitungen;
+    }
+
     public Integer getAufgabenNr() {
         return aufgabenNr;
+    }
+
+    public void setKlausurNr(String klausurNr) {
+        this.klausurNr = klausurNr;
+    }
+
+    public Double getMaxPunkte() {
+        return maxPunkte;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

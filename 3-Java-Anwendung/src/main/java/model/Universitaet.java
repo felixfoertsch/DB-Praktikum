@@ -9,6 +9,7 @@ public class Universitaet {
     private Map<String, Veranstaltung> veranstaltungen;
     private Map<String, Klausur> klausuren;
     private Map<String, Raum> raeume;
+    private Map<String, Studiengang> studiengaenge;
 
     public Universitaet() {
         this.studenten = new HashMap<>();
@@ -16,6 +17,7 @@ public class Universitaet {
         this.veranstaltungen = new HashMap<>();
         this.klausuren = new HashMap<>();
         this.raeume = new HashMap<>();
+        this.studiengaenge = new HashMap<>();
     }
 
     public Map<String, Student> getStudenten() {
@@ -55,4 +57,14 @@ public class Universitaet {
     public void setRaeume(Map<String, Raum> raeume) {
         this.raeume = raeume;
     }
+
+    public void setStudiengaenge(Map<String, Studiengang> studiengaenge) {
+        this.studiengaenge = studiengaenge;
+    }
+
+    public Map<String, Studiengang> getStudiengaenge() {
+        return studiengaenge;
+    }
+
+
 }

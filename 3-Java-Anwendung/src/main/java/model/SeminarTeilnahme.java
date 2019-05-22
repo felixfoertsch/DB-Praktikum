@@ -1,12 +1,12 @@
 package model;
 
-public class PraktikumTeilnahme {
-    private Praktikum praktikum;
+public class SeminarTeilnahme {
+    private Seminar seminar;
     private Student student;
     private Double note;
 
-    public PraktikumTeilnahme(Praktikum praktikum, Student student, String note) {
-        this.praktikum = praktikum;
+    public SeminarTeilnahme(Seminar seminar, Student student, String note) {
+        this.seminar = seminar;
         this.student = student;
         if (note.equals("NA")) {
             this.note = 0.0;
@@ -16,11 +16,11 @@ public class PraktikumTeilnahme {
     }
 
     public String generateKey() {
-        return praktikum.generateKey() + "_" + student.getMatrikelNr();
+        return seminar.generateKey() + "_" + student.getMatrikelNr();
     }
 
-    public Praktikum getPraktikum() {
-        return praktikum;
+    public Seminar getSeminar() {
+        return seminar;
     }
 
     public Double getNote() {
