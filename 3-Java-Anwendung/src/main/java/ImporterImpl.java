@@ -90,6 +90,7 @@ public class ImporterImpl implements Importer {
             importKlausurErg(files.get("klausurerg.csv"), universitaet.getKlausuren(), universitaet.getStudenten());
             importSemPrakErg(files.get("semprakerg.csv"), universitaet.getVeranstaltungen(), universitaet.getStudenten());
             importPunkte(klausurpunkte, universitaet.getKlausuren(), universitaet.getStudenten());
+            associateUebungenToGV(universitaet);
         } catch (NullPointerException npe) {
             npe.printStackTrace();
         } catch (Exception e) {
@@ -364,7 +365,9 @@ public class ImporterImpl implements Importer {
                 v.addDozent(m);
             }
             if (v instanceof Uebung) {
-                veranstaltungMap.get(v.generateKey());
+                ((Uebung) v).setZugehoerigeVA(record.get("kennung"));
+                Grundvorlesung gv = (Grundvorlesung) veranstaltungMap.get(((Uebung) v).getZugehoerigeVA());
+                gv.getUebungen().put(v.generateKey(), (Uebung) v);
             }
             veranstaltungMap.put(v.generateKey(), v);
         }
@@ -538,6 +541,17 @@ public class ImporterImpl implements Importer {
         System.out.println("Aufgabenbearbeitungen/Punkte: " + countA + "/1592 (in Aufgaben in Klausuren), " + countS + "/1592 (in Studenten)");
     }
 
+    private void associateUebungenToGV(Universitaet universitaet) {
+        Map<String, Veranstaltung> veranstaltungMap = universitaet.getVeranstaltungen();
+
+        ArrayList<Uebung> uebungArrayList = new ArrayList<>();
+
+        for (Veranstaltung v : veranstaltungMap.values()) {
+            if (v instanceof Uebung) {
+                uebungArrayList.add((Uebung) v);
+            }
+        }
+    }
     /**
      * Helper method. Takes a String that may contain multiple Mitarbeiter, splits it and gets the Mitarbeiter from the
      * provided map, if it exists. Requires that staff.csv is already imported.
@@ -1043,7 +1057,7 @@ public class ImporterImpl implements Importer {
                 continue;
             }
             if (g.getUebungen().size() < 4 || g.getUebungen().size() > 5) {
-                System.out.printf("%-22s%-33s%s%n", "Violation of model: " + g.getUebungen().size() + " ", "Uebungen in Grundvorlesung " + g.getName() + ".", "Should be 4-5.");
+                System.out.printf("%-22s%-33s%s%n", "Violation of model: " + g.getUebungen().size() + " ", "Uebungen in Grundvorlesung " + g.getName() + " (" + g.getKennung() + ").", "Should be 4-5.");
             }
         }
     }
