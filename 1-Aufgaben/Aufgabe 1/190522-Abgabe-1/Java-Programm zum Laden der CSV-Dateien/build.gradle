@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.flywaydb.flyway' version '5.2.4'
+    id 'org.openjfx.javafxplugin' version '0.0.7'
+}
+
+group 'de.felixfoertsch'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.apache.commons:commons-csv:1.6' // https://mvnrepository.com/artifact/org.apache.commons/commons-csv
+    compile 'org.postgresql:postgresql:42.2.5'
+    testCompile 'junit:junit:4.12'
+}
+
+flyway {
+    url = 'jdbc:postgresql://localhost:5432/dbp'
+    user = 'dbp'
+    password = 'dbp'
+}
+
+javafx {
+    version = '12'
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+mainClassName = 'App'

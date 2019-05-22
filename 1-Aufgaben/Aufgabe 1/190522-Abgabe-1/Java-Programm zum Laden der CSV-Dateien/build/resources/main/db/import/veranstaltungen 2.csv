@@ -1,0 +1,84 @@
+typ,name, jahr, semester, raum, maxTeilnehmer, dozent,zeit,tag,kennung
+V,DBS1,2018,WiSe,HS7,300,Rahm,13:15,Montag,18ws_dbs1
+SV,IDBS1,2018,WiSe,HS12,90,Rahm,11:15,Dienstag,18ws_idbs1
+SV,IDBS2,2018,WiSe,HS10,90,Rahm,11:15,Freitag,18ws_idbs2
+SV,Data Mining,2018,WiSe,HS20,90,Zschache,09:15,Donnerstag,18ws_dm
+P,DWH-Prak,2018,WiSe,SG214,18,"Christen, Franke, Sehili",15:15,Freitag,18ws_dwhprak
+PS,Secure Data Processing,2018,WiSe,ScaDS,22,NULL,13:30,Freitag,18ws_ps
+OS,Oberseminar,2018,WiSe,ScaDS,30,NULL,13:30,Freitag,18ws_os
+V,DBS2,2018,SoSe,HS2,200,Rahm,15:15,Montag,18ss_dbs2
+SV,Data Warehousing,2018,SoSe,HS19,90,Rahm,11:15,Freitag,18ss_dwh
+SV,NoSQL-Datenbanken,2018,SoSe,HS19,90,Zschache,09:15,Donnerstag,18ss_nosql
+P,DB-Prak,2018,SoSe,HS16,50,"Christen, Franke, Sehili, Zschache",11:15,Montag,18ss_dbprak
+P,Big-Data-Praktikum,2018,SoSe,SG314,13,NULL,11:15,Montag,18ss_bdprak
+OS,Oberseminar Zingst,2018,SoSe,Zingst,30,NULL,NULL,NULL,18ss_os
+V,DBS1,2017,WiSe,HS7,300,Rahm,13:15,Montag,17ws_dbs1
+SV,Cloud Data Management,2017,WiSe,HS20,90,Peukert,09:15,Donnerstag,17ws_cdm
+SV,Mehrrechner-Datenbanksysteme,2017,WiSe,HS19,90,Rahm,11:15,Freitag,17ws_mrdbs
+P,DWH-Prak,2017,WiSe,SG314,18,"Christen, Franke, Sehili",09:15,Montag,17ws_dwhprak
+PS,Deep Learning,2017,WiSe,ScaDS,18,NULL,13:30,Freitag,17ws_ps
+OS,Oberseminar,2017,WiSe,ScaDS,30,NULL,13:30,Freitag,17ws_os
+V,DBS2,2017,SoSe,HS2,200,Rahm,13:15,Montag,17ss_dbs2
+SV,IDBS2,2017,SoSe,HS19,90,Rahm,11:15,Freitag,17ss_idbs2
+SV,NoSQL-Datenbanken,2017,SoSe,HS19,90,Groß,09:15,Donnerstag,17ss_nosql
+SV,ScaDS-Ringvorlesung,2017,SoSe,HS8,30,Rahm,15:15,Donnerstag,17ss_rivo
+P,DB-Prak,2017,SoSe,HS8,30,"Christen, Franke, Groß, Sehili",11:15,Montag,17ss_dbprak
+P,Big-Data-Praktikum,2017,SoSe,SG204,20,NULL,11:15,Montag,17ss_bdprak
+V,DBS1,2016,WiSe,HS9,300,Rahm,13:15,Montag,16ws_dbs1
+SV,Cloud Data Management,2016,WiSe,HS19,90,Groß,09:15,Donnerstag,16ws_cdm
+SV,IDBS1,2016,WiSe,HS19,90,Rahm,11:15,Freitag,16ws_idbs1
+P,DWH-Prak,2016,WiSe,SG214,20,"Christen, Junghanns",13:15,Montag,16ws_dwhprak
+PS,Big-Data-Streaming,2016,WiSe,ScaDS,20,NULL,13:30,Freitag,16ws_ps
+OS,Oberseminar,2016,WiSe,ScaDS,30,NULL,13:30,Freitag,16ws_os
+V,DBS2,2016,SoSe,HS2,200,Rahm,15:15,Montag,16ss_dbs2
+SV,Data Warehousing,2016,SoSe,HS19,90,Rahm,11:15,Freitag,16ss_dwh
+SV,Datenintegration,2016,SoSe,HS19,90,Groß,09:15,Donnerstag,16ss_di
+P,DB-Prak,2016,SoSe,SG314,20,"Christen, Groß, Junghanns, Sehili",11:15,Montag,16ss_dbprak
+P,Big-Data-Praktikum,2016,SoSe,SG314,20,NULL,12:00,Montag,16ss_bdprak
+OS,Oberseminar,2016,SoSe,ScaDS,30,NULL,13:30,Freitag,16ss_os
+V,DBS1,2015,WiSe,HS9,300,Rahm,13:15,Montag,15ws_dbs1
+SV,Mehrrechner-Datenbanksysteme,2015,WiSe,HS19,90,Rahm,11:15,Freitag,15ws_mrdbs
+SV,NoSQL-Datenbanken,2015,WiSe,HS19,90,"Groß, Junghanns",09:15,Donnerstag,15ws_nosql
+P,Big-Data-Praktikum,2015,WiSe,P801,20,NULL,14:30,Montag,15ws_bdprak
+PS,Privacy for Big Data,2015,WiSe,P801,20,NULL,13:30,Freitag,15ws_ps
+OS,Oberseminar,2015,WiSe,ScaDS,30,NULL,13:30,Freitag,15ws_os
+V,DBS2,2015,SoSe,HS2,200,Rahm,15:15,Montag,15ss_dbs2
+SV,IDBS1,2015,SoSe,HS19,90,Rahm,09:15,Mittwoch,15ss_idbs1
+SV,IDBS2,2015,SoSe,HS19,90,Rahm,11:15,Freitag,15ss_idbs2
+SV,CDM,2015,SoSe,HS19,90,Groß,09:15,Donnerstag,15ss_cdm
+P,DB-Prak,2015,SoSe,SG314,30,"Groß, Christen",11:15,Montag,15ss_dbprak
+OS,Oberseminar,2015,SoSe,Zingst,30,NULL,NULL,NULL,15ss_os
+Ü,DBS1 – A,2018,WiSe,HS19,60,"Christen, Franke",17:15,Montag,18ws_dbs1
+Ü,DBS1 – B,2018,WiSe,HS19,60,"Christen, Franke",17:15,Montag,18ws_dbs1
+Ü,DBS1 – C,2018,WiSe,SG312,30,"Christen, Franke",13:15,Mittwoch,18ws_dbs1
+Ü,DBS1 – D,2018,WiSe,HS19,60,"Christen, Franke",15:15,Donnerstag,18ws_dbs1
+Ü,DBS1 – E,2018,WiSe,HS19,60,"Christen, Franke",15:15,Donnerstag,18ws_dbs1
+Ü,DBS2 – A,2018,SoSe,HS19,60,"Christen, Franke",17:15,Montag,18ss_dbs2
+Ü,DBS2 – B,2018,SoSe,HS19,60,"Christen, Franke",17:15,Montag,18ss_dbs2
+Ü,DBS2 – C,2018,SoSe,HS19,60,"Christen, Franke",15:15,Dienstag,18ss_dbs2
+Ü,DBS2 – D ,2018,SoSe,HS19,60,"Christen, Franke",15:15,Dienstag,18ss_dbs2
+Ü,DBS1 – A,2017,WiSe,HS19,60,"Christen, Franke",17:15,Montag,17ws_dbs1
+Ü,DBS1 – B,2017,WiSe,HS19,60,"Christen, Franke",17:15,Montag,17ws_dbs1
+Ü,DBS1 – C,2017,WiSe,SG311,30,"Christen, Franke",11:15,Mittwoch,17ws_dbs1
+Ü,DBS1 – D,2017,WiSe,HS19,60,"Christen, Franke",15:15,Donnerstag,17ws_dbs1
+Ü,DBS1 – E,2017,WiSe,HS19,60,"Christen, Franke",15:15,Donnerstag,17ws_dbs1
+Ü,DBS2 – A,2017,SoSe,HS19,60,"Christen, Franke",17:15,Montag,17ss_dbs2
+Ü,DBS2 – B,2017,SoSe,HS19,60,"Christen, Franke",17:15,Montag,17ss_dbs2
+Ü,DBS2 – C,2017,SoSe,SG312,30,"Christen, Franke",15:15,Mittwoch,17ss_dbs2
+Ü,DBS2 – D ,2017,SoSe,SG312,30,"Christen, Franke",15:15,Mittwoch,17ss_dbs2
+Ü,DBS1 – A,2016,WiSe,HS19,60,"Junghanns, Christen",17:15,Montag,16ws_dbs1
+Ü,DBS1 – B,2016,WiSe,HS19,60,"Junghanns, Christen",17:15,Montag,16ws_dbs1
+Ü,DBS1 – C,2016,WiSe,Felix-Klein-HS,60,"Junghanns, Christen",11:15,Dienstag,16ws_dbs1
+Ü,DBS1 – D,2016,WiSe,Felix-Klein-HS,60,"Junghanns, Christen",11:15,Dienstag,16ws_dbs1
+Ü,DBS2 – A,2016,SoSe,HS19,60,"Junghanns, Christen",17:15,Montag,16ss_dbs2
+Ü,DBS2 – B,2016,SoSe,HS19,60,"Junghanns, Christen",17:15,Montag,16ss_dbs2
+Ü,DBS2 – C,2016,SoSe,SG312,30,"Junghanns, Christen",15:15,Mittwoch,16ss_dbs2
+Ü,DBS2 – D ,2016,SoSe,SG312,30,"Junghanns, Christen",15:15,Mittwoch,16ss_dbs2
+Ü,DBS1 – A,2015,WiSe,HS19,60,"Junghanns, Christen",17:15,Montag,15ws_dbs1
+Ü,DBS1 – B,2015,WiSe,HS19,60,"Junghanns, Christen",17:15,Montag,15ws_dbs1
+Ü,DBS1 – C,2015,WiSe,Felix-Klein-HS,60,"Junghanns, Christen",11:15,Dienstag,15ws_dbs1
+Ü,DBS1 – D,2015,WiSe,Felix-Klein-HS,60,"Junghanns, Christen",11:15,Dienstag,15ws_dbs1
+Ü,DBS2 – A,2015,SoSe,HS19,60,"Junghanns, Christen",17:15,Montag,15ss_dbs2
+Ü,DBS2 – B,2015,SoSe,HS19,60,"Junghanns, Christen",17:15,Montag,15ss_dbs2
+Ü,DBS2 – C,2015,SoSe,SG312,30,"Junghanns, Christen",15:15,Mittwoch,15ss_dbs2
+Ü,DBS2 – D ,2015,SoSe,SG312,30,"Junghanns, Christen",15:15,Mittwoch,15ss_dbs2

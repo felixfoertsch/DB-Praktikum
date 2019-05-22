@@ -1,0 +1,58 @@
+datum,name,ort, uhrzeitVon,Punktzahl100, Gesamtpunktzahl,Aufsicht,VeranstKennung,Typ,KlausurNr
+30.07.2015,AK Cloud Data Management,HS9,09:15,46,49,"Groß, Christen",15ss_cdm,AK,15ss_cdm
+12.06.2015,WDH DBS1,HS3,15:15,49,51,"Junghanns, Christen",14ws_dbs1,WDH,15ss_dbs1_wh
+05.06.2015,ZK DBS2,HS3,15:15,38,40,"Groß, Junghanns, Christen",15ss_dbs2,ZK,15ss_dbs2_zk
+28.07.2015,AK DBS2,HS3,14:00,44,46,"Christen, Junghanns, Nentwig",15ss_dbs2,AK,15ss_dbs2
+11.06.2015,AK IDBS1,Felix-Klein-HS,17:00,41,43,"Junghanns, Christen",15ss_idbs1,AK,15ss_idbs1
+21.07.2015,AK IDBS2,HS3,09:15,45,48,"Junghanns, Christen",15ss_idbs2,AK,15ss_idbs2
+10.12.2015,WDH Cloud Data Management,HS5,15:00,46,49,"Groß, Christen",15ss_cdm,WDH,15ws_cdm_wh
+03.12.2015,ZK DBS1,Audimax,15:00,42,42,"Groß. Christen, Junghanns",15ws_dbs1,ZK,15ws_dbs1_zk
+10.02.2016,AK DBS1,"Audimax, HS3",15:30,45,48,"Junghanns, Nentwig, Petermann, Lin",15ws_dbs1,AK,15ws_dbs1
+01.12.2015,WDH DBS2,HS2,11:00,46,46,"Junghanns, Christen",15ss_dbs2,WDH,15ws_dbs2_wh
+01.12.2015,WDH IDBS1,HS2,11:00,42,43,"Junghanns, Christen",15ss_idbs1,WDH,15ws_idbs1_wh
+10.12.2015,WDH IDBS2,HS5,15:00,46,48,"Groß, Christen",15ss_idbs2,WDH,15ws_idbs2_wh
+11.02.2016,AK Mehrrechner-Datenbanksysteme,HS9,15:30,45,49,"Junghanns, Christen",15ws_mrdbs,AK,15ws_mrdbs
+18.02.2016,AK NoSQL-Datenbanken,HS9,13:30,44,44,"Groß, Junghanns, Christen",15ws_nosql,AK,15ws_nosql
+10.06.2016,WDH DBS1,Audimax,13:00,50,50,"Junghanns, Christen",15ws_dbs1,WDH,16ss_dbs1_wh
+03.06.2016,ZK DBS2,Audimax,13:00,38,40,"Groß, Junghanns, Christen",16ss_dbs2,ZK,16ss_dbs2_zk
+19.07.2016,AK DBS2,HS3,14:00,44,46,"Groß, Junghanns, Christen",16ss_dbs2,AK,16ss_dbs2
+20.07.2016,AK Datenintegration,HS3,14:00,50,52,"Groß, Junghanns",16ss_di,AK,16ss_di
+15.07.2016,AK Data Warehousing,Audimax,14:00,46,48,"Junghanns, Christen",16ss_dwh,AK,16ss_dwh
+10.06.2016,WDH Mehrrechner-Datenbanksysteme,Audimax,13:00,46,48,"Junghanns, Christen",15ws_mrdbs,WDH,16ss_mrdbs_wh
+03.06.2016,WDH NoSQL-Datenbanken,Audimax,13:00,46,46,"Groß, Junghanns, Christen",15ws_nosql,WDH,16ss_nosql_wh
+10.02.2017,AK Cloud Data Management,HS9,14:00,49,49,"Junghanns, Christen, Groß, Sehili, Nentwig",16ws_cdm,AK,16ws_cdm
+06.12.2016,ZK DBS1,"Audimax, HS3",07:30,42,42,"Groß, Christen",16ws_dbs1,ZK,16ws_dbs1_zk
+14.02.2017,AK DBS1,"Audimax, HS3",14:00,44.5,49,"Junghanns, Christen",16ws_dbs1,AK,16ws_dbs1
+01.12.2016,WDH DBS2,HS2,15:00,46,50,"Junghanns, Christen",16ss_dbs2,WDH,16ws_dbs2_wh
+24.11.2016,WDH Datenintegration,HS8,15:00,48,50,"Junghanns, Christen",16ss_di,WDH,16ws_di_wh
+01.12.2016,WDH Data Warehousing,HS2,15:00,45,46,"Junghanns, Christen, Groß, Sehili, Nentwig",16ss_dwh,WDH,16ws_dwh_wh
+16.02.2017,AK IDBS1,HS3,14:00,43,47,"Junghanns, Christen",16ws_idbs1,AK,16ws_idbs1
+08.06.2017,WDH Cloud Data Management,Audimax,15:00,49,49,"Christen, Franke",16ws_cdm,WDH,17ss_cdm_wh
+02.06.2017,WDH DBS1,Audimax,13:30,46.5,48,"Christen, Franke",16ws_dbs1,WDH,17ss_dbs1_wh
+08.06.2017,ZK DBS2,Audimax,15:00,40,42,"Christen, Franke, Nentwig",17ss_dbs2,ZK,17ss_dbs2_zk
+18.07.2017,AK DBS2,Audimax,14:00,47,47,"Christen, Franke, Sehili",17ss_dbs2,AK,17ss_dbs2
+02.06.2017,WDH IDBS1,Audimax,13:30,44,44,"Christen, Franke",16ws_idbs1,WDH,17ss_idbs1_wh
+14.07.2017,AK IDBS2,HS3,13:30,45,48,"Christen, Franke",17ss_idbs2,AK,17ss_idbs2
+19.07.2017,AK NoSQL-Datenbanken,HS9,10:00,44,44,"Groß, Christen",17ss_nosql,AK,17ss_nosql
+20.02.2018,AK Cloud Data Management,HS3,13:00,40,46,"Peukert, Christen",17ws_cdm,AK,17ws_cdm
+30.11.2017,ZK DBS1,"Audimax, HS9",07:15,45,45,"Sehili, Nentwig, Lin, Christen, Franke",17ws_dbs1,ZK,17ws_dbs1_zk
+13.02.2018,AK DBS1,"Audimax, HS3",14:00,46,50,"Christen, Franke",17ws_dbs1,AK,17ws_dbs1
+05.12.2017,WDH DBS2,HS8,12:00,46,48,"Christen, Franke",17ss_dbs2,WDH,17ws_dbs2_wh
+05.12.2017,WDH IDBS2,HS8,12:00,46,48,"Christen, Franke",17ss_idbs2,WDH,17ws_idbs2_wh
+09.02.2018,AK Mehrrechner-Datenbanksysteme,HS3,10:00,46,49,"Christen, Franke",17ws_mrdbs,AK,17ws_mrdbs
+30.11.2017,WDH NoSQL-Datenbanken,HS9,07:15,46,46,"Christen, Franke",17ss_nosql,WDH,17ws_nosql_wh
+06.06.2018,WDH Cloud Data Management,Audimax,15:15,40,46,"Christen, Franke",17ws_cdm,WDH,18ss_cdm_wh
+31.05.2018,WDH DBS1,HS3,15:15,49,49,"Christen, Franke",17ws_dbs1,WDH,18ss_dbs1_wh
+06.06.2018,ZK DBS2,Audimax,15:15,42,42,"Christen, Franke",18ss_dbs2,ZK,18ss_dbs2_zk
+25.07.2018,AK DBS2,Audimax,14:00,45,47,"Christen, Franke",18ss_dbs2,AK,18ss_dbs2
+20.07.2018,AK Data Warehousing,HS3,13:30,45,48,"Christen, Franke",18ss_dwh,AK,18ss_dwh
+31.05.2018,WDH Mehrrechner-Datenbanksysteme,HS3,15:15,46,49,"Christen, Franke",17ws_mrdbs,WDH,18ss_mrdbs_wh
+30.07.2018,AK NoSQL-Datenbanken,HS7,10:00,44,44,"Zschache, Christen",18ss_nosql,AK,18ss_nosql
+19.02.2019,AK DBS1,"Audimax, HS3",14:00,43,47,"Christen, Sehili, Rohde, Rost, Nentwig",18ws_dbs1,AK,18ws_dbs1
+07.12.2018,ZK DBS1,"Audimax, HS3, HS9",07:30,45,45,"Christen, Nentwig, Rost, Gomez, Sehili, Franke, Rohde",18ws_dbs1,ZK,18ws_dbs1_zk
+03.12.2018,WDH DBS2,Felix-Klein-HS,09:00,44,45,"Christen, Franke",18ss_dbs2,WDH,18ws_dbs2_wh
+28.02.2019,AK Data Mining,HS1,10:00,27,27,"Zschache, Christen",18ws_dm,AK,18ws_dm
+03.12.2018,WDH Data Warehousing,Felix-Klein-HS,09:00,48,48,"Christen, Franke",18ss_dwh,WDH,18ws_dwh_wh
+14.12.2018,AK IDBS1,Audimax,16:30,44,46,"Christen, Peukert",18ws_idbs1,AK,18ws_idbs1
+15.02.2019,AK IDBS2,HS9,10:00,45,48,"Christen, Franke",18ws_idbs2,AK,18ws_idbs2
+07.12.2018,WDH NoSQL-Datenbanken,HS9,07:30,42,42,"Christen, Franke",18ss_nosql,WDH,18ws_nosql_wh
