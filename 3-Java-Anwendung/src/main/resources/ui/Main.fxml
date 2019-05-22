@@ -4,8 +4,10 @@
 <?import javafx.scene.layout.Pane?>
 
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AppController">
+<?import javafx.scene.control.Label?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AppController">
    <children>
-      <Button fx:id="importButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Import" onAction="#importButtonClicked"/>
+      <Label layoutX="10.0" layoutY="10.0">Version: Aufgabe 1</Label>
+      <Button fx:id="importButton" layoutX="10.0" layoutY="30.0" mnemonicParsing="false" text="Import" onAction="#importButtonClicked"/>
    </children>
 </Pane>
