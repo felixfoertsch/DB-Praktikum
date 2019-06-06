@@ -43,7 +43,7 @@ FROM klausur
 WHERE jahr = 2017
   AND semester = 'WiSe'
   AND name = 'DBS1'
-  AND erschienen = TRUE
+  AND erschienen = TRUE;
 
 -- 4. Welche Mitarbeiter der Abteilung haben noch nie eine Abschlussklausur beaufsichtigt?
 -- Finde alle Mitarbeiter, die AKs beaufsichtigt haben. Gib restliche Mitarbeiter zurück.
