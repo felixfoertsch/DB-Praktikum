@@ -50,9 +50,9 @@ WHERE jahr = 2017
 SELECT vorname, nachname
 FROM mitarbeiter
 WHERE id NOT IN (SELECT mitarbeiterid
-             FROM klausur
-                      JOIN abschlussklausur a on klausur.id = a.klausurid
-                      JOIN aufsicht a2 on klausur.id = a2.klausurid);
+                 FROM klausur
+                          JOIN abschlussklausur a ON klausur.id = a.klausurid
+                          JOIN aufsicht a2 ON klausur.id = a2.klausurid);
 
 -- 5. Welche Veranstaltungsreihen wurden immer zur selben Zeit abgehalten?
 -- Annahmen: Wochentag egal, Veranstaltungsreihe = gleicher Name
@@ -62,8 +62,8 @@ SELECT name
 FROM (SELECT name,
              zeit
       FROM veranstaltung
-               JOIN abhaltung on veranstaltung.id = abhaltung.veranstaltungid
-      GROUP BY name, zeit) AS groupedVeranstaltungen
+               JOIN abhaltung ON veranstaltung.id = abhaltung.veranstaltungid
+      GROUP BY name, zeit) AS groupedveranstaltungen
 GROUP BY name
 HAVING COUNT(name) < 2;
 
@@ -73,20 +73,20 @@ HAVING COUNT(name) < 2;
 -- Alle Studenten, die GV besucht haben minus die, die SV besucht haben
 SELECT DISTINCT s2.id, s2.vorname, s2.nachname
 FROM klausur
-         JOIN studentteilnahmeklausur s on klausur.id = s.klausurid
-         JOIN student s2 on s.studentid = s2.id
+         JOIN studentteilnahmeklausur s ON klausur.id = s.klausurid
+         JOIN student s2 ON s.studentid = s2.id
 WHERE grundvorlesungid IS NOT NULL
     EXCEPT
 SELECT DISTINCT s2.id, s2.vorname, s2.nachname
 FROM klausur
-         JOIN studentteilnahmeklausur s on klausur.id = s.klausurid
-         JOIN student s2 on s.studentid = s2.id
+         JOIN studentteilnahmeklausur s ON klausur.id = s.klausurid
+         JOIN student s2 ON s.studentid = s2.id
 WHERE spezialvorlesungid IS NOT NULL;
 
 -- 7. Erstellen Sie eine Liste aller Studierenden geordnet nach der Anzahl der erfolgreich teilgenommenen Klausuren sowie Prüfungsleistungen.
 -- erfolgreich = Note zwischen 1.0 und 4.0 (nicht erschienen hat Note 0.0)
 SELECT id, vorname, nachname, teilnahmen
-FROM (SELECT studentid, COUNT(studentid) as teilnahmen
+FROM (SELECT studentid, COUNT(studentid) AS teilnahmen
       FROM (SELECT studentid
             FROM studentteilnahmeklausur
             WHERE note >= 1.0
@@ -101,7 +101,11 @@ FROM (SELECT studentid, COUNT(studentid) as teilnahmen
 ORDER BY teilnahmen DESC;
 
 -- 8. Welche Studenten haben im Jahr 2016 und 2017 jeweils mindestens zwei Veranstaltungen zusammen besucht.
-
+SELECT *
+FROM (SELECT studenta.id AS ida, studentb.id AS idb
+      FROM student AS studenta
+               CROSS JOIN student AS studentb) AS studenttuple
+         JOIN studentteilnahmeveranstaltung ON (ida = studentid OR idb = studentid);
 -- 9. Erstellen Sie ein Ranking über alle Studierenden zur Ermittlung der Top-Studierenden. Beachten Sie dabei die nachfolgenden Anforderungen:
 -- Oberseminare und Zwischenklausuren sowie die entsprechenden Noten werden nicht berücksichtigt.
 -- Es sollen nur Studierende berücksichtigt werden, welche mindestens zwei Veranstaltungen erfolgreich abgeschlossen haben.
