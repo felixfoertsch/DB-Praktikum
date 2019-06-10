@@ -1,4 +1,4 @@
-package model;
+package importmodel;
 
 public class Zwischenklausur extends Klausur {
     Integer klausurId;

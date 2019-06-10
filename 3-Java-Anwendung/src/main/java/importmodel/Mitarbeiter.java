@@ -1,4 +1,4 @@
-package model;
+package importmodel;
 
 public class Mitarbeiter {
     private Integer id;

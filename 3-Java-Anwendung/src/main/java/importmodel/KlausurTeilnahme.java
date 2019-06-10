@@ -1,4 +1,4 @@
-package model;
+package importmodel;
 
 public class KlausurTeilnahme {
     private Klausur klausur;

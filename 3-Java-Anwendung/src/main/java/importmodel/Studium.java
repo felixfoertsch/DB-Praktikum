@@ -1,6 +1,4 @@
-package model;
-
-import java.time.Year;
+package importmodel;
 
 public class Studium {
     Integer studiengangId;

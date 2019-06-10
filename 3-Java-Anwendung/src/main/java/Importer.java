@@ -1,7 +1,6 @@
-import model.Universitaet;
+import importmodel.Universitaet;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.Map;
 
 public interface Importer {

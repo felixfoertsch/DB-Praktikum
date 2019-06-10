@@ -1,4 +1,4 @@
-package model;
+package importmodel;
 
 public class SeminarTeilnahme {
     private Seminar seminar;

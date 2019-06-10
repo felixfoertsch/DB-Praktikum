@@ -1,8 +1,7 @@
-package model;
+package importmodel;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.Collection;
 

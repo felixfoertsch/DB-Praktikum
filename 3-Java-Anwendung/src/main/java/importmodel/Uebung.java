@@ -1,4 +1,4 @@
-package model;
+package importmodel;
 
 public class Uebung extends Veranstaltung {
     Integer veranstaltungId;

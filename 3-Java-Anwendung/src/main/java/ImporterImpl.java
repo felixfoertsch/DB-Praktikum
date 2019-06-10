@@ -1,7 +1,6 @@
-import com.sun.javafx.binding.StringFormatter;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import model.*;
+import importmodel.*;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
@@ -14,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ImporterImpl implements Importer {
 
@@ -1039,11 +1037,11 @@ public class ImporterImpl implements Importer {
         String ortViolation = "";
         for (Klausur k : universitaet.getKlausuren().values()) {
             if (k.getAufgaben().size() < 6 || k.getAufgaben().size() > 9) {
-                aufgabenViolation = aufgabenViolation.concat(String.format("%-23s%-34s%s%n", "Violation of model: " + k.getAufgaben().size() + " ", "Aufgabe in Klausur " + k.getKlausurNr() + ".", "Should be 6-9."));
+                aufgabenViolation = aufgabenViolation.concat(String.format("%-23s%-34s%s%n", "Violation of importmodel: " + k.getAufgaben().size() + " ", "Aufgabe in Klausur " + k.getKlausurNr() + ".", "Should be 6-9."));
             }
 
             if (k.getOrte().size() < 1 || k.getOrte().size() > 3) {
-                ortViolation = ortViolation.concat(String.format("%-23s%-33s%s%n", "Violation of model: " + k.getOrte().size() + " ", "Orte in Klausur " + k.getKlausurNr() + ".", "Should be 1-3."));
+                ortViolation = ortViolation.concat(String.format("%-23s%-33s%s%n", "Violation of importmodel: " + k.getOrte().size() + " ", "Orte in Klausur " + k.getKlausurNr() + ".", "Should be 1-3."));
             }
         }
         System.out.printf("%s%s", aufgabenViolation, ortViolation);
@@ -1057,7 +1055,7 @@ public class ImporterImpl implements Importer {
                 continue;
             }
             if (g.getUebungen().size() < 4 || g.getUebungen().size() > 5) {
-                System.out.printf("%-22s%-33s%s%n", "Violation of model: " + g.getUebungen().size() + " ", "Uebungen in Grundvorlesung " + g.getName() + " (" + g.getKennung() + ").", "Should be 4-5.");
+                System.out.printf("%-22s%-33s%s%n", "Violation of importmodel: " + g.getUebungen().size() + " ", "Uebungen in Grundvorlesung " + g.getName() + " (" + g.getKennung() + ").", "Should be 4-5.");
             }
         }
     }

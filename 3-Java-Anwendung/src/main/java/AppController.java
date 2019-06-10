@@ -1,11 +1,9 @@
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import model.Universitaet;
+import importmodel.Universitaet;
 
-import javax.sql.DataSource;
 import java.io.File;
-import java.util.Collection;
 import java.util.Map;
 
 public class AppController {
