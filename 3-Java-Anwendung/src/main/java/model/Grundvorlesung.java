@@ -16,6 +16,5 @@ public class Grundvorlesung extends Veranstaltung {
     private Map<String, Klausur> klausurMap;
 
     public Grundvorlesung() {
-        this.uebungen = new HashMap<>();
     }
 }

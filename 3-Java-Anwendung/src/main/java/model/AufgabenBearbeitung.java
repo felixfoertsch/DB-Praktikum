@@ -23,16 +23,8 @@ public class AufgabenBearbeitung {
 
     private Double punkte;
 
-    public AufgabenBearbeitung(Aufgabe aufgabe, Student student, String punkte) {
-        this.aufgabe = aufgabe;
-        this.student = student;
-        this.punkte = Double.valueOf(punkte);
-    }
 
     public AufgabenBearbeitung() {
     }
 
-    public String generateKey() {
-        return student.getMatrikelNr() + "_" + aufgabe.generateKey();
-    }
 }

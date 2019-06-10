@@ -16,16 +16,7 @@ public class Studiengang {
 
     private Studium studium;
 
-    public Studiengang(String name, String abschluss, String regelstudienzeit) {
-        this.name = name;
-        this.abschluss = abschluss;
-        this.regelstudienzeit = Integer.valueOf(regelstudienzeit);
-    }
-
     public Studiengang() {
     }
 
-    public String getName() {
-        return name;
-    }
 }

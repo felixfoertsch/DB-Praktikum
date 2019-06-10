@@ -14,8 +14,4 @@ public class Zwischenklausur extends Klausur {
     public Zwischenklausur() {
     }
 
-    @Override
-    public String generateKey() {
-        return this.getKlausurNr();
-    }
 }

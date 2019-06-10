@@ -18,7 +18,4 @@ public class Seminar extends Veranstaltung {
         this.semPrakTeilnahmeMap = new HashMap<>();
     }
 
-    public void addSemTeilnahme(SemPrakTeilnahme pt) {
-        this.semPrakTeilnahmeMap.put(pt.generateSemKey(), pt);
-    }
 }

@@ -19,10 +19,6 @@ public class Raum {
 
     private Map<String, VeranstaltungAbhaltung> abhaltungMap;
 
-    public Raum(String bezeichnung) {
-        this.bezeichnung = bezeichnung;
-    }
-
     public Raum() {
     }
 }

@@ -21,12 +21,6 @@ public class VeranstaltungAbhaltung {
     private Veranstaltung veranstaltung;
     private Raum raum;
 
-    public VeranstaltungAbhaltung(LocalTime zeit, DayOfWeek tag, Raum raum) {
-        this.zeit = zeit;
-        this.tag = tag;
-        this.raum = raum;
-    }
-
     public VeranstaltungAbhaltung() {
     }
 }
