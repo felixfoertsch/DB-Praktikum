@@ -13,7 +13,6 @@ public class Aufgabe {
     private Integer klausurId;
     private Integer rang;
 
-    //Remove if not needed
     private String klausurNr;
 
     private Integer aufgabenNr;

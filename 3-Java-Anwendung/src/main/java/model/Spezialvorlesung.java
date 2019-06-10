@@ -10,7 +10,6 @@ import java.util.Map;
 @PrimaryKeyJoinColumn(name = "veranstaltungId")
 public class Spezialvorlesung extends Veranstaltung {
 
-//    private Integer veranstaltungId;
     private Map<String, Klausur> klausurMap;
 
     public Spezialvorlesung() {

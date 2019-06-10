@@ -51,7 +51,6 @@ public class HibernateConfig {
                 c.addAnnotatedClass(Studiengang.class);
                 c.addAnnotatedClass(Studium.class);
                 c.addAnnotatedClass(Uebung.class);
-                c.addAnnotatedClass(Universitaet.class);
                 c.addAnnotatedClass(Veranstaltung.class);
                 c.addAnnotatedClass(Wiederholungsklausur.class);
                 c.addAnnotatedClass(Zwischenklausur.class);

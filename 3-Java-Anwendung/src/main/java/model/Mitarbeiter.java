@@ -18,9 +18,6 @@ public class Mitarbeiter {
 
     private Raum raum;
 
-    //?
-    private String titel;
-
     private Map<String, Klausur> klausurMap;
 
     public Mitarbeiter() {

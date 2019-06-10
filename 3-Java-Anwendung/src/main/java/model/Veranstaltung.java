@@ -23,10 +23,9 @@ public class Veranstaltung {
     private String semester;
     private Integer maxTeilnehmer;
 
-    //Change to abhaltungMap, or change to Collection
+
     private Map<String, VeranstaltungAbhaltung> abhaltungMap;
-    //Table betreut
-    private Collection<Mitarbeiter> dozenten;
+    private Collection<Mitarbeiter> betreutVonMitarbeiter;
 
     //@Transient makes Hibernate not map the field
     @Transient
