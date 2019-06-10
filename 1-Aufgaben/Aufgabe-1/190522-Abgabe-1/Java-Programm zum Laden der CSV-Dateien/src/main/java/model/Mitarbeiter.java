@@ -1,12 +1,27 @@
 package model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.Map;
+
+@Entity
+@Table(name = "mitarbeiter")
 public class Mitarbeiter {
+
+    @Id
     private Integer id;
+
     private String vorname;
     private String nachname;
     private String email;
-    private String titel;
+
     private Raum raum;
+
+    //?
+    private String titel;
+
+    private Map<String, Klausur> klausurMap;
 
     public Mitarbeiter(String vorname, String nachname, String email, String titel, Raum raum) {
         this.vorname = vorname;
@@ -14,6 +29,9 @@ public class Mitarbeiter {
         this.email = email;
         this.titel = titel;
         this.raum = raum;
+    }
+
+    public Mitarbeiter() {
     }
 
     public void setVorname(String vorname) {

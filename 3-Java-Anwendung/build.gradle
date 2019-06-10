@@ -17,6 +17,7 @@ repositories {
 dependencies {
     compile 'org.apache.commons:commons-csv:1.6' // https://mvnrepository.com/artifact/org.apache.commons/commons-csv
     compile 'org.postgresql:postgresql:42.2.5'
+    compile 'org.hibernate:hibernate-core:5.4.2.Final'
     testCompile 'junit:junit:4.12'
 }
 
