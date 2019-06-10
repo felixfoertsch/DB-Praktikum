@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "oberseminar")
-@PrimaryKeyJoinColumn(name = "seminarId")
+@PrimaryKeyJoinColumn(name = "veranstaltungId")
 public class Oberseminar extends Seminar {
 
     public Oberseminar() {

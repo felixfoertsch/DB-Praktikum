@@ -1,7 +1,6 @@
 package model;
 
 import javax.persistence.*;
-import java.util.HashMap;
 import java.util.Map;
 
 @Entity

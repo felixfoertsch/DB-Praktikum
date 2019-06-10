@@ -33,6 +33,7 @@ public class HibernateConfig {
 
                 c.setProperties(p);
 
+                c.addAnnotatedClass(Veranstaltung.class);
                 c.addAnnotatedClass(Abschlussklausur.class);
                 c.addAnnotatedClass(Aufgabe.class);
                 c.addAnnotatedClass(AufgabenBearbeitung.class);
@@ -51,7 +52,6 @@ public class HibernateConfig {
                 c.addAnnotatedClass(Studiengang.class);
                 c.addAnnotatedClass(Studium.class);
                 c.addAnnotatedClass(Uebung.class);
-                c.addAnnotatedClass(Veranstaltung.class);
                 c.addAnnotatedClass(Wiederholungsklausur.class);
                 c.addAnnotatedClass(Zwischenklausur.class);
 
