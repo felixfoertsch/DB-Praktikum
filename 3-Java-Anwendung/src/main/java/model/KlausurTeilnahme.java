@@ -2,7 +2,9 @@ package model;
 
 import compositeKeys.KlausurTeilnahmeKey;
 
-import javax.persistence.*;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "studentTeilnahmeKlausur")

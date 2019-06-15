@@ -2,7 +2,9 @@ package model;
 
 import compositeKeys.AufgabenBearbeitungKey;
 
-import javax.persistence.*;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "bearbeitung")

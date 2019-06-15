@@ -1,10 +1,7 @@
 package compositeKeys;
 
-import importmodel.Student;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.MapKey;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,7 +9,7 @@ import java.util.Objects;
 public class SemPrakTeilnahmeKey implements Serializable {
 
     @Column(name = "studentId")
-    private Student studentId;
+    private Integer studentId;
 
     @Column(name = "veranstaltungId")
     private Integer veranstaltungId;

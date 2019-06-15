@@ -4,7 +4,6 @@ import compositeKeys.SemPrakTeilnahmeKey;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
