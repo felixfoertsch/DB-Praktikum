@@ -4,11 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import manager.StudentManager;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
-import javax.persistence.EntityManager;
 
 public class App extends Application {
 
@@ -25,6 +21,7 @@ public class App extends Application {
         // After the loader is set up, the window can now be loaded in and shown.
         Pane pane = loader.load();
         Scene scene = new Scene(pane);
+
         stage.setScene(scene);
         stage.show();
     }

@@ -1,7 +1,10 @@
 package compositeKeys;
 
+import importmodel.Student;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.MapKey;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -9,28 +12,12 @@ import java.util.Objects;
 public class SemPrakTeilnahmeKey implements Serializable {
 
     @Column(name = "studentId")
-    Integer studentId;
+    private Student studentId;
 
-    @Column(name = "klausurId")
-    Integer klausurId;
+    @Column(name = "veranstaltungId")
+    private Integer veranstaltungId;
 
     public SemPrakTeilnahmeKey() {
-    }
-
-    public Integer getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
-    }
-
-    public Integer getKlausurId() {
-        return klausurId;
-    }
-
-    public void setKlausurId(Integer klausurId) {
-        this.klausurId = klausurId;
     }
 
     @Override
@@ -39,11 +26,11 @@ public class SemPrakTeilnahmeKey implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         SemPrakTeilnahmeKey that = (SemPrakTeilnahmeKey) o;
         return studentId.equals(that.studentId) &&
-                klausurId.equals(that.klausurId);
+                veranstaltungId.equals(that.veranstaltungId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentId, klausurId);
+        return Objects.hash(studentId, veranstaltungId);
     }
 }

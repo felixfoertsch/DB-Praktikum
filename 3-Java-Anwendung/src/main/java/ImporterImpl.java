@@ -1,6 +1,6 @@
+import importmodel.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import importmodel.*;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
@@ -8,10 +8,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 import java.sql.*;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import java.util.*;
 
 public class ImporterImpl implements Importer {

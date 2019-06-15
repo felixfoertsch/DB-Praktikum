@@ -18,9 +18,6 @@ public class VeranstaltungAbhaltung {
     private LocalTime zeit;
     private DayOfWeek tag;
 
-    private Veranstaltung veranstaltung;
-    private Raum raum;
-
     public VeranstaltungAbhaltung() {
     }
 }

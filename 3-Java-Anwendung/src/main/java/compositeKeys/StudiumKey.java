@@ -9,28 +9,12 @@ import java.util.Objects;
 public class StudiumKey implements Serializable {
 
     @Column(name = "studentId")
-    Integer studentId;
+    private Integer studentId;
 
     @Column(name = "studiengangId")
-    Integer studiengangId;
+    private Integer studiengangId;
 
     public StudiumKey() {
-    }
-
-    public Integer getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
-    }
-
-    public Integer getStudiengangId() {
-        return studiengangId;
-    }
-
-    public void setStudiengangId(Integer studiengangId) {
-        this.studiengangId = studiengangId;
     }
 
     @Override

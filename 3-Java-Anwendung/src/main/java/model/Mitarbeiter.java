@@ -1,8 +1,6 @@
 package model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Map;
 
 @Entity
@@ -11,13 +9,13 @@ public class Mitarbeiter {
 
     @Id
     private Integer id;
-
     private String vorname;
     private String nachname;
     private String email;
 
+    @OneToOne
     private Raum raum;
-
+    @Transient
     private Map<String, Klausur> klausurMap;
 
     public Mitarbeiter() {

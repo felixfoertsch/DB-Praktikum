@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 
-
-<?import javafx.scene.control.Label?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AppController">
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AppController">
    <children>
-      <Label layoutX="10.0" layoutY="10.0">Version: Aufgabe 1</Label>
-      <Button fx:id="importButton" layoutX="10.0" layoutY="30.0" mnemonicParsing="false" text="Import" onAction="#importButtonClicked"/>
+      <MenuBar useSystemMenuBar="true">
+         <Menu text="File">
+            <Menu text="New">
+               <MenuItem text="Veranstaltung" onAction="#newVeranstaltungButtonClicked"/>
+            </Menu>
+            <SeparatorMenuItem />
+            <MenuItem text="Import" onAction="#importButtonClicked"/>
+         </Menu>
+         <Menu text="Edit" />
+         <Menu text="View" />
+         <Menu text="Window" />
+         <Menu text="Help" />
+      </MenuBar>
+      <Label layoutX="25.0" layoutY="169.0">Version: Aufgabe 3</Label>
+      <Button fx:id="importButton" layoutX="14.0" layoutY="129.0" mnemonicParsing="false" onAction="#importButtonClicked" text="Import" />
    </children>
 </Pane>

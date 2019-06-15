@@ -1,15 +1,15 @@
 package model;
 
 import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Map;
 
 @Entity
 @Table(name = "spezialvorlesung")
-@PrimaryKeyJoinColumn(name = "veranstaltungId")
 public class Spezialvorlesung extends Veranstaltung {
 
+    @Transient
     private Map<String, Klausur> klausurMap;
 
     public Spezialvorlesung() {

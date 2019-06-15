@@ -6,22 +6,15 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "studentTeilnahmeVeranstaltung")
-public class SemPrakTeilnahme {
+public class SeminarTeilnahme {
 
     @EmbeddedId
     private SemPrakTeilnahmeKey semPrakTeilnahmeKey;
 
-    private Seminar seminar;
-    private Praktikum praktikum;
-
-    @ManyToOne
-    @MapsId("id")
-    @JoinColumn(name = "id")
-    private Student student;
     private Double note;
 
 
-    public SemPrakTeilnahme() {
+    public SeminarTeilnahme() {
     }
 
 }

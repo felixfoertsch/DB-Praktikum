@@ -13,34 +13,21 @@ public class Klausur {
 
     @Id
     private Integer id;
-
-    // Properties
     private LocalDate datum;
     private LocalTime uhrzeitVon;
     private Double gesamtpunktzahl;
 
-    // Foreign key, Vererbung
-    private String typ;
-
-    // Nicht im Schema
-    @Transient
-    private String name;
-    @Transient
-    private Double punktzahl100;
-    @Transient
-    private String vaKennung;
-    @Transient
-    private String klausurNr;
-
+    @ManyToOne
     private Spezialvorlesung spezialvorlesung;
+    @ManyToOne
     private Grundvorlesung grundvorlesung;
+    @OneToMany
     private Collection<Mitarbeiter> aufsichten;
+    @ManyToMany
     private Collection<Raum> orte;
-
-    @MapKey(name = "id")
+    @OneToMany
     private Map<Integer, Aufgabe> aufgaben;
-
-    @OneToMany(mappedBy = "klausur")
+    @OneToMany
     private Map<String, KlausurTeilnahme> klausurTeilnahmen;
 
     public Klausur() {

@@ -9,28 +9,12 @@ import java.util.Objects;
 public class KlausurTeilnahmeKey implements Serializable {
 
     @Column(name = "studentId")
-    Integer studentId;
+    private Integer studentId;
 
     @Column(name = "klausurId")
-    Integer klausurId;
+    private Integer klausurId;
 
     public KlausurTeilnahmeKey() {
-    }
-
-    public Integer getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
-    }
-
-    public Integer getKlausurId() {
-        return klausurId;
-    }
-
-    public void setKlausurId(Integer klausurId) {
-        this.klausurId = klausurId;
     }
 
     @Override

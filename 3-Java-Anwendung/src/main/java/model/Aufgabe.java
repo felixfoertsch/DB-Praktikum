@@ -8,20 +8,13 @@ import java.util.Map;
 public class Aufgabe {
 
     @Id
+    @GeneratedValue
     private Integer id;
-    private Integer klausurId;
     private Integer rang;
-
-    private String klausurNr;
-
-    private Integer aufgabenNr;
     private Double maxPunkte;
-
-    @ManyToOne
-    @JoinColumn(name = "klausurId")
+    @OneToOne
     private Klausur klausur;
-
-    @OneToMany(mappedBy = "aufgabenBearbeitung")
+    @Transient
     private Map<String, AufgabenBearbeitung> aufgabenBearbeitungen;
 
     public Aufgabe() {

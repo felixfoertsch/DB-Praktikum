@@ -1,5 +1,7 @@
 package model;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 import java.util.Map;
 
@@ -10,21 +12,20 @@ public class Student {
     @Id
     @GeneratedValue
     private Integer id;
+
+    @NaturalId
     private String matrikelNr;
     private String vorname;
     private String nachname;
     private String uniMail;
 
-    @OneToMany(mappedBy = "student")
-    @MapKey(name = "klausurTeilnahmeKey")
+    @Transient
     private Map<String, KlausurTeilnahme> klausurTeilnahmen;
-
-    private Map<String, SemPrakTeilnahme> semPrakTeilnahme;
-
+    @Transient
+    private Map<String, SeminarTeilnahme> semPrakTeilnahme;
+    @Transient
     private Map<String, Studium> studiumMap;
-
-    @OneToMany(mappedBy = "aufgabenBearbeitung")
-    @MapKey(name = "aufgabenBearbeitungKey")
+    @Transient
     private Map<String, AufgabenBearbeitung> aufgabenBearbeitungen;
 
     public Student() {

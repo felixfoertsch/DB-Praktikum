@@ -5,12 +5,12 @@ import java.time.Year;
 import java.util.Collection;
 import java.util.Map;
 
-@Entity
+@MappedSuperclass
 @Table(name = "veranstaltung")
-@Inheritance(strategy = InheritanceType.JOINED)
-public class Veranstaltung {
+abstract public class Veranstaltung {
 
     @Id
+    @GeneratedValue
     private Integer id;
 
     private String name;
@@ -18,7 +18,9 @@ public class Veranstaltung {
     private String semester;
     private Integer maxTeilnehmer;
 
+    @Transient
     private Map<String, VeranstaltungAbhaltung> abhaltungMap;
+    @Transient
     private Collection<Mitarbeiter> betreutVonMitarbeiter;
 
     public Veranstaltung() {

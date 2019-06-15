@@ -9,28 +9,12 @@ import java.util.Objects;
 public class VeranstaltungAbhaltungKey implements Serializable {
 
     @Column(name = "raumId")
-    Integer raumId;
+    private Integer raumId;
 
     @Column(name = "veranstaltungId")
-    Integer veranstaltungId;
+    private Integer veranstaltungId;
 
     public VeranstaltungAbhaltungKey() {
-    }
-
-    public Integer getRaumId() {
-        return raumId;
-    }
-
-    public void setRaumId(Integer raumId) {
-        this.raumId = raumId;
-    }
-
-    public Integer getVeranstaltungId() {
-        return veranstaltungId;
-    }
-
-    public void setVeranstaltungId(Integer veranstaltungId) {
-        this.veranstaltungId = veranstaltungId;
     }
 
     @Override

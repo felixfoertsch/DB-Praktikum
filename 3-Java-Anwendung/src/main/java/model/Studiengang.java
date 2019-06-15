@@ -1,8 +1,7 @@
 package model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Map;
 
 @Entity
 @Table(name = "studiengang")
@@ -14,7 +13,8 @@ public class Studiengang {
     private String abschluss;
     private Integer regelstudienzeit;
 
-    private Studium studium;
+    @OneToMany
+    private Map<String, Studium> studium;
 
     public Studiengang() {
     }
