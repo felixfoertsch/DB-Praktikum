@@ -1,6 +1,8 @@
 package model.relationen;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -9,14 +11,10 @@ import java.util.Objects;
 public class AufgabenBearbeitung implements Serializable {
 
     @Id
-    @Column(name = "studentId")
     private Integer studentId;
 
     @Id
-    @Column(name = "aufgabeId")
     private Integer aufgabeId;
-
-    @Column(name = "punkte")
     private Double punkte;
 
     public AufgabenBearbeitung() {

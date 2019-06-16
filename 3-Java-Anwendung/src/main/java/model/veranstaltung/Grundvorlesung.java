@@ -12,9 +12,9 @@ import java.util.Map;
 public class Grundvorlesung extends Veranstaltung {
 
     @OneToMany
-    private Map<String, Uebung> uebungen;
+    private Map<Integer, Uebung> uebungen;
     @OneToMany
-    private Map<String, Klausur> klausurMap;
+    private Map<Integer, Klausur> klausurMap;
 
     public Grundvorlesung() {
     }

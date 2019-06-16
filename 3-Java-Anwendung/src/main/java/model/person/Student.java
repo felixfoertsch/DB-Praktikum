@@ -25,7 +25,7 @@ public class Student {
 
     @Transient
     private Map<String, KlausurTeilnahme> klausurTeilnahmen;
-    @Transient
+    @OneToMany
     private Map<String, SemPrakTeilnahme> semPrakTeilnahme;
     @Transient
     private Map<String, Studium> studiumMap;

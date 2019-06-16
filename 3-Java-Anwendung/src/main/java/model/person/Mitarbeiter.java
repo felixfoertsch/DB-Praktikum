@@ -18,8 +18,8 @@ public class Mitarbeiter {
 
     @OneToOne
     private Raum raum;
-    @Transient
-    private Map<String, Klausur> klausurMap;
+    @OneToMany
+    private Map<Integer, Klausur> klausurMap;
 
     public Mitarbeiter() {
     }

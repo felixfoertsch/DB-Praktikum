@@ -1,8 +1,5 @@
 package model.veranstaltung;
 
-import model.veranstaltung.Grundvorlesung;
-import model.veranstaltung.Veranstaltung;
-
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;

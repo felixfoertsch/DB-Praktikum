@@ -16,13 +16,12 @@ abstract public class Veranstaltung {
     @Id
     @GeneratedValue
     private Integer id;
-
     private String name;
     private Year jahr;
     private String semester;
     private Integer maxTeilnehmer;
 
-    @OneToMany(mappedBy = "veranstaltungId")
+    @OneToMany
     private Map<Integer, VeranstaltungAbhaltung> abhaltungMap;
     @OneToMany
     private Collection<Mitarbeiter> betreutVonMitarbeiter;

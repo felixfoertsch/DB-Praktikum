@@ -1,7 +1,8 @@
 package model.relationen;
 
-import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.Year;
 import java.util.Objects;
@@ -11,20 +12,11 @@ import java.util.Objects;
 public class Studium implements Serializable {
 
     @Id
-    @Column(name = "studentId")
     private Integer studentId;
-
     @Id
-    @Column(name = "studiengangId")
     private Integer studiengangId;
-
-    @Column(name = "imma")
     private Year imma;
-
-    @Column(name = "exma")
     private Year exma;
-
-    @Column(name = "semester")
     private Integer semester;
 
     public Studium() {

@@ -12,7 +12,7 @@ import java.util.Map;
 public class Praktikum extends Veranstaltung {
 
     @OneToMany
-    private Map<String, SemPrakTeilnahme> semPrakTeilnahmeMap;
+    private Map<Integer, SemPrakTeilnahme> semPrakTeilnahmeMap;
 
     public Praktikum() {
     }

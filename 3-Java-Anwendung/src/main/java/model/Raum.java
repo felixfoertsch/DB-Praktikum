@@ -19,11 +19,11 @@ public class Raum {
     private String bezeichnung;
 
     @OneToMany
-    private Map<String, Mitarbeiter> mitarbeiterMap;
+    private Map<Integer, Mitarbeiter> mitarbeiterMap;
     @ManyToMany
-    private Map<String, Klausur> klausurMap;
-    @OneToMany
-    private Map<String, VeranstaltungAbhaltung> abhaltungMap;
+    private Map<Integer, Klausur> klausurMap;
+    @OneToMany(mappedBy = "raumId")
+    private Map<Integer, VeranstaltungAbhaltung> abhaltungMap;
 
     public Raum() {
     }

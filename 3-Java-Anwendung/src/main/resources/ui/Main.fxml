@@ -18,6 +18,10 @@
             <SeparatorMenuItem />
             <MenuItem text="Import" onAction="#importButtonClicked"/>
          </Menu>
+         <Menu text="Hibernate">
+            <MenuItem text="Setup Hibernate" onAction="#setUpHibernate"/>
+            <MenuItem text="Tear Down Hibernate" onAction="#tearDownHibernate"/>
+         </Menu>
          <Menu text="Edit" />
          <Menu text="View" />
          <Menu text="Window" />

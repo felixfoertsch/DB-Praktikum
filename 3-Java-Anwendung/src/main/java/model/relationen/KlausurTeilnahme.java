@@ -1,6 +1,8 @@
 package model.relationen;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -9,23 +11,12 @@ import java.util.Objects;
 public class KlausurTeilnahme implements Serializable {
 
     @Id
-    @Column(name = "studentId")
     private Integer studentId;
-
     @Id
-    @Column(name = "klausurId")
     private Integer klausurId;
-
-    @Column(name = "erschienen")
     private Boolean erschienen;
-
-    @Column(name = "entschuldigt")
     private Boolean entschuldigt;
-
-    @Column(name = "punkte")
     private Double punkte;
-
-    @Column(name = "note")
     private Double note;
 
     public KlausurTeilnahme() {

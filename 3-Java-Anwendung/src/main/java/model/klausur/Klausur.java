@@ -1,6 +1,7 @@
 package model.klausur;
 
-import model.*;
+import model.Aufgabe;
+import model.Raum;
 import model.person.Mitarbeiter;
 import model.relationen.KlausurTeilnahme;
 import model.veranstaltung.Grundvorlesung;

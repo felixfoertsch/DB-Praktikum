@@ -1,6 +1,8 @@
 package model.relationen;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -11,17 +13,10 @@ import java.util.Objects;
 public class VeranstaltungAbhaltung implements Serializable {
 
     @Id
-    @Column(name = "raumId")
     private Integer raumId;
-
     @Id
-    @Column(name = "veranstaltungId")
     private Integer veranstaltungId;
-
-    @Column(name = "zeit")
     private LocalTime zeit;
-
-    @Column(name = "wochentag")
     private DayOfWeek tag;
 
     public VeranstaltungAbhaltung() {

@@ -1,6 +1,8 @@
 package model.relationen;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -9,14 +11,9 @@ import java.util.Objects;
 public class SemPrakTeilnahme implements Serializable {
 
     @Id
-    @Column(name = "studentId")
     private Integer studentId;
-
     @Id
-    @Column(name = "veranstaltungId")
     private Integer veranstaltungId;
-
-    @Column(name = "note")
     private Double note;
 
     public SemPrakTeilnahme() {

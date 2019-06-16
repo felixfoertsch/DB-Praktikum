@@ -2,7 +2,9 @@ package model.veranstaltung;
 
 import model.relationen.SemPrakTeilnahme;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.Map;
 
 @Entity
@@ -10,7 +12,7 @@ import java.util.Map;
 abstract public class Seminar extends Veranstaltung {
 
     @OneToMany
-    private Map<String, SemPrakTeilnahme> semPrakTeilnahmeMap;
+    private Map<Integer, SemPrakTeilnahme> semPrakTeilnahmeMap;
 
     public Seminar() {
     }
