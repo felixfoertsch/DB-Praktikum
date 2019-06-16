@@ -1,6 +1,14 @@
 package config;
 
 import model.*;
+import model.klausur.Abschlussklausur;
+import model.klausur.Klausur;
+import model.klausur.Wiederholungsklausur;
+import model.klausur.Zwischenklausur;
+import model.person.Mitarbeiter;
+import model.person.Student;
+import model.relationen.*;
+import model.veranstaltung.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;

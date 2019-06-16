@@ -1,5 +1,8 @@
 package model;
 
+import model.klausur.Klausur;
+import model.relationen.AufgabenBearbeitung;
+
 import javax.persistence.*;
 import java.util.Map;
 

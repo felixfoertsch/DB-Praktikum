@@ -1,5 +1,8 @@
 package model;
 
+import model.klausur.Klausur;
+import model.person.Mitarbeiter;
+import model.relationen.VeranstaltungAbhaltung;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;

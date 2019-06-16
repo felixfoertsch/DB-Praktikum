@@ -11,7 +11,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         //Create SessionFactory
-        SessionFactory sessionFactory = HibernateConfig.createSessionFactory();
+        HibernateConfig.createSessionFactory();
 
         // Create a FMXLLoader to load the main window and assign a custom
         // controller class to it, that will handle the events.

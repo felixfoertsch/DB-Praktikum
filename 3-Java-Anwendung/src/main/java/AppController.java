@@ -1,4 +1,7 @@
-import importmodel.Universitaet;
+import controller.VeranstaltungController;
+import dataimport.Importer;
+import dataimport.ImporterImpl;
+import dataimport.model.Universitaet;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

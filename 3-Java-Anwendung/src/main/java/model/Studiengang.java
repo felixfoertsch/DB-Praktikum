@@ -1,5 +1,7 @@
 package model;
 
+import model.relationen.Studium;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
