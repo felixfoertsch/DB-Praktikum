@@ -27,4 +27,50 @@ public class Raum {
 
     public Raum() {
     }
+
+    /***********************************************************************************************
+     *
+     * Getters and Setters
+     *
+     */
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getBezeichnung() {
+        return bezeichnung;
+    }
+
+    public void setBezeichnung(String bezeichnung) {
+        this.bezeichnung = bezeichnung;
+    }
+
+    public Collection<Mitarbeiter> getMitarbeiter() {
+        return mitarbeiter;
+    }
+
+    public void setMitarbeiter(Collection<Mitarbeiter> mitarbeiter) {
+        this.mitarbeiter = mitarbeiter;
+    }
+
+    public Collection<Klausur> getKlausuren() {
+        return klausuren;
+    }
+
+    public void setKlausuren(Collection<Klausur> klausuren) {
+        this.klausuren = klausuren;
+    }
+
+    public Collection<VeranstaltungAbhaltung> getAbhaltungen() {
+        return abhaltungen;
+    }
+
+    public void setAbhaltungen(Collection<VeranstaltungAbhaltung> abhaltungen) {
+        this.abhaltungen = abhaltungen;
+    }
 }
