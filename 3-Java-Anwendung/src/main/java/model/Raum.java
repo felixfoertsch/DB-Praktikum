@@ -6,7 +6,7 @@ import model.relationen.VeranstaltungAbhaltung;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
-import java.util.Map;
+import java.util.Collection;
 
 @Entity
 @Table(name = "raum")
@@ -19,11 +19,11 @@ public class Raum {
     private String bezeichnung;
 
     @OneToMany
-    private Map<Integer, Mitarbeiter> mitarbeiterMap;
+    private Collection<Mitarbeiter> mitarbeiter;
     @ManyToMany
-    private Map<Integer, Klausur> klausurMap;
-    @OneToMany(mappedBy = "raumId")
-    private Map<Integer, VeranstaltungAbhaltung> abhaltungMap;
+    private Collection<Klausur> klausuren;
+    @OneToMany
+    private Collection<VeranstaltungAbhaltung> abhaltungen;
 
     public Raum() {
     }

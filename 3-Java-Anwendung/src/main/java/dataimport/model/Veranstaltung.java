@@ -41,10 +41,6 @@ public class Veranstaltung {
         this.kennung = kennung;
     }
 
-    public void setRaum(Raum raum) {
-        this.raum = raum;
-    }
-
     public void addDozent(Mitarbeiter mitarbeiter) {
         this.dozenten.add(mitarbeiter);
     }
@@ -67,17 +63,33 @@ public class Veranstaltung {
         }
         return LocalTime.parse(zeit);
     }
+
     private DayOfWeek convertGerWeekDay(String tag) {
         DayOfWeek day;
         switch (tag) {
-            case "Montag"    : day = DayOfWeek.MONDAY; break;
-            case "Dienstag"  : day = DayOfWeek.TUESDAY; break;
-            case "Mittwoch"  : day = DayOfWeek.WEDNESDAY; break;
-            case "Donnerstag": day = DayOfWeek.THURSDAY; break;
-            case "Freitag"   : day = DayOfWeek.FRIDAY; break;
-            case "Samstag"   : day = DayOfWeek.SATURDAY; break;
-            case "Sonntag"   : day = DayOfWeek.SUNDAY; break;
-            default: day = null;
+            case "Montag":
+                day = DayOfWeek.MONDAY;
+                break;
+            case "Dienstag":
+                day = DayOfWeek.TUESDAY;
+                break;
+            case "Mittwoch":
+                day = DayOfWeek.WEDNESDAY;
+                break;
+            case "Donnerstag":
+                day = DayOfWeek.THURSDAY;
+                break;
+            case "Freitag":
+                day = DayOfWeek.FRIDAY;
+                break;
+            case "Samstag":
+                day = DayOfWeek.SATURDAY;
+                break;
+            case "Sonntag":
+                day = DayOfWeek.SUNDAY;
+                break;
+            default:
+                day = null;
         }
         return day;
     }
@@ -94,12 +106,12 @@ public class Veranstaltung {
         return maxTeilnehmer;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getTyp() {
@@ -108,6 +120,10 @@ public class Veranstaltung {
 
     public Raum getRaum() {
         return raum;
+    }
+
+    public void setRaum(Raum raum) {
+        this.raum = raum;
     }
 
     public DayOfWeek getTag() {

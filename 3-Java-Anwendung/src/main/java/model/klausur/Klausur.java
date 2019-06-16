@@ -11,7 +11,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
-import java.util.Map;
 
 @Entity
 @Table(name = "klausur")
@@ -19,6 +18,7 @@ import java.util.Map;
 public class Klausur {
 
     @Id
+    @GeneratedValue
     private Integer id;
     private LocalDate datum;
     private LocalTime uhrzeitVon;
@@ -33,12 +33,96 @@ public class Klausur {
     @ManyToMany
     private Collection<Raum> orte;
     @OneToMany
-    private Map<Integer, Aufgabe> aufgaben;
+    private Collection<Aufgabe> aufgaben;
     @OneToMany
-    private Map<String, KlausurTeilnahme> klausurTeilnahmen;
+    private Collection<KlausurTeilnahme> klausurTeilnahmen;
 
     public Klausur() {
     }
 
+    /***********************************************************************************************
+     *
+     * Getters and Setters
+     *
+     */
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public LocalDate getDatum() {
+        return datum;
+    }
+
+    public void setDatum(LocalDate datum) {
+        this.datum = datum;
+    }
+
+    public LocalTime getUhrzeitVon() {
+        return uhrzeitVon;
+    }
+
+    public void setUhrzeitVon(LocalTime uhrzeitVon) {
+        this.uhrzeitVon = uhrzeitVon;
+    }
+
+    public Double getGesamtpunktzahl() {
+        return gesamtpunktzahl;
+    }
+
+    public void setGesamtpunktzahl(Double gesamtpunktzahl) {
+        this.gesamtpunktzahl = gesamtpunktzahl;
+    }
+
+    public Spezialvorlesung getSpezialvorlesung() {
+        return spezialvorlesung;
+    }
+
+    public void setSpezialvorlesung(Spezialvorlesung spezialvorlesung) {
+        this.spezialvorlesung = spezialvorlesung;
+    }
+
+    public Grundvorlesung getGrundvorlesung() {
+        return grundvorlesung;
+    }
+
+    public void setGrundvorlesung(Grundvorlesung grundvorlesung) {
+        this.grundvorlesung = grundvorlesung;
+    }
+
+    public Collection<Mitarbeiter> getAufsichten() {
+        return aufsichten;
+    }
+
+    public void setAufsichten(Collection<Mitarbeiter> aufsichten) {
+        this.aufsichten = aufsichten;
+    }
+
+    public Collection<Raum> getOrte() {
+        return orte;
+    }
+
+    public void setOrte(Collection<Raum> orte) {
+        this.orte = orte;
+    }
+
+    public Collection<Aufgabe> getAufgaben() {
+        return aufgaben;
+    }
+
+    public void setAufgaben(Collection<Aufgabe> aufgaben) {
+        this.aufgaben = aufgaben;
+    }
+
+    public Collection<KlausurTeilnahme> getKlausurTeilnahmen() {
+        return klausurTeilnahmen;
+    }
+
+    public void setKlausurTeilnahmen(Collection<KlausurTeilnahme> klausurTeilnahmen) {
+        this.klausurTeilnahmen = klausurTeilnahmen;
+    }
 }

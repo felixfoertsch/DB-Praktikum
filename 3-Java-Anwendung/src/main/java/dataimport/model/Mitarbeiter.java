@@ -16,36 +16,36 @@ public class Mitarbeiter {
         this.raum = raum;
     }
 
-    public void setVorname(String vorname) {
-        this.vorname = vorname;
-    }
-
-    public void setNachname(String nachname) {
-        this.nachname = nachname;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getVorname() {
         return vorname;
+    }
+
+    public void setVorname(String vorname) {
+        this.vorname = vorname;
     }
 
     public String getNachname() {
         return nachname;
     }
 
+    public void setNachname(String nachname) {
+        this.nachname = nachname;
+    }
+
     public String getEmail() {
         return email;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Raum getRaum() {

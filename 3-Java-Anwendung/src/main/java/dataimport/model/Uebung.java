@@ -15,11 +15,11 @@ public class Uebung extends Veranstaltung {
         return Character.toString(name.charAt(0)).toLowerCase();
     }
 
-    public void setZugehoerigeVA(String zugehoerigeVA) {
-        this.zugehoerigeVA = zugehoerigeVA;
-    }
-
     public String getZugehoerigeVA() {
         return zugehoerigeVA;
+    }
+
+    public void setZugehoerigeVA(String zugehoerigeVA) {
+        this.zugehoerigeVA = zugehoerigeVA;
     }
 }

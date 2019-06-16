@@ -23,7 +23,9 @@ public class Aufgabe {
         return klausurNr + "_" + aufgabenNr;
     }
 
-    public void addAufgabenBearbeitung(AufgabenBearbeitung ab) { this.aufgabenBearbeitungen.put(ab.generateKey(), ab); }
+    public void addAufgabenBearbeitung(AufgabenBearbeitung ab) {
+        this.aufgabenBearbeitungen.put(ab.generateKey(), ab);
+    }
 
     public Map<String, AufgabenBearbeitung> getAufgabenBearbeitungen() {
         return aufgabenBearbeitungen;
@@ -41,11 +43,11 @@ public class Aufgabe {
         return maxPunkte;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

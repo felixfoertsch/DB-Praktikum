@@ -2,24 +2,22 @@ package model;
 
 import model.relationen.Studium;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import java.util.Map;
+import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "studiengang")
 public class Studiengang {
 
     @Id
+    @GeneratedValue
     private Integer id;
     private String name;
     private String abschluss;
     private Integer regelstudienzeit;
 
     @OneToMany
-    private Map<String, Studium> studium;
+    private Collection<Studium> studien;
 
     public Studiengang() {
     }

@@ -12,7 +12,6 @@ public class AufgabenBearbeitung implements Serializable {
 
     @Id
     private Integer studentId;
-
     @Id
     private Integer aufgabeId;
     private Double punkte;

@@ -4,7 +4,7 @@ import model.klausur.Klausur;
 import model.relationen.AufgabenBearbeitung;
 
 import javax.persistence.*;
-import java.util.Map;
+import java.util.Collection;
 
 @Entity
 @Table(name = "aufgabe")
@@ -18,7 +18,7 @@ public class Aufgabe {
     @OneToOne
     private Klausur klausur;
     @Transient
-    private Map<String, AufgabenBearbeitung> aufgabenBearbeitungen;
+    private Collection<AufgabenBearbeitung> aufgabenBearbeitungen;
 
     public Aufgabe() {
     }

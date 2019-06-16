@@ -24,46 +24,48 @@ public class Universitaet {
         return studenten;
     }
 
-    public Map<String, Mitarbeiter> getMitarbeiter() {
-        return mitarbeiter;
-    }
-
-    public Map<String, Veranstaltung> getVeranstaltungen() {
-        return veranstaltungen;
-    }
-
-    public Map<String, Klausur> getKlausuren() {
-        return klausuren;
-    }
-
-    public Map<String, Raum> getRaeume() { return raeume; }
-
     public void setStudenten(Map<String, Student> studenten) {
         this.studenten = studenten;
+    }
+
+    public Map<String, Mitarbeiter> getMitarbeiter() {
+        return mitarbeiter;
     }
 
     public void setMitarbeiter(Map<String, Mitarbeiter> mitarbeiter) {
         this.mitarbeiter = mitarbeiter;
     }
 
+    public Map<String, Veranstaltung> getVeranstaltungen() {
+        return veranstaltungen;
+    }
+
     public void setVeranstaltungen(Map<String, Veranstaltung> veranstaltungen) {
         this.veranstaltungen = veranstaltungen;
+    }
+
+    public Map<String, Klausur> getKlausuren() {
+        return klausuren;
     }
 
     public void setKlausuren(Map<String, Klausur> klausuren) {
         this.klausuren = klausuren;
     }
 
+    public Map<String, Raum> getRaeume() {
+        return raeume;
+    }
+
     public void setRaeume(Map<String, Raum> raeume) {
         this.raeume = raeume;
     }
 
-    public void setStudiengaenge(Map<String, Studiengang> studiengaenge) {
-        this.studiengaenge = studiengaenge;
-    }
-
     public Map<String, Studiengang> getStudiengaenge() {
         return studiengaenge;
+    }
+
+    public void setStudiengaenge(Map<String, Studiengang> studiengaenge) {
+        this.studiengaenge = studiengaenge;
     }
 
 

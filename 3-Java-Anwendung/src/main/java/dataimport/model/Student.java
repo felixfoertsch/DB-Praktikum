@@ -43,10 +43,8 @@ public class Student {
         this.seminarTeilnahme.put(st.generateKey(), st);
     }
 
-    public void addAufgabenBearbeitung(AufgabenBearbeitung ab) { this.aufgabenBearbeitungen.put(ab.generateKey(), ab); }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public void addAufgabenBearbeitung(AufgabenBearbeitung ab) {
+        this.aufgabenBearbeitungen.put(ab.generateKey(), ab);
     }
 
     public String getVorname() {
@@ -71,6 +69,10 @@ public class Student {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Map<String, KlausurTeilnahme> getKlausurTeilnahmen() {

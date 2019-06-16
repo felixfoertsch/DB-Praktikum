@@ -27,7 +27,7 @@ public class Klausur {
     private Map<String, KlausurTeilnahme> klausurTeilnahmen;
 
 
-    public void setData(String name, String datum, String uhrzeitVon, String gesamtpunktzahl, String punktzahl100, String vaKennung, String klausurNr, Collection<Mitarbeiter> aufsichten, Collection<Raum> orte){
+    public void setData(String name, String datum, String uhrzeitVon, String gesamtpunktzahl, String punktzahl100, String vaKennung, String klausurNr, Collection<Mitarbeiter> aufsichten, Collection<Raum> orte) {
         this.aufgaben = new HashMap<>();
         this.klausurTeilnahmen = new HashMap<>();
         this.name = name;
@@ -41,16 +41,12 @@ public class Klausur {
         this.orte = orte;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Integer getId() {
         return id;
     }
 
-    public void setTyp(String typ) {
-        this.typ = typ.toLowerCase();
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void addAufgabe(Aufgabe aufgabe) {
@@ -75,6 +71,10 @@ public class Klausur {
 
     public String getTyp() {
         return typ;
+    }
+
+    public void setTyp(String typ) {
+        this.typ = typ.toLowerCase();
     }
 
     public String getKlausurNr() {

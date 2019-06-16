@@ -548,6 +548,7 @@ public class ImporterImpl implements Importer {
             }
         }
     }
+
     /**
      * Helper method. Takes a String that may contain multiple Mitarbeiter, splits it and gets the Mitarbeiter from the
      * provided map, if it exists. Requires that staff.csv is already imported.
