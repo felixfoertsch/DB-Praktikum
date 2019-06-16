@@ -8,48 +8,43 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "studium")
-public class Studium {
+public class Studium implements Serializable {
 
-    @EmbeddedId
-    private StudiumKey studiumKey;
+    @Id
+    @Column(name = "studentId")
+    private Integer studentId;
+
+    @Id
+    @Column(name = "studiengangId")
+    private Integer studiengangId;
+
     @Column(name = "imma")
     private Year imma;
+
     @Column(name = "exma")
     private Year exma;
+
     @Column(name = "semester")
     private Integer semester;
 
     public Studium() {
     }
 
-    @Embeddable
-    class StudiumKey implements Serializable {
-
-        @Column(name = "studentId")
-        private Integer studentId;
-
-        @Column(name = "studiengangId")
-        private Integer studiengangId;
-
-        public StudiumKey() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            StudiumKey that = (StudiumKey) o;
-            return studentId.equals(that.studentId) && studiengangId.equals(that.studiengangId);
+        if (o == null || getClass() != o.getClass()) {
+            return false;
         }
+        Studium that = (Studium) o;
+        return studentId.equals(that.studentId) && studiengangId.equals(that.studiengangId);
+    }
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(studentId, studiengangId);
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(studentId, studiengangId);
     }
 
     /***********************************************************************************************
@@ -59,16 +54,20 @@ public class Studium {
      */
 
     public Integer getStudentId() {
-        return studiumKey.studentId;
+        return studentId;
     }
 
-    public void setStudentId(Integer studentId) { this.studiumKey.studentId = studentId; }
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
+    }
 
     public Integer getStudiengangId() {
-        return studiumKey.studiengangId;
+        return studiengangId;
     }
 
-    public void setStudiengangId(Integer studiengangId) { this.studiumKey.studiengangId = studiengangId; }
+    public void setStudiengangId(Integer studiengangId) {
+        this.studiengangId = studiengangId;
+    }
 
     public Year getImma() {
         return imma;

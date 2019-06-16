@@ -6,50 +6,46 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "studentTeilnahmeKlausur")
-public class KlausurTeilnahme {
+public class KlausurTeilnahme implements Serializable {
 
-    @EmbeddedId
-    private KlausurTeilnahmeKey klausurTeilnahmeKey;
+    @Id
+    @Column(name = "studentId")
+    private Integer studentId;
+
+    @Id
+    @Column(name = "klausurId")
+    private Integer klausurId;
+
     @Column(name = "erschienen")
     private Boolean erschienen;
+
     @Column(name = "entschuldigt")
     private Boolean entschuldigt;
+
     @Column(name = "punkte")
     private Double punkte;
+
     @Column(name = "note")
     private Double note;
 
     public KlausurTeilnahme() {
     }
 
-    @Embeddable
-    class KlausurTeilnahmeKey implements Serializable {
-
-        @Column(name = "studentId")
-        private Integer studentId;
-
-        @Column(name = "klausurId")
-        private Integer klausurId;
-
-        public KlausurTeilnahmeKey() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            KlausurTeilnahmeKey that = (KlausurTeilnahmeKey) o;
-            return studentId.equals(that.studentId) && klausurId.equals(that.klausurId);
+        if (o == null || getClass() != o.getClass()) {
+            return false;
         }
+        KlausurTeilnahme that = (KlausurTeilnahme) o;
+        return studentId.equals(that.studentId) && klausurId.equals(that.klausurId);
+    }
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(studentId, klausurId);
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(studentId, klausurId);
     }
 
     /***********************************************************************************************
@@ -59,16 +55,20 @@ public class KlausurTeilnahme {
      */
 
     public Integer getStudentId() {
-        return klausurTeilnahmeKey.studentId;
+        return studentId;
     }
 
-    public void setStudentId(Integer studentId) { this.klausurTeilnahmeKey.studentId = studentId; }
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
+    }
 
     public Integer getKlausurId() {
-        return klausurTeilnahmeKey.klausurId;
+        return klausurId;
     }
 
-    public void setKlausurId(Integer klausurId) { this.klausurTeilnahmeKey.klausurId = klausurId; }
+    public void setKlausurId(Integer klausurId) {
+        this.klausurId = klausurId;
+    }
 
     public Boolean getErschienen() {
         return erschienen;

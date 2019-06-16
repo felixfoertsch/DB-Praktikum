@@ -8,45 +8,40 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "abhaltung")
-public class VeranstaltungAbhaltung {
+public class VeranstaltungAbhaltung implements Serializable {
 
-    @EmbeddedId
-    private VeranstaltungAbhaltungKey veranstaltungAbhaltungKey;
+    @Id
+    @Column(name = "raumId")
+    private Integer raumId;
 
+    @Id
+    @Column(name = "veranstaltungId")
+    private Integer veranstaltungId;
+
+    @Column(name = "zeit")
     private LocalTime zeit;
+
+    @Column(name = "wochentag")
     private DayOfWeek tag;
 
     public VeranstaltungAbhaltung() {
     }
 
-    @Embeddable
-    class VeranstaltungAbhaltungKey implements Serializable {
-
-        @Column(name = "raumId")
-        private Integer raumId;
-
-        @Column(name = "veranstaltungId")
-        private Integer veranstaltungId;
-
-        public VeranstaltungAbhaltungKey() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            VeranstaltungAbhaltungKey that = (VeranstaltungAbhaltungKey) o;
-            return raumId.equals(that.raumId) && veranstaltungId.equals(that.veranstaltungId);
+        if (o == null || getClass() != o.getClass()) {
+            return false;
         }
+        VeranstaltungAbhaltung that = (VeranstaltungAbhaltung) o;
+        return raumId.equals(that.raumId) && veranstaltungId.equals(that.veranstaltungId);
+    }
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(raumId, veranstaltungId);
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(raumId, veranstaltungId);
     }
 
     /***********************************************************************************************
@@ -54,18 +49,21 @@ public class VeranstaltungAbhaltung {
      * Getters and Setters
      *
      */
-
     public Integer getRaumId() {
-        return veranstaltungAbhaltungKey.raumId;
+        return raumId;
     }
 
-    public void setRaumId(Integer raumId) { this.veranstaltungAbhaltungKey.raumId = raumId; }
+    public void setRaumId(Integer raumId) {
+        this.raumId = raumId;
+    }
 
     public Integer getVeranstaltungId() {
-        return veranstaltungAbhaltungKey.veranstaltungId;
+        return veranstaltungId;
     }
 
-    public void setVeranstaltungId(Integer veranstaltungId) { this.veranstaltungAbhaltungKey.veranstaltungId = veranstaltungId; }
+    public void setVeranstaltungId(Integer veranstaltungId) {
+        this.veranstaltungId = veranstaltungId;
+    }
 
     public LocalTime getZeit() {
         return zeit;

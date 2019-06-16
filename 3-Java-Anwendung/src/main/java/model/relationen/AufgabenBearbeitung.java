@@ -6,44 +6,37 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "bearbeitung")
-public class AufgabenBearbeitung {
+public class AufgabenBearbeitung implements Serializable {
 
-    @EmbeddedId
-    private AufgabenBearbeitungKey aufgabenBearbeitungKey;
+    @Id
+    @Column(name = "studentId")
+    private Integer studentId;
+
+    @Id
+    @Column(name = "aufgabeId")
+    private Integer aufgabeId;
+
     @Column(name = "punkte")
     private Double punkte;
 
     public AufgabenBearbeitung() {
     }
 
-    @Embeddable
-    class AufgabenBearbeitungKey implements Serializable {
-
-        @Column(name = "studentId")
-        private Integer studentId;
-
-        @Column(name = "aufgabeId")
-        private Integer aufgabeId;
-
-        public AufgabenBearbeitungKey() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            AufgabenBearbeitungKey that = (AufgabenBearbeitungKey) o;
-            return studentId.equals(that.studentId) && aufgabeId.equals(that.aufgabeId);
+        if (o == null || getClass() != o.getClass()) {
+            return false;
         }
+        AufgabenBearbeitung that = (AufgabenBearbeitung) o;
+        return studentId.equals(that.studentId) && aufgabeId.equals(that.aufgabeId);
+    }
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(studentId, aufgabeId);
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(studentId, aufgabeId);
     }
 
     /***********************************************************************************************
@@ -53,19 +46,19 @@ public class AufgabenBearbeitung {
      */
 
     public Integer getStudentId() {
-        return aufgabenBearbeitungKey.studentId;
+        return studentId;
     }
 
     public void setStudentId(Integer studentId) {
-        this.aufgabenBearbeitungKey.studentId = studentId;
+        this.studentId = studentId;
     }
 
     public Integer getAufgabeId() {
-        return aufgabenBearbeitungKey.aufgabeId;
+        return aufgabeId;
     }
 
     public void setAufgabeId(Integer aufgabeId) {
-        this.aufgabenBearbeitungKey.aufgabeId = aufgabeId;
+        this.aufgabeId = aufgabeId;
     }
 
     public Double getPunkte() {
