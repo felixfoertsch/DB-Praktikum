@@ -2,7 +2,7 @@ package model.person;
 
 import model.relationen.AufgabenBearbeitung;
 import model.relationen.KlausurTeilnahme;
-import model.relationen.SeminarTeilnahme;
+import model.relationen.SemPrakTeilnahme;
 import model.relationen.Studium;
 import org.hibernate.annotations.NaturalId;
 
@@ -26,7 +26,7 @@ public class Student {
     @Transient
     private Map<String, KlausurTeilnahme> klausurTeilnahmen;
     @Transient
-    private Map<String, SeminarTeilnahme> semPrakTeilnahme;
+    private Map<String, SemPrakTeilnahme> semPrakTeilnahme;
     @Transient
     private Map<String, Studium> studiumMap;
     @Transient

@@ -22,8 +22,8 @@ abstract public class Veranstaltung {
     private String semester;
     private Integer maxTeilnehmer;
 
-    @OneToMany
-    private Map<String, VeranstaltungAbhaltung> abhaltungMap;
+    @OneToMany(mappedBy = "veranstaltungId")
+    private Map<Integer, VeranstaltungAbhaltung> abhaltungMap;
     @OneToMany
     private Collection<Mitarbeiter> betreutVonMitarbeiter;
 

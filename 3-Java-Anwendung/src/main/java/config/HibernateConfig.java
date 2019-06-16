@@ -59,7 +59,7 @@ public class HibernateConfig {
 
                 c.addAnnotatedClass(AufgabenBearbeitung.class);
                 c.addAnnotatedClass(KlausurTeilnahme.class);
-                c.addAnnotatedClass(SeminarTeilnahme.class);
+                c.addAnnotatedClass(SemPrakTeilnahme.class);
                 c.addAnnotatedClass(Studium.class);
 
                 ServiceRegistry sr = new StandardServiceRegistryBuilder().applySettings(c.getProperties()).build();
