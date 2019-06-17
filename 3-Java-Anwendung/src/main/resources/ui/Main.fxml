@@ -1,29 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.Pane?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AppController">
-   <children>
-      <MenuBar useSystemMenuBar="true">
-         <Menu text="File">
-            <MenuItem text="New Veranstaltung" onAction="#newVeranstaltungButtonClicked"/>
-            <MenuItem text="New Klausur" onAction="#newKlausurButtonClicked"/>
-            <SeparatorMenuItem />
-            <MenuItem text="Import" onAction="#importButtonClicked"/>
-         </Menu>
-         <Menu text="Test">
-            <MenuItem text="Insert Hard Coded Studiengang" onAction="#testStudiengangInsert"/>
-         </Menu>
-         <Menu text="Hibernate">
-            <MenuItem text="Setup Hibernate" onAction="#setUpHibernate"/>
-            <MenuItem text="Tear Down Hibernate" onAction="#tearDownHibernate"/>
-         </Menu>
-         <Menu text="Edit" />
-         <Menu text="View" />
-         <Menu text="Window" />
-         <Menu text="Help" />
-      </MenuBar>
-      <Label layoutX="25.0" layoutY="169.0">Version: Aufgabe 3</Label>
-      <Button fx:id="importButton" layoutX="14.0" layoutY="129.0" mnemonicParsing="false" onAction="#importButtonClicked" text="Import" />
-   </children>
-</Pane>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.StatusBar?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="200.0" prefWidth="200.0"
+            xmlns="http://javafx.com/javafx/8.0.999-ea" fx:controller="AppController">
+    <top>
+        <MenuBar useSystemMenuBar="false" BorderPane.alignment="CENTER">
+            <menus>
+                <Menu text="File">
+                    <items>
+                        <MenuItem onAction="#newVeranstaltungButtonClicked" text="New Veranstaltung"/>
+                        <MenuItem onAction="#newKlausurButtonClicked" text="New Klausur"/>
+                        <SeparatorMenuItem/>
+                        <MenuItem onAction="#importButtonClicked" text="Import"/>
+                    </items>
+                </Menu>
+                <Menu text="Test">
+                    <items>
+                        <MenuItem onAction="#testStudiengangInsert" text="Insert Hard Coded Studiengang"/>
+                    </items>
+                </Menu>
+                <Menu text="Hibernate">
+                    <items>
+                        <MenuItem onAction="#setUpHibernate" text="Setup Hibernate"/>
+                        <MenuItem onAction="#tearDownHibernate" text="Tear Down Hibernate"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+        <GridPane BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Button fx:id="importButton" mnemonicParsing="false" onAction="#importButtonClicked" text="Import"/>
+            </children>
+        </GridPane>
+    </center>
+    <bottom>
+        <StatusBar text="Version: Aufgabe 3" />
+    </bottom>
+</BorderPane>

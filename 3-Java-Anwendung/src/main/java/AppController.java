@@ -43,7 +43,6 @@ public class AppController {
 
     @FXML
     public void newKlausurButtonClicked(Event e) {
-
     }
 
     @FXML
