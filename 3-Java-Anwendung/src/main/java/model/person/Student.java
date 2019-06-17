@@ -14,7 +14,7 @@ import java.util.Collection;
 public class Student {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NaturalId
     private String matrikelNr;

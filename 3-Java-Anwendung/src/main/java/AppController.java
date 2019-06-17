@@ -1,22 +1,24 @@
 import controller.VeranstaltungController;
-import dataimport.Importer;
 import dataimport.ImporterImpl;
 import dataimport.model.Universitaet;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import model.Studiengang;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Map;
-
 public class AppController {
     private SessionFactory sessionFactory;
 
     public AppController() {
+        try {
+            setUpHibernate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -41,8 +43,24 @@ public class AppController {
 
     @FXML
     public void newKlausurButtonClicked(Event e) {
-        System.out.println("Hello, World!");
+
     }
+
+    @FXML
+    public void testStudiengangInsert() {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        var studiengang = new Studiengang();
+        studiengang.setName("Test");
+        studiengang.setAbschluss("Testabschluss");
+        studiengang.setRegelstudienzeit(111);
+
+        session.save(studiengang);
+        session.getTransaction().commit();
+        session.close();
+    }
+
 
     @FXML
     protected void setUpHibernate() throws Exception {

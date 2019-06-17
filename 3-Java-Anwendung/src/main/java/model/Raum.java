@@ -13,7 +13,7 @@ import java.util.Collection;
 public class Raum {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NaturalId
     private String bezeichnung;

@@ -11,7 +11,7 @@ import java.util.Collection;
 public class Mitarbeiter {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String vorname;
     private String nachname;

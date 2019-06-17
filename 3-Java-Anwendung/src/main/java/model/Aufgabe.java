@@ -11,7 +11,7 @@ import java.util.Collection;
 public class Aufgabe {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer rang;
     private Double maxPunkte;

@@ -18,7 +18,7 @@ import java.util.Collection;
 public class Klausur {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private LocalDate datum;
     private LocalTime uhrzeitVon;
