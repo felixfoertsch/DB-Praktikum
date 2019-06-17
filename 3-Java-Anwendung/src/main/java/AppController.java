@@ -10,20 +10,20 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class AppController {
     private SessionFactory sessionFactory;
 
     public AppController() {
-
     }
 
     @FXML
     public void importButtonClicked(Event e) {
-        Importer importer = new ImporterImpl();
-        Universitaet universitaet = new Universitaet();
-        Map<String, File> files = importer.importCSVtoMemory();
+        var importer = new ImporterImpl();
+        var universitaet = new Universitaet();
+        var files = importer.importCSVtoMemory();
         universitaet = importer.parseCSVandCreateModel(files);
         importer.checkMultiplicities(universitaet);
         importer.persistModel(universitaet);

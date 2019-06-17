@@ -9,7 +9,8 @@ plugins {
 group 'de.felixfoertsch'
 version '2.0'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 12
+targetCompatibility = 12
 
 repositories {
     mavenCentral()
@@ -37,11 +38,11 @@ javafx {
 mainClassName = 'App'
 compileKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "12"
     }
 }
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "12"
     }
 }
