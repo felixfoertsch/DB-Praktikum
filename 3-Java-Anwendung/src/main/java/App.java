@@ -1,7 +1,8 @@
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class App extends Application {
 
@@ -10,15 +11,11 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        // Create a FMXLLoader to load the main window and assign a custom
-        // controller class to it, that will handle the events.
-        var loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/ui/Main.fxml"));
+    public void start(Stage primaryStage) throws IOException {
 
-        // After the loader is set up, the window can now be loaded in and shown.
-        stage.setScene(new Scene(loader.load()));
+        Stage stage = FXMLLoader.load(getClass().getResource("/ui/Main.fxml"));
         stage.show();
+
     }
 
 }

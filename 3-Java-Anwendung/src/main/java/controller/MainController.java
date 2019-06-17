@@ -1,8 +1,12 @@
-import controller.VeranstaltungController;
+package controller;
+
 import dataimport.ImporterImpl;
 import dataimport.model.Universitaet;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import model.Studiengang;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,15 +14,24 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-public class AppController {
+public class MainController {
     private SessionFactory sessionFactory;
 
-    public AppController() {
+    @FXML
+    private Stage mainStage;
+
+    public MainController() {
         try {
             setUpHibernate();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void viewKlausuren() throws Exception {
+        Scene scene = FXMLLoader.load(getClass().getResource("/ui/Klausuren.fxml"));
+        mainStage.setScene(scene);
     }
 
     @FXML

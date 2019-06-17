@@ -1,49 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import org.controlsfx.control.StatusBar?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="200.0" prefWidth="200.0"
-            xmlns="http://javafx.com/javafx/8.0.999-ea" fx:controller="AppController">
-    <top>
-        <MenuBar useSystemMenuBar="false" BorderPane.alignment="CENTER">
-            <menus>
-                <Menu text="File">
-                    <items>
-                        <MenuItem onAction="#newVeranstaltungButtonClicked" text="New Veranstaltung"/>
-                        <MenuItem onAction="#newKlausurButtonClicked" text="New Klausur"/>
-                        <SeparatorMenuItem/>
-                        <MenuItem onAction="#importButtonClicked" text="Import"/>
-                    </items>
-                </Menu>
-                <Menu text="Test">
-                    <items>
-                        <MenuItem onAction="#testStudiengangInsert" text="Insert Hard Coded Studiengang"/>
-                    </items>
-                </Menu>
-                <Menu text="Hibernate">
-                    <items>
-                        <MenuItem onAction="#setUpHibernate" text="Setup Hibernate"/>
-                        <MenuItem onAction="#tearDownHibernate" text="Tear Down Hibernate"/>
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
-    </top>
-    <center>
-        <GridPane BorderPane.alignment="CENTER">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
-            </rowConstraints>
-            <children>
-                <Button fx:id="importButton" mnemonicParsing="false" onAction="#importButtonClicked" text="Import"/>
-            </children>
-        </GridPane>
-    </center>
-    <bottom>
-        <StatusBar text="Version: Aufgabe 3" />
-    </bottom>
-</BorderPane>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.Scene?>
+<?import javafx.stage.Stage?>
+<Stage xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
+       fx:controller="controller.MainController" fx:id="mainStage">
+    <scene>
+        <Scene>
+            <BorderPane prefWidth="640" prefHeight="480">
+                <top>
+                    <MenuBar useSystemMenuBar="false" BorderPane.alignment="CENTER">
+                        <menus>
+                            <Menu text="File">
+                                <items>
+                                    <MenuItem onAction="#newVeranstaltungButtonClicked" text="New Veranstaltung"/>
+                                    <MenuItem onAction="#newKlausurButtonClicked" text="New Klausur"/>
+                                    <SeparatorMenuItem/>
+                                    <MenuItem onAction="#importButtonClicked" text="Import"/>
+                                </items>
+                            </Menu>
+                            <Menu text="View">
+                                <items>
+                                    <MenuItem onAction="#viewKlausuren" text="Klausuren"/>
+                                </items>
+                            </Menu>
+                            <Menu text="Test">
+                                <items>
+                                    <MenuItem onAction="#testStudiengangInsert" text="Insert Hard Coded Studiengang"/>
+                                </items>
+                            </Menu>
+                            <Menu text="Hibernate">
+                                <items>
+                                    <MenuItem onAction="#setUpHibernate" text="Setup Hibernate"/>
+                                    <MenuItem onAction="#tearDownHibernate" text="Tear Down Hibernate"/>
+                                </items>
+                            </Menu>
+                        </menus>
+                    </MenuBar>
+                </top>
+                <bottom>
+                    <Label>Version: Aufgabe 3</Label>
+                </bottom>
+                <center>
+                    <Pane/>
+                </center>
+            </BorderPane>
+        </Scene>
+    </scene>
+</Stage>
+
