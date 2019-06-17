@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="PostgreSQL - dbp@localhost" uuid="d03d4e5d-5c17-43e7-b37c-87ce02864771">
+    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="cdd25601-7e2b-4c89-9e05-8386c2c3736a">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate
+
+/Users/felixfoertsch/Documents/Organisationen/Uni Leipizg/git/DB-Praktikum/3-Java-Anwendung/src/main/resources/hibernate.cfg.xml</remarks>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/dbp</jdbc-url>
     </data-source>

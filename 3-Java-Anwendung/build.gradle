@@ -6,22 +6,20 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.31'
 }
 
+mainClassName = 'App'
 group 'de.felixfoertsch'
 version '2.0'
-
-sourceCompatibility = 12
-targetCompatibility = 12
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile 'org.apache.commons:commons-csv:1.6' // https://mvnrepository.com/artifact/org.apache.commons/commons-csv
+    compile 'org.apache.commons:commons-csv:1.6'
     compile 'org.postgresql:postgresql:42.2.5'
     compile 'org.hibernate:hibernate-core:5.4.2.Final'
     testCompile 'junit:junit:4.12'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 }
 
 flyway {
@@ -35,14 +33,18 @@ javafx {
     modules = ['javafx.controls', 'javafx.fxml']
 }
 
-mainClassName = 'App'
+compileJava {
+    sourceCompatibility = '12'
+    targetCompatibility = '12'
+}
+
 compileKotlin {
     kotlinOptions {
-        jvmTarget = "12"
+        jvmTarget = '1.8'
     }
 }
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = "12"
+        jvmTarget = '1.8'
     }
 }

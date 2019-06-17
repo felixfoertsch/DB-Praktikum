@@ -21,7 +21,7 @@ public class ImporterImpl implements Importer {
      * @return HashMap<K: Filename, V: CSV file>
      */
     @Override
-    public Map<String, File> importCSVtoMemory() {
+    public Map<String, File> importCSVtoMemory() throws NullPointerException {
         Map<String, File> csvFiles = new HashMap<>();
         DirectoryChooser directoryChooser = new DirectoryChooser();
         Stage newStage = new Stage();
@@ -39,10 +39,7 @@ public class ImporterImpl implements Importer {
                     csvFiles.put(listOfFile.getName(), listOfFile);
                 }
             }
-        } else {
-            System.out.println("Path is null.");
         }
-        System.out.println(Arrays.toString(csvFiles.entrySet().toArray()));
         return csvFiles;
     }
 

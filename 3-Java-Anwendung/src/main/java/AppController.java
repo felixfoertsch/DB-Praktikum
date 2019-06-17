@@ -23,10 +23,14 @@ public class AppController {
     public void importButtonClicked(Event e) {
         var importer = new ImporterImpl();
         var universitaet = new Universitaet();
-        var files = importer.importCSVtoMemory();
-        universitaet = importer.parseCSVandCreateModel(files);
-        importer.checkMultiplicities(universitaet);
-        importer.persistModel(universitaet);
+        try {
+            var files = importer.importCSVtoMemory();
+            universitaet = importer.parseCSVandCreateModel(files);
+            importer.checkMultiplicities(universitaet);
+            importer.persistModel(universitaet);
+        } catch (NullPointerException npe) {
+            System.out.println("Import canceled.");
+        }
     }
 
     @FXML
