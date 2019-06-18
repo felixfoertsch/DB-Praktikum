@@ -1,53 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.Scene?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.stage.Stage?>
-<Stage xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
-       fx:controller="controller.MainController" fx:id="mainStage">
+
+<Stage fx:id="mainStage" height="480" width="640" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController" onShowing="#viewKlausuren">
     <scene>
         <Scene>
-            <BorderPane prefWidth="640" prefHeight="480">
+            <BorderPane fx:id="mainBorderPane">
                 <top>
-                    <MenuBar useSystemMenuBar="false" BorderPane.alignment="CENTER">
-                        <menus>
-                            <Menu text="File">
-                                <items>
-                                    <MenuItem onAction="#newVeranstaltungButtonClicked" text="New Veranstaltung"/>
-                                    <MenuItem onAction="#newKlausurButtonClicked" text="New Klausur"/>
-                                    <SeparatorMenuItem/>
-                                    <MenuItem onAction="#importButtonClicked" text="Import"/>
-                                </items>
-                            </Menu>
-                            <Menu text="View">
-                                <items>
-                                    <MenuItem onAction="#viewKlausuren" text="Klausuren"/>
-                                </items>
-                            </Menu>
-                            <Menu text="Test">
-                                <items>
-                                    <MenuItem onAction="#testStudiengangInsert" text="Insert Hard Coded Studiengang"/>
-                                </items>
-                            </Menu>
-                            <Menu text="Hibernate">
-                                <items>
-                                    <MenuItem onAction="#setUpHibernate" text="Setup Hibernate"/>
-                                    <MenuItem onAction="#tearDownHibernate" text="Tear Down Hibernate"/>
-                                </items>
-                            </Menu>
-                        </menus>
+                    <MenuBar fx:id="mainMenuBar" useSystemMenuBar="false" BorderPane.alignment="CENTER">
+                        <Menu text="File">
+                            <MenuItem onAction="#newVeranstaltungButtonClicked" text="New Veranstaltung" />
+                            <MenuItem onAction="#newKlausurButtonClicked" text="New Klausur" />
+                            <SeparatorMenuItem />
+                            <MenuItem onAction="#importButtonClicked" text="Import" />
+                        </Menu>
+                        <Menu text="View">
+                            <MenuItem onAction="#viewKlausuren" text="Klausuren" />
+                        </Menu>
+                        <Menu text="Test">
+                            <MenuItem onAction="#testStudiengangInsert" text="Insert Hard Coded Studiengang" />
+                            <MenuItem onAction="#testStudiengangGet" text="Get Studiengang Id 1" />
+                        </Menu>
+                        <Menu text="Help">
+                            <MenuItem onAction="#aboutButtonClicked" text="About" />
+                        </Menu>
                     </MenuBar>
                 </top>
-                <bottom>
-                    <Label>Version: Aufgabe 3</Label>
-                </bottom>
-                <center>
-                    <Pane/>
-                </center>
             </BorderPane>
         </Scene>
     </scene>
 </Stage>
-

@@ -6,32 +6,47 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Studiengang;
+import model.klausur.Klausur;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
 
 public class MainController {
+
     private SessionFactory sessionFactory;
 
     @FXML
     private Stage mainStage;
+    @FXML
+    private MenuBar mainMenuBar;
+    @FXML
+    private BorderPane mainBorderPane;
+
 
     public MainController() {
-        try {
-            setUpHibernate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+    }
+
+    public void injectSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @FXML
     private void viewKlausuren() throws Exception {
-        Scene scene = FXMLLoader.load(getClass().getResource("/ui/Klausuren.fxml"));
-        mainStage.setScene(scene);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Klausuren.fxml"));
+        Pane pane = loader.load();
+
+        KlausurenController kc = loader.getController();
+        kc.injectSessionFactory(sessionFactory);
+
+        mainBorderPane.setCenter(pane);
     }
 
     @FXML
@@ -56,44 +71,45 @@ public class MainController {
 
     @FXML
     public void newKlausurButtonClicked(Event e) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Klausur k = session.load(Klausur.class, 1);
+        session.close();
+
+        System.out.println(k.getDatum());
+    }
+
+    @FXML
+    public void aboutButtonClicked(Event e) {
+        var vBox = new VBox(new Label("Version: Aufgabe 3"));
+        vBox.setPrefHeight(50);
+        vBox.setPrefWidth(200);
+        var scene = new Scene(vBox);
+        var stage = new Stage();
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
     public void testStudiengangInsert() {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-
         var studiengang = new Studiengang();
         studiengang.setName("Test");
         studiengang.setAbschluss("Testabschluss");
         studiengang.setRegelstudienzeit(111);
 
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
         session.save(studiengang);
         session.getTransaction().commit();
         session.close();
     }
 
-
     @FXML
-    protected void setUpHibernate() throws Exception {
-        // A SessionFactory is set up once for an application!
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure() // configures settings from hibernate.cfg.xml
-                .build();
-        try {
-            sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-        } catch (Exception e) {
-            // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
-            // so destroy it manually.
-            StandardServiceRegistryBuilder.destroy(registry);
-        }
-    }
+    public void testStudiengangGet() {
+        Session session = sessionFactory.openSession();
+        Studiengang sg = session.load(Studiengang.class, 1);
 
-    @FXML
-    protected void tearDownHibernate() throws Exception {
-        if (sessionFactory != null) {
-            sessionFactory.close();
-        }
+        System.out.println(sg.getName());
+        session.close();
     }
-
 }
