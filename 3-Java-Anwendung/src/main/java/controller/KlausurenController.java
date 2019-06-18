@@ -1,10 +1,9 @@
 package controller;
 
-import model.klausur.Klausur;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
-import model.Studiengang;
+import model.person.Student;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -28,9 +27,9 @@ public class KlausurenController {
     @FXML
     void populateTable() {
         Session session = sessionFactory.openSession();
-        Klausur k = session.load(Klausur.class, 1);
+        Student k = session.load(Student.class, 2);
 
-        System.out.println(k.getDatum());
+        System.out.println(k.getMatrikelNr());
         session.close();
     }
 }
