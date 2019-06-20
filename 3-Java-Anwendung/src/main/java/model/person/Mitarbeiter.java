@@ -4,11 +4,14 @@ import model.Raum;
 import model.klausur.Klausur;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "mitarbeiter")
-public class Mitarbeiter {
+public class Mitarbeiter implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,12 +20,30 @@ public class Mitarbeiter {
     private String nachname;
     private String email;
 
-    @OneToOne
+    @ManyToOne
     private Raum raum;
-    @OneToMany
-    private Collection<Klausur> klausuren;
 
-    public Mitarbeiter() {
+    @OneToMany
+    private List<Klausur> klausuren;
+
+    protected Mitarbeiter() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Mitarbeiter mitarbeiter = (Mitarbeiter) o;
+        return Objects.equals(this.id, mitarbeiter.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
     }
 
     /***********************************************************************************************
@@ -71,11 +92,11 @@ public class Mitarbeiter {
         this.raum = raum;
     }
 
-    public Collection<Klausur> getKlausuren() {
+    public List<Klausur> getKlausuren() {
         return klausuren;
     }
 
-    public void setKlausuren(Collection<Klausur> klausuren) {
+    public void setKlausuren(List<Klausur> klausuren) {
         this.klausuren = klausuren;
     }
 }

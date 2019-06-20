@@ -37,7 +37,7 @@
         <mapping class="model.klausur.Wiederholungsklausur"/>
         <mapping class="model.klausur.Zwischenklausur"/>
 
-<!--        <mapping class="model.person.Mitarbeiter"/>-->
+        <mapping class="model.person.Mitarbeiter"/>
         <mapping class="model.person.Student"/>
 
         <mapping class="model.relationen.AufgabenBearbeitung"/>

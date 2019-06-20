@@ -1,6 +1,7 @@
 package model;
 
 import model.klausur.Klausur;
+import model.person.Mitarbeiter;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -22,15 +23,15 @@ public class Raum implements Serializable {
     // The ManyToMany mapping in the table ort is defined here, since there
     // is no associated data to this relation: this is the owner of the relation.
     // The target mapping in Klausur references this construct via "mappedBy",
-    // that's why both columsn have to be identified here.
+    // that's why both columns have to be identified here.
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "ort", joinColumns = {
             @JoinColumn(name = "raum_id") }, inverseJoinColumns = {
             @JoinColumn(name = "klausur_id")})
     private List<Klausur> klausuren = new ArrayList<>();
 
-//    @OneToMany
-//    private Collection<Mitarbeiter> mitarbeiter;
+    @OneToMany(mappedBy = "raum")
+    private List<Mitarbeiter> mitarbeiter;
 
 //    @OneToMany
 //    private Collection<VeranstaltungAbhaltung> abhaltungen;
@@ -99,5 +100,13 @@ public class Raum implements Serializable {
 
     public void setKlausuren(List<Klausur> klausuren) {
         this.klausuren = klausuren;
+    }
+
+    public List<Mitarbeiter> getMitarbeiter() {
+        return mitarbeiter;
+    }
+
+    public void setMitarbeiter(List<Mitarbeiter> mitarbeiter) {
+        this.mitarbeiter = mitarbeiter;
     }
 }

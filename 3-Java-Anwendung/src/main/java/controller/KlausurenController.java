@@ -5,9 +5,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 import model.Aufgabe;
 import model.Raum;
+import model.Studiengang;
 import model.klausur.Klausur;
+import model.person.Mitarbeiter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+import java.util.List;
 
 
 public class KlausurenController {
@@ -29,18 +33,32 @@ public class KlausurenController {
     @FXML
     void populateTable() {
         Session session = sessionFactory.openSession();
-//        Studiengang s = session.load(Studiengang.class, 2);
-//        System.out.println(s.getName());
-//
-//
-//        List studien = session.createQuery("from AufgabenBearbeitung ").list();
-//
+        Studiengang s = session.load(Studiengang.class, 2);
+        System.out.println(s.getName());
+
+
+        List studien = session.createQuery("from AufgabenBearbeitung ").list();
+
         Klausur k = session.load(Klausur.class, 2);
         for (Aufgabe a : k.getAufgaben()) {
             System.out.println(a.getKlausur());
         }
         for (Raum r : k.getRaum()) {
             System.out.println(r.getBezeichnung());
+            for (Mitarbeiter m : r.getMitarbeiter()) {
+                System.out.println(m.getNachname());
+            }
+        }
+
+        Mitarbeiter m = session.load(Mitarbeiter.class, 1);
+        System.out.println(m.getNachname());
+
+        List<Klausur> klausuren = session.createQuery("from Klausur").list();
+
+        for (Klausur klausur : klausuren) {
+            for (Raum r : klausur.getRaum()) {
+                System.out.println(r.getBezeichnung());
+            }
         }
 
         System.out.println("STOP");
