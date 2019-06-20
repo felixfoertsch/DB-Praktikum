@@ -1,5 +1,7 @@
 package model.klausur;
 
+import model.Aufgabe;
+import model.Raum;
 import model.relationen.KlausurTeilnahme;
 
 import javax.persistence.*;
@@ -22,8 +24,17 @@ public class Klausur implements Serializable {
     private LocalTime uhrzeitVon;
     private Double gesamtpunktzahl;
 
+    // Explicit Relation with additional data: see KlausurTeilnahme class.
     @OneToMany(mappedBy = "klausur")
     private List<KlausurTeilnahme> klausurTeilnahmen;
+
+    // Explicit Relation with additional data: see AufgabenBearbeitung class.
+    @OneToMany(mappedBy = "klausur")
+    private List<Aufgabe> aufgaben;
+
+    // Look into the Raum class for the mapping instructions.
+    @ManyToMany(mappedBy = "klausuren")
+    private List<Raum> raum;
 
 //    @ManyToOne
 //    private Spezialvorlesung spezialvorlesung;
@@ -31,10 +42,7 @@ public class Klausur implements Serializable {
 //    private Grundvorlesung grundvorlesung;
 //    @OneToMany
 //    private ArrayList<Mitarbeiter> aufsichten;
-//    @ManyToMany
-//    private Collection<Raum> orte;
-//    @OneToMany
-//    private Collection<Aufgabe> aufgaben;
+
 
 
     public Klausur() {
@@ -56,6 +64,8 @@ public class Klausur implements Serializable {
     public int hashCode() {
         return Objects.hash(this.id);
     }
+
+
 
     /***********************************************************************************************
      *
@@ -95,4 +105,19 @@ public class Klausur implements Serializable {
         this.gesamtpunktzahl = gesamtpunktzahl;
     }
 
+    public List<Aufgabe> getAufgaben() {
+        return aufgaben;
+    }
+
+    public void setAufgaben(List<Aufgabe> aufgaben) {
+        this.aufgaben = aufgaben;
+    }
+
+    public List<Raum> getRaum() {
+        return raum;
+    }
+
+    public void setRaum(List<Raum> raeume) {
+        this.raum = raeume;
+    }
 }

@@ -17,9 +17,11 @@ public class Aufgabe implements Serializable {
     private Integer id;
     private Integer rang;
     private Double maxPunkte;
-    @OneToOne
+
+    @ManyToOne
     private Klausur klausur;
 
+    // Explicit Relation with additional data: see AufgabenBearbeitung class.
     @OneToMany(mappedBy = "aufgabe")
     private List<AufgabenBearbeitung> aufgabenBearbeitungen;
 

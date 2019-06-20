@@ -56,7 +56,7 @@
 <!--        <mapping class="model.veranstaltung.Veranstaltung"/>-->
 
         <mapping class="model.Aufgabe"/>
-<!--        <mapping class="model.Raum"/>-->
+        <mapping class="model.Raum"/>
         <mapping class="model.Studiengang"/>
 
 

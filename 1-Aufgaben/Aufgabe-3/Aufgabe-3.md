@@ -6,7 +6,7 @@ Ihre Aufgabe ist die Implementierung einer Java-Anwendung zum Zugriff auf die Da
 
 2. Java-Anwendung:
 
-Use Case I: Klausurergebnisse eintragen
+**Use Case I: Klausurergebnisse eintragen**
 
 Liste aller Klausuren anzeigen, geordnet nach Datum
 Nutzer wählt Klausur aus
@@ -16,13 +16,15 @@ Ja: Eingabe der Punkte
 Test, ob Eingabe korrekt + Ausgabe Gesamtpunktzahl
 Gehe zu 3. bis alle Studenten verarbeitet sind
 Anzeige aller abwesenden Studenten
-Use Case II: Klausurergebnisse (Notenschnitt) einsehen und anpassen
+
+**Use Case II: Klausurergebnisse (Notenschnitt) einsehen und anpassen**
 
 Liste aller Klausuren anzeigen, geordnet nach Datum
 Nutzer wählt Klausur aus
 Anzeige Noten-Verteilung (Histogram) oder Anzeige Punkte-Noten-Verteilung oder Anzeige geordnete Liste aller Studenten mit Note und Punkte oder Anpassung Punkte-Noten-Verteilung oder Exit
 Gehe zu 3. solange nicht exit
-Use Case III: Top-Studenten
+
+**Use Case III: Top-Studenten**
 
 Eingabe der Gewichtungen
 Anzeige der Liste aller Top-Studenten (Nutzung View)

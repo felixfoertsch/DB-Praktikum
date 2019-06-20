@@ -3,11 +3,11 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
-import model.Studiengang;
+import model.Aufgabe;
+import model.Raum;
+import model.klausur.Klausur;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
-import java.util.List;
 
 
 public class KlausurenController {
@@ -29,11 +29,20 @@ public class KlausurenController {
     @FXML
     void populateTable() {
         Session session = sessionFactory.openSession();
-        Studiengang k = session.load(Studiengang.class, 1);
-        System.out.println(k.getName());
+//        Studiengang s = session.load(Studiengang.class, 2);
+//        System.out.println(s.getName());
+//
+//
+//        List studien = session.createQuery("from AufgabenBearbeitung ").list();
+//
+        Klausur k = session.load(Klausur.class, 2);
+        for (Aufgabe a : k.getAufgaben()) {
+            System.out.println(a.getKlausur());
+        }
+        for (Raum r : k.getRaum()) {
+            System.out.println(r.getBezeichnung());
+        }
 
-
-        List studien = session.createQuery("from AufgabenBearbeitung ").list();
         System.out.println("STOP");
 
         session.close();
