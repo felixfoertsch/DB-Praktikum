@@ -10,8 +10,8 @@ import javax.persistence.Table;
 @PrimaryKeyJoinColumn(name = "veranstaltung_id")
 public class Uebung extends Veranstaltung {
 
-    @OneToOne
-    private Grundvorlesung grundvorlesung;
+//    @OneToOne
+//    private Grundvorlesung grundvorlesung;
 
     public Uebung() {
     }
@@ -22,11 +22,5 @@ public class Uebung extends Veranstaltung {
      *
      */
 
-    public Grundvorlesung getGrundvorlesung() {
-        return grundvorlesung;
-    }
 
-    public void setGrundvorlesung(Grundvorlesung grundvorlesung) {
-        this.grundvorlesung = grundvorlesung;
-    }
 }

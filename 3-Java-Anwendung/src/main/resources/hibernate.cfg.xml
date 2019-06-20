@@ -44,16 +44,16 @@
         <mapping class="model.relationen.KlausurTeilnahme"/>
 <!--        <mapping class="model.relationen.SemPrakTeilnahme"/>-->
         <mapping class="model.relationen.Studium"/>
-<!--        <mapping class="model.relationen.VeranstaltungAbhaltung"/>-->
+        <mapping class="model.relationen.VeranstaltungAbhaltung"/>
 
-<!--        <mapping class="model.veranstaltung.Grundvorlesung"/>-->
-<!--        <mapping class="model.veranstaltung.Oberseminar"/>-->
-<!--        <mapping class="model.veranstaltung.Praktikum"/>-->
-<!--        <mapping class="model.veranstaltung.Problemseminar"/>-->
-<!--        <mapping class="model.veranstaltung.Seminar"/>-->
-<!--        <mapping class="model.veranstaltung.Spezialvorlesung"/>-->
-<!--        <mapping class="model.veranstaltung.Uebung"/>-->
-<!--        <mapping class="model.veranstaltung.Veranstaltung"/>-->
+        <mapping class="model.veranstaltung.Grundvorlesung"/>
+        <mapping class="model.veranstaltung.Oberseminar"/>
+        <mapping class="model.veranstaltung.Praktikum"/>
+        <mapping class="model.veranstaltung.Problemseminar"/>
+        <mapping class="model.veranstaltung.Seminar"/>
+        <mapping class="model.veranstaltung.Spezialvorlesung"/>
+        <mapping class="model.veranstaltung.Uebung"/>
+        <mapping class="model.veranstaltung.Veranstaltung"/>
 
         <mapping class="model.Aufgabe"/>
         <mapping class="model.Raum"/>

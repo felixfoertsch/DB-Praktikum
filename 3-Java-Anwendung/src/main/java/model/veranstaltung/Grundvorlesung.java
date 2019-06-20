@@ -7,16 +7,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "grundvorlesung")
 @PrimaryKeyJoinColumn(name = "veranstaltung_id")
 public class Grundvorlesung extends Veranstaltung {
 
-    @OneToMany
-    private Collection<Uebung> uebungen;
-    @OneToMany
-    private Collection<Klausur> klausuren;
+//    @OneToMany
+//    private List<Uebung> uebungen;
+//    @OneToMany
+//    private List<Klausur> klausuren;
 
     public Grundvorlesung() {
     }
@@ -27,19 +28,4 @@ public class Grundvorlesung extends Veranstaltung {
      *
      */
 
-    public Collection<Uebung> getUebungen() {
-        return uebungen;
-    }
-
-    public void setUebungen(Collection<Uebung> uebungen) {
-        this.uebungen = uebungen;
-    }
-
-    public Collection<Klausur> getKlausuren() {
-        return klausuren;
-    }
-
-    public void setKlausuren(Collection<Klausur> klausuren) {
-        this.klausuren = klausuren;
-    }
 }

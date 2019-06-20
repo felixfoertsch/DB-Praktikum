@@ -13,8 +13,8 @@ import java.util.Collection;
 @PrimaryKeyJoinColumn(name = "veranstaltung_id")
 abstract public class Seminar extends Veranstaltung {
 
-    @OneToMany
-    private Collection<SemPrakTeilnahme> semPrakTeilnahmen;
+//    @OneToMany
+//    private Collection<SemPrakTeilnahme> semPrakTeilnahmen;
 
     public Seminar() {
     }
@@ -25,11 +25,5 @@ abstract public class Seminar extends Veranstaltung {
      *
      */
 
-    public Collection<SemPrakTeilnahme> getSemPrakTeilnahmen() {
-        return semPrakTeilnahmen;
-    }
 
-    public void setSemPrakTeilnahmen(Collection<SemPrakTeilnahme> semPrakTeilnahmen) {
-        this.semPrakTeilnahmen = semPrakTeilnahmen;
-    }
 }

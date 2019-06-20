@@ -8,6 +8,8 @@ import model.Raum;
 import model.Studiengang;
 import model.klausur.Klausur;
 import model.person.Mitarbeiter;
+import model.relationen.VeranstaltungAbhaltung;
+import model.veranstaltung.Veranstaltung;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -60,6 +62,14 @@ public class KlausurenController {
                 System.out.println(r.getBezeichnung());
             }
         }
+
+        List<VeranstaltungAbhaltung> va = session.createQuery("from VeranstaltungAbhaltung ").list();
+
+        for (VeranstaltungAbhaltung v : va) {
+            System.out.println(v.getWochentag());
+            System.out.println(v.getVeranstaltung().getName());
+        }
+
 
         System.out.println("STOP");
 

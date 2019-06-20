@@ -2,6 +2,7 @@ package model;
 
 import model.klausur.Klausur;
 import model.person.Mitarbeiter;
+import model.relationen.VeranstaltungAbhaltung;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -33,10 +34,14 @@ public class Raum implements Serializable {
     @OneToMany(mappedBy = "raum")
     private List<Mitarbeiter> mitarbeiter;
 
-//    @OneToMany
-//    private Collection<VeranstaltungAbhaltung> abhaltungen;
+    @OneToMany(mappedBy = "raum")
+    private List<VeranstaltungAbhaltung> abhaltungen;
 
-    public Raum() {
+    protected Raum() {
+    }
+
+    public Raum(String bezeichnung) {
+        this.bezeichnung = bezeichnung;
     }
 
     @Override

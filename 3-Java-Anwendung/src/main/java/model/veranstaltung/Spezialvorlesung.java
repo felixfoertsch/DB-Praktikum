@@ -13,8 +13,8 @@ import java.util.Collection;
 @PrimaryKeyJoinColumn(name = "veranstaltung_id")
 public class Spezialvorlesung extends Veranstaltung {
 
-    @OneToMany
-    private Collection<Klausur> klausuren;
+//    @OneToMany
+//    private Collection<Klausur> klausuren;
 
     public Spezialvorlesung() {
     }
@@ -25,11 +25,5 @@ public class Spezialvorlesung extends Veranstaltung {
      *
      */
 
-    public Collection<Klausur> getKlausuren() {
-        return klausuren;
-    }
 
-    public void setKlausuren(Collection<Klausur> klausuren) {
-        this.klausuren = klausuren;
-    }
 }

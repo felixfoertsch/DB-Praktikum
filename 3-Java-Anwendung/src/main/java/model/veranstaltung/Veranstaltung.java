@@ -4,28 +4,55 @@ import model.person.Mitarbeiter;
 import model.relationen.VeranstaltungAbhaltung;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.Year;
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "veranstaltung")
 @Inheritance(strategy = InheritanceType.JOINED)
-abstract public class Veranstaltung {
+abstract public class Veranstaltung implements Serializable {
 
     @Id
     @GeneratedValue
     private Integer id;
     private String name;
-    private Year jahr;
+    private Integer jahr;
     private String semester;
     private Integer maxTeilnehmer;
 
-    @OneToMany
-    private Collection<VeranstaltungAbhaltung> abhaltungen;
-    @OneToMany
-    private Collection<Mitarbeiter> betreuer;
+    @OneToMany(mappedBy = "veranstaltung")
+    private List<VeranstaltungAbhaltung> abhaltungen;
+//    @OneToMany
+//    private List<Mitarbeiter> betreuer;
 
-    public Veranstaltung() {
+    protected Veranstaltung() {
+    }
+
+    public Veranstaltung(String name, Integer jahr, String semester, Integer maxTeilnehmer) {
+        this.name = name;
+        this.jahr = jahr;
+        this.semester = semester;
+        this.maxTeilnehmer = maxTeilnehmer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Veranstaltung veranstaltung = (Veranstaltung) o;
+        return Objects.equals(this.id, veranstaltung.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
     }
 
     /***********************************************************************************************
@@ -50,11 +77,11 @@ abstract public class Veranstaltung {
         this.name = name;
     }
 
-    public Year getJahr() {
+    public Integer getJahr() {
         return jahr;
     }
 
-    public void setJahr(Year jahr) {
+    public void setJahr(Integer jahr) {
         this.jahr = jahr;
     }
 
@@ -74,19 +101,4 @@ abstract public class Veranstaltung {
         this.maxTeilnehmer = maxTeilnehmer;
     }
 
-    public Collection<VeranstaltungAbhaltung> getAbhaltungen() {
-        return abhaltungen;
-    }
-
-    public void setAbhaltungen(Collection<VeranstaltungAbhaltung> abhaltungen) {
-        this.abhaltungen = abhaltungen;
-    }
-
-    public Collection<Mitarbeiter> getBetreuer() {
-        return betreuer;
-    }
-
-    public void setBetreuer(Collection<Mitarbeiter> betreuer) {
-        this.betreuer = betreuer;
-    }
 }
