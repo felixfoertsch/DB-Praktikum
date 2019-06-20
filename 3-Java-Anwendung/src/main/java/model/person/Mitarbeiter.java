@@ -2,6 +2,7 @@ package model.person;
 
 import model.Raum;
 import model.klausur.Klausur;
+import model.veranstaltung.Veranstaltung;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,6 +29,12 @@ public class Mitarbeiter implements Serializable {
             @JoinColumn(name = "mitarbeiter_id")}, inverseJoinColumns = {
             @JoinColumn(name = "klausur_id")})
     private List<Klausur> klausuren;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "betreut", joinColumns = {
+            @JoinColumn(name = "mitarbeiter_id")}, inverseJoinColumns = {
+            @JoinColumn(name = "veranstaltung_id")})
+    private List<Veranstaltung> veranstaltungen;
 
     protected Mitarbeiter() {
     }
@@ -108,5 +115,13 @@ public class Mitarbeiter implements Serializable {
 
     public void setKlausuren(List<Klausur> klausuren) {
         this.klausuren = klausuren;
+    }
+
+    public List<Veranstaltung> getVeranstaltungen() {
+        return veranstaltungen;
+    }
+
+    public void setVeranstaltungen(List<Veranstaltung> veranstaltungen) {
+        this.veranstaltungen = veranstaltungen;
     }
 }

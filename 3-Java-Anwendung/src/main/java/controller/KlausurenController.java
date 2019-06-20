@@ -74,6 +74,14 @@ public class KlausurenController {
             System.out.println(v.getVeranstaltung().getName());
         }
 
+        List<Mitarbeiter> mitarbeiters = session.createQuery("from Mitarbeiter").list();
+        for (Mitarbeiter mitarbeiter : mitarbeiters) {
+            System.out.println(mitarbeiter.getNachname() + ": \n");
+            for (Veranstaltung v : mitarbeiter.getVeranstaltungen()) {
+                System.out.println(v.getName());
+            }
+        }
+
 
         System.out.println("STOP");
 

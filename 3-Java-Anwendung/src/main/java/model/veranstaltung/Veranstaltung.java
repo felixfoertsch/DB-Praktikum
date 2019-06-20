@@ -25,8 +25,9 @@ abstract public class Veranstaltung implements Serializable {
 
     @OneToMany(mappedBy = "veranstaltung")
     private List<VeranstaltungAbhaltung> abhaltungen;
-//    @OneToMany
-//    private List<Mitarbeiter> betreuer;
+
+    @ManyToMany(mappedBy = "veranstaltungen")
+    private List<Mitarbeiter> betreuer;
 
     protected Veranstaltung() {
     }
@@ -101,4 +102,19 @@ abstract public class Veranstaltung implements Serializable {
         this.maxTeilnehmer = maxTeilnehmer;
     }
 
+    public List<VeranstaltungAbhaltung> getAbhaltungen() {
+        return abhaltungen;
+    }
+
+    public void setAbhaltungen(List<VeranstaltungAbhaltung> abhaltungen) {
+        this.abhaltungen = abhaltungen;
+    }
+
+    public List<Mitarbeiter> getBetreuer() {
+        return betreuer;
+    }
+
+    public void setBetreuer(List<Mitarbeiter> betreuer) {
+        this.betreuer = betreuer;
+    }
 }
