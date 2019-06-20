@@ -3,9 +3,11 @@ package model.relationen;
 import model.Studiengang;
 import model.person.Student;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.io.Serializable;
-import java.time.Year;
 import java.util.Objects;
 
 @Entity

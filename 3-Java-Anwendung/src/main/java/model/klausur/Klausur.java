@@ -1,42 +1,60 @@
 package model.klausur;
 
-import model.Aufgabe;
-import model.Raum;
-import model.person.Mitarbeiter;
 import model.relationen.KlausurTeilnahme;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "klausur")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Klausur {
+public class Klausur implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private LocalDate datum;
     private LocalTime uhrzeitVon;
     private Double gesamtpunktzahl;
 
-    //    @ManyToOne
+    @OneToMany(mappedBy = "klausur")
+    private List<KlausurTeilnahme> klausurTeilnahmen;
+
+//    @ManyToOne
 //    private Spezialvorlesung spezialvorlesung;
 //    @ManyToOne
 //    private Grundvorlesung grundvorlesung;
-    @OneToMany
-    private ArrayList<Mitarbeiter> aufsichten;
-    @ManyToMany
-    private Collection<Raum> orte;
-    @OneToMany
-    private Collection<Aufgabe> aufgaben;
-    @OneToMany
-    private Collection<KlausurTeilnahme> klausurTeilnahmen;
+//    @OneToMany
+//    private ArrayList<Mitarbeiter> aufsichten;
+//    @ManyToMany
+//    private Collection<Raum> orte;
+//    @OneToMany
+//    private Collection<Aufgabe> aufgaben;
+
 
     public Klausur() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Klausur klausur = (Klausur) o;
+        return Objects.equals(this.id, klausur.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
     }
 
     /***********************************************************************************************
@@ -77,51 +95,4 @@ public class Klausur {
         this.gesamtpunktzahl = gesamtpunktzahl;
     }
 
-//    public Spezialvorlesung getSpezialvorlesung() {
-//        return spezialvorlesung;
-//    }
-//
-//    public void setSpezialvorlesung(Spezialvorlesung spezialvorlesung) {
-//        this.spezialvorlesung = spezialvorlesung;
-//    }
-//
-//    public Grundvorlesung getGrundvorlesung() {
-//        return grundvorlesung;
-//    }
-//
-//    public void setGrundvorlesung(Grundvorlesung grundvorlesung) {
-//        this.grundvorlesung = grundvorlesung;
-//    }
-
-    public ArrayList<Mitarbeiter> getAufsichten() {
-        return aufsichten;
-    }
-
-    public void setAufsichten(ArrayList<Mitarbeiter> aufsichten) {
-        this.aufsichten = aufsichten;
-    }
-
-    public Collection<Raum> getOrte() {
-        return orte;
-    }
-
-    public void setOrte(Collection<Raum> orte) {
-        this.orte = orte;
-    }
-
-    public Collection<Aufgabe> getAufgaben() {
-        return aufgaben;
-    }
-
-    public void setAufgaben(Collection<Aufgabe> aufgaben) {
-        this.aufgaben = aufgaben;
-    }
-
-    public Collection<KlausurTeilnahme> getKlausurTeilnahmen() {
-        return klausurTeilnahmen;
-    }
-
-    public void setKlausurTeilnahmen(Collection<KlausurTeilnahme> klausurTeilnahmen) {
-        this.klausurTeilnahmen = klausurTeilnahmen;
-    }
 }

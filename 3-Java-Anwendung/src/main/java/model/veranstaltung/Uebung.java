@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "uebung")
-@PrimaryKeyJoinColumn(name = "veranstaltungId")
+@PrimaryKeyJoinColumn(name = "veranstaltung_id")
 public class Uebung extends Veranstaltung {
 
     @OneToOne

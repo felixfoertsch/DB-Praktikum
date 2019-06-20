@@ -10,7 +10,7 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "praktikum")
-@PrimaryKeyJoinColumn(name = "veranstaltungId")
+@PrimaryKeyJoinColumn(name = "veranstaltung_id")
 public class Praktikum extends Veranstaltung {
 
     @OneToMany

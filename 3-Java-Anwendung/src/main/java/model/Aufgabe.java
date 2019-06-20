@@ -4,11 +4,13 @@ import model.klausur.Klausur;
 import model.relationen.AufgabenBearbeitung;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "aufgabe")
-public class Aufgabe {
+public class Aufgabe implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +19,34 @@ public class Aufgabe {
     private Double maxPunkte;
     @OneToOne
     private Klausur klausur;
-    @Transient
-    private Collection<AufgabenBearbeitung> aufgabenBearbeitungen;
+
+    @OneToMany(mappedBy = "aufgabe")
+    private List<AufgabenBearbeitung> aufgabenBearbeitungen;
 
     public Aufgabe() {
+    }
+
+    public Aufgabe(Integer rang, Double maxPunkte, Klausur klausur) {
+        this.rang = rang;
+        this.maxPunkte = maxPunkte;
+        this.klausur = klausur;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Aufgabe aufgabe = (Aufgabe) o;
+        return Objects.equals(this.id, aufgabe.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
     }
 
     /***********************************************************************************************
@@ -61,11 +87,4 @@ public class Aufgabe {
         this.klausur = klausur;
     }
 
-    public Collection<AufgabenBearbeitung> getAufgabenBearbeitungen() {
-        return aufgabenBearbeitungen;
-    }
-
-    public void setAufgabenBearbeitungen(Collection<AufgabenBearbeitung> aufgabenBearbeitungen) {
-        this.aufgabenBearbeitungen = aufgabenBearbeitungen;
-    }
 }

@@ -1,7 +1,11 @@
 package model.relationen;
 
+import model.klausur.Klausur;
+import model.person.Student;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
@@ -11,15 +15,27 @@ import java.util.Objects;
 public class KlausurTeilnahme implements Serializable {
 
     @Id
-    private Integer studentId;
+    @ManyToOne
+    private Student student;
     @Id
-    private Integer klausurId;
+    @ManyToOne
+    private Klausur klausur;
+
     private Boolean erschienen;
     private Boolean entschuldigt;
     private Double punkte;
     private Double note;
 
-    public KlausurTeilnahme() {
+    protected KlausurTeilnahme() {
+    }
+
+    public KlausurTeilnahme(Student student, Klausur klausur, Boolean erschienen, Boolean entschuldigt, Double punkte, Double note) {
+        this.student = student;
+        this.klausur = klausur;
+        this.erschienen = erschienen;
+        this.entschuldigt = entschuldigt;
+        this.punkte = punkte;
+        this.note = note;
     }
 
     @Override
@@ -30,13 +46,14 @@ public class KlausurTeilnahme implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        KlausurTeilnahme that = (KlausurTeilnahme) o;
-        return studentId.equals(that.studentId) && klausurId.equals(that.klausurId);
+        KlausurTeilnahme klausurTeilnahme = (KlausurTeilnahme) o;
+        return Objects.equals(this.student, klausurTeilnahme.getStudent()) &&
+                Objects.equals(this.klausur, klausurTeilnahme.getKlausur());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentId, klausurId);
+        return Objects.hash(this.student, this.klausur);
     }
 
     /***********************************************************************************************
@@ -45,20 +62,20 @@ public class KlausurTeilnahme implements Serializable {
      *
      */
 
-    public Integer getStudentId() {
-        return studentId;
+    public Student getStudent() {
+        return student;
     }
 
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
-    public Integer getKlausurId() {
-        return klausurId;
+    public Klausur getKlausur() {
+        return klausur;
     }
 
-    public void setKlausurId(Integer klausurId) {
-        this.klausurId = klausurId;
+    public void setKlausur(Klausur klausur) {
+        this.klausur = klausur;
     }
 
     public Boolean getErschienen() {

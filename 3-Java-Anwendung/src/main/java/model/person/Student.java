@@ -1,9 +1,13 @@
 package model.person;
 
+import model.relationen.AufgabenBearbeitung;
+import model.relationen.KlausurTeilnahme;
+import model.relationen.Studium;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,6 +22,15 @@ public class Student implements Serializable {
     private String vorname;
     private String nachname;
     private String uniMail;
+
+    @OneToMany(mappedBy = "student")
+    private List<Studium> studien;
+
+    @OneToMany(mappedBy = "student")
+    private List<KlausurTeilnahme> klausurTeilnahmen;
+
+    @OneToMany(mappedBy = "student")
+    private List<AufgabenBearbeitung> aufgabenBearbeitungen;
 
     protected Student() {
     }

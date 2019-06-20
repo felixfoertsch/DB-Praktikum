@@ -4,11 +4,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 import model.Studiengang;
-import model.relationen.Studium;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,7 +33,7 @@ public class KlausurenController {
         System.out.println(k.getName());
 
 
-        List studien = session.createQuery("from Studium ").list();
+        List studien = session.createQuery("from AufgabenBearbeitung ").list();
         System.out.println("STOP");
 
         session.close();

@@ -1,7 +1,11 @@
 package model.relationen;
 
+import model.Aufgabe;
+import model.person.Student;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
@@ -11,12 +15,20 @@ import java.util.Objects;
 public class AufgabenBearbeitung implements Serializable {
 
     @Id
-    private Integer studentId;
+    @ManyToOne
+    private Student student;
     @Id
-    private Integer aufgabeId;
+    @ManyToOne
+    private Aufgabe aufgabe;
     private Double punkte;
 
-    public AufgabenBearbeitung() {
+    protected AufgabenBearbeitung() {
+    }
+
+    public AufgabenBearbeitung(Student student, Aufgabe aufgabe, Double punkte) {
+        this.student = student;
+        this.aufgabe = aufgabe;
+        this.punkte = punkte;
     }
 
     @Override
@@ -27,13 +39,14 @@ public class AufgabenBearbeitung implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        AufgabenBearbeitung that = (AufgabenBearbeitung) o;
-        return studentId.equals(that.studentId) && aufgabeId.equals(that.aufgabeId);
+        AufgabenBearbeitung aufgabenBearbeitung = (AufgabenBearbeitung) o;
+        return Objects.equals(this.student, aufgabenBearbeitung.getStudent()) &&
+                Objects.equals(this.aufgabe, aufgabenBearbeitung.getAufgabe());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentId, aufgabeId);
+        return Objects.hash(this.student, this.aufgabe);
     }
 
     /***********************************************************************************************
@@ -42,20 +55,20 @@ public class AufgabenBearbeitung implements Serializable {
      *
      */
 
-    public Integer getStudentId() {
-        return studentId;
+    public Student getStudent() {
+        return student;
     }
 
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
-    public Integer getAufgabeId() {
-        return aufgabeId;
+    public Aufgabe getAufgabe() {
+        return aufgabe;
     }
 
-    public void setAufgabeId(Integer aufgabeId) {
-        this.aufgabeId = aufgabeId;
+    public void setAufgabe(Aufgabe aufgabe) {
+        this.aufgabe = aufgabe;
     }
 
     public Double getPunkte() {

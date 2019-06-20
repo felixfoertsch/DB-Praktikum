@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "wiederholungsklausur")
-@PrimaryKeyJoinColumn(name = "klausurId")
+@PrimaryKeyJoinColumn(name = "klausur_id")
 public class Wiederholungsklausur extends Abschlussklausur {
 
     public Wiederholungsklausur() {

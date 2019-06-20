@@ -10,7 +10,7 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "seminar")
-@PrimaryKeyJoinColumn(name = "veranstaltungId")
+@PrimaryKeyJoinColumn(name = "veranstaltung_id")
 abstract public class Seminar extends Veranstaltung {
 
     @OneToMany
