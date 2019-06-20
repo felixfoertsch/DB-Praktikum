@@ -15,7 +15,6 @@
                 <top>
                     <MenuBar fx:id="mainMenuBar" useSystemMenuBar="false" BorderPane.alignment="CENTER">
                         <Menu text="File">
-                            <MenuItem onAction="#newVeranstaltungButtonClicked" text="New Veranstaltung" />
                             <MenuItem onAction="#newKlausurButtonClicked" text="New Klausur" />
                             <SeparatorMenuItem />
                             <MenuItem onAction="#importButtonClicked" text="Import" />

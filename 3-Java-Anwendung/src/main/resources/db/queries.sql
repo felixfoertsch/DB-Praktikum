@@ -101,14 +101,131 @@ FROM (SELECT studentid, COUNT(studentid) AS teilnahmen
 ORDER BY teilnahmen DESC;
 
 -- 8. Welche Studenten haben im Jahr 2016 und 2017 jeweils mindestens zwei Veranstaltungen zusammen besucht.
-SELECT *
-FROM (SELECT studenta.id AS ida, studentb.id AS idb
-      FROM student AS studenta
-               CROSS JOIN student AS studentb) AS studenttuple
-         JOIN studentteilnahmeveranstaltung ON (ida = studentid OR idb = studentid);
+WITH veranstaltungen1617 AS (
+    SELECT *
+    FROM veranstaltung
+    WHERE jahr = 2016 OR jahr = 2017),
+     veranstaltungsMatching AS (-- Welche Studenten nehmen an welchen SemPraks teil?
+         SELECT veranstaltungid, studentid, FALSE AS isKlausur
+         FROM veranstaltungen1617 AS v
+                  JOIN
+              studentteilnahmeveranstaltung
+              ON veranstaltungid = v.id
+
+         UNION
+         -- Welche Studenten nehmen an welchen Vorlesungen teil?
+         SELECT DISTINCT veranstaltungid,
+                         studentteilnahmeklausur.studentid,
+                         TRUE AS isKlausur -- DISTINCT, da manche Stud. 2 Pruefungen in einer Veranstaltung schreiben
+         FROM ( -- Welche Klausuren gehören zu welcher Veranstaltung
+                  SELECT klausur.id AS klausurid, coalesce(spezialvorlesungid, grundvorlesungid) AS veranstaltungid
+                  FROM veranstaltungen1617 AS v
+                           JOIN
+                       klausur
+                       ON coalesce(spezialvorlesungid, grundvorlesungid) = v.id) AS k
+                  JOIN
+              studentteilnahmeklausur
+              ON studentteilnahmeklausur.klausurid = k.klausurid
+     )
+SELECT concat(linkerStudent.vorname, ' ', linkerStudent.nachname) AS student_1, -- Infos der Studierenden retrieven
+       links AS id_1,
+       concat(rechterStudent.vorname, ' ', rechterStudent.nachname) AS student_2,
+       rechts AS id_2,
+       gemVer
+FROM (SELECT a.studentid AS links, b.studentid AS rechts, COUNT(*) AS gemVer
+      FROM veranstaltungsMatching AS a
+               FULL JOIN veranstaltungsMatching AS b ON a.veranstaltungid = b.veranstaltungid
+      WHERE a.studentid < b.studentid -- Tie-Breaker
+      GROUP BY a.studentid, b.studentid
+      HAVING count(*) >= 2
+      ORDER BY count(*) DESC) AS ids
+         JOIN student AS linkerStudent ON ids.links = linkerStudent.id
+         JOIN student AS rechterStudent ON ids.rechts = rechterstudent.id;
+
 -- 9. Erstellen Sie ein Ranking über alle Studierenden zur Ermittlung der Top-Studierenden. Beachten Sie dabei die nachfolgenden Anforderungen:
 -- Oberseminare und Zwischenklausuren sowie die entsprechenden Noten werden nicht berücksichtigt.
--- Es sollen nur Studierende berücksichtigt werden, welche mindestens zwei Veranstaltungen erfolgreich abgeschlossen haben.
+-- Es sollen nur Studierende berücksichtigt werden, welche mindestens zwei   Veranstaltungen erfolgreich abgeschlossen haben.
 -- Seminar- und Praktikumsnoten ergeben sich jeweils aus dem Mittel der Noten aus den Prüfungsteilleistungen.
 -- Ermöglichen Sie eine unterschiedliche Gewichtung von Seminar-, Praktikums- und Klausurnoten.
 -- Studierende, welche mehr als drei Veranstaltungen erfolgreich abgeschlossen haben, sollen einen individuell definierbaren Bonus auf ihren Rankingdurchschnitt erhalten
+
+
+-- NR.2
+-- innerhalb eines Jahres 3 Veranstaltungen zusammen besucht
+CREATE OR REPLACE VIEW lernpartner AS
+    WITH veranstaltungsMatching AS (-- Welche Studenten nehmen an welchen Veranstaltungen und in welchem Jahr teil?
+        SELECT veranstaltungid,
+               studentid,
+               jahr
+        FROM veranstaltung AS v
+                 JOIN studentteilnahmeveranstaltung
+                      ON veranstaltungid = v.id
+
+        UNION
+
+        SELECT DISTINCT veranstaltungid,
+                        studentteilnahmeklausur.studentid,
+                        jahr
+        FROM (
+                 SELECT klausur.id AS klausurid,
+                        coalesce(spezialvorlesungid, grundvorlesungid) AS veranstaltungid,
+                        jahr
+                 FROM veranstaltung AS v
+                          JOIN klausur
+                               ON coalesce(spezialvorlesungid, grundvorlesungid) = v.id) AS k
+                 JOIN studentteilnahmeklausur
+                      ON studentteilnahmeklausur.klausurid = k.klausurid
+    )
+    SELECT DISTINCT a.studentid AS links, b.studentid rechts -- DISTINCT, da lernpartner-Eigenschaft in mehrere
+    FROM veranstaltungsMatching AS a
+             FULL JOIN veranstaltungsMatching AS b ON a.veranstaltungid = b.veranstaltungid
+    WHERE a.studentid < b.studentid
+    GROUP BY a.jahr, a.studentid, b.studentid -- a und b sind in einer Veranstaltung, und durch a.jahr im selben Jahr
+    HAVING count(*) >= 3;
+
+
+-- Lerpartner ersten Grades
+SELECT id, concat(vorname, ' ', nachname), matrikelnr
+FROM(
+        SELECT rechts AS partnerId
+        FROM lernpartner
+                 JOIN student ON links = id
+        WHERE matrikelnr = '3153305'
+
+        UNION
+
+        SELECT links AS partnerId
+        FROM lernpartner
+                 JOIN student ON rechts = id
+        WHERE matrikelnr = '3153305'
+    ) AS s
+        JOIN student ON partnerId = id;
+
+
+-- Lernpartner ersten und zweiten Grades
+WITH partnerFirstDegree AS (
+    SELECT rechts AS partnerId
+    FROM lernpartner
+             JOIN student ON links = id
+    WHERE matrikelnr = '3029075'
+
+    UNION
+
+    SELECT links AS partnerId
+    FROM lernpartner
+             JOIN student ON rechts = id
+    WHERE matrikelnr = '3029075'
+)
+SELECT DISTINCT id, concat(vorname, ' ', nachname), matrikelnr
+FROM (
+         SELECT rechts AS partnerSDId
+         FROM partnerFirstDegree
+                  JOIN lernpartner on partnerFirstDegree.partnerId = lernpartner.links
+
+         UNION
+
+         SELECT links AS partneSDId
+         FROM partnerFirstDegree
+                  JOIN lernpartner on partnerFirstDegree.partnerId = lernpartner.rechts
+     ) AS s
+         JOIN student ON partnerSDId = id;

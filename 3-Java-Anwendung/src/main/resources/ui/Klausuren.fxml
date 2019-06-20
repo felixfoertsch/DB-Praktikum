@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.control.Button?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="controller.KlausurenController" fx:id="klausurenPane">
-    <TableView fx:id="tableView">
-        <columns>
-            <TableColumn prefWidth="75.0" text="C1"/>
-            <TableColumn prefWidth="75.0" text="C2"/>
-            <TableColumn prefWidth="75.0" text="C3"/>
-        </columns>
-    </TableView>
-    <Button onAction="#populateTable" text="populate" />
-</AnchorPane>
+    <center>
+        <TableView fx:id="tableView">
+            <columns>
+                <TableColumn prefWidth="75.0" text="C1"/>
+                <TableColumn prefWidth="75.0" text="C2"/>
+                <TableColumn prefWidth="75.0" text="C3"/>
+            </columns>
+        </TableView>
+    </center>
+    <bottom>
+        <Button onAction="#populateTable" text="populate"/>
+    </bottom>
+</BorderPane>

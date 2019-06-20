@@ -63,11 +63,6 @@ public class MainController {
         }
     }
 
-    @FXML
-    public void newVeranstaltungButtonClicked(Event e) {
-        VeranstaltungController vc = new VeranstaltungController();
-        vc.hello();
-    }
 
     @FXML
     public void newKlausurButtonClicked(Event e) {
