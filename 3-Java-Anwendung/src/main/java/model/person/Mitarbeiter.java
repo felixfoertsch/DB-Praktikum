@@ -23,10 +23,20 @@ public class Mitarbeiter implements Serializable {
     @ManyToOne
     private Raum raum;
 
-    @OneToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "aufsicht", joinColumns = {
+            @JoinColumn(name = "mitarbeiter_id")}, inverseJoinColumns = {
+            @JoinColumn(name = "klausur_id")})
     private List<Klausur> klausuren;
 
     protected Mitarbeiter() {
+    }
+
+    public Mitarbeiter(String vorname, String nachname, String email, Raum raum) {
+        this.vorname = vorname;
+        this.nachname = nachname;
+        this.email = email;
+        this.raum = raum;
     }
 
     @Override

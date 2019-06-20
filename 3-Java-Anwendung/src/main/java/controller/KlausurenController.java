@@ -61,6 +61,10 @@ public class KlausurenController {
             for (Raum r : klausur.getRaum()) {
                 System.out.println(r.getBezeichnung());
             }
+
+            for (Mitarbeiter aufsicht : klausur.getAufsichten()) {
+                System.out.println(aufsicht.getNachname());
+            }
         }
 
         List<VeranstaltungAbhaltung> va = session.createQuery("from VeranstaltungAbhaltung ").list();

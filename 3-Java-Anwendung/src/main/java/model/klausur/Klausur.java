@@ -2,6 +2,7 @@ package model.klausur;
 
 import model.Aufgabe;
 import model.Raum;
+import model.person.Mitarbeiter;
 import model.relationen.KlausurTeilnahme;
 
 import javax.persistence.*;
@@ -36,16 +37,21 @@ public class Klausur implements Serializable {
     @ManyToMany(mappedBy = "klausuren")
     private List<Raum> raum;
 
+    @ManyToMany(mappedBy = "klausuren")
+    private List<Mitarbeiter> aufsichten;
+
 //    @ManyToOne
 //    private Spezialvorlesung spezialvorlesung;
 //    @ManyToOne
 //    private Grundvorlesung grundvorlesung;
-//    @OneToMany
-//    private ArrayList<Mitarbeiter> aufsichten;
 
+    protected Klausur() {
+    }
 
-
-    public Klausur() {
+    public Klausur(LocalDate datum, LocalTime uhrzeitVon, Double gesamtpunktzahl) {
+        this.datum = datum;
+        this.uhrzeitVon = uhrzeitVon;
+        this.gesamtpunktzahl = gesamtpunktzahl;
     }
 
     @Override
@@ -64,7 +70,6 @@ public class Klausur implements Serializable {
     public int hashCode() {
         return Objects.hash(this.id);
     }
-
 
 
     /***********************************************************************************************
@@ -119,5 +124,21 @@ public class Klausur implements Serializable {
 
     public void setRaum(List<Raum> raeume) {
         this.raum = raeume;
+    }
+
+    public List<Mitarbeiter> getAufsichten() {
+        return aufsichten;
+    }
+
+    public void setAufsichten(List<Mitarbeiter> aufsichten) {
+        this.aufsichten = aufsichten;
+    }
+
+    public List<KlausurTeilnahme> getKlausurTeilnahmen() {
+        return klausurTeilnahmen;
+    }
+
+    public void setKlausurTeilnahmen(List<KlausurTeilnahme> klausurTeilnahmen) {
+        this.klausurTeilnahmen = klausurTeilnahmen;
     }
 }

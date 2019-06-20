@@ -27,7 +27,7 @@ public class Raum implements Serializable {
     // that's why both columns have to be identified here.
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "ort", joinColumns = {
-            @JoinColumn(name = "raum_id") }, inverseJoinColumns = {
+            @JoinColumn(name = "raum_id")}, inverseJoinColumns = {
             @JoinColumn(name = "klausur_id")})
     private List<Klausur> klausuren = new ArrayList<>();
 
