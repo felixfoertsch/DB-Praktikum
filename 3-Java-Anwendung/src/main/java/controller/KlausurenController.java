@@ -3,9 +3,13 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
-import model.person.Student;
+import model.Studiengang;
+import model.relationen.Studium;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class KlausurenController {
@@ -27,9 +31,13 @@ public class KlausurenController {
     @FXML
     void populateTable() {
         Session session = sessionFactory.openSession();
-        Student k = session.load(Student.class, 2);
+        Studiengang k = session.load(Studiengang.class, 1);
+        System.out.println(k.getName());
 
-        System.out.println(k.getMatrikelNr());
+
+        List studien = session.createQuery("from Studiengang ").list();
+        System.out.println("STOP");
+
         session.close();
     }
 }

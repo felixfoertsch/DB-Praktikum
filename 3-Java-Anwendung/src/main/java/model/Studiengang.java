@@ -3,11 +3,14 @@ package model;
 import model.relationen.Studium;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "studiengang")
-public class Studiengang {
+public class Studiengang implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +19,33 @@ public class Studiengang {
     private String abschluss;
     private Integer regelstudienzeit;
 
-    @OneToMany
-    private Collection<Studium> studien;
+    @OneToMany(mappedBy = "studiengang")
+    private List<Studium> studien;
 
-    public Studiengang() {
+    protected Studiengang() {
+    }
+
+    public Studiengang(String name, String abschluss, Integer regelstudienzeit) {
+        this.name = name;
+        this.abschluss = abschluss;
+        this.regelstudienzeit = regelstudienzeit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Studiengang studiengang = (Studiengang) o;
+        return Objects.equals(this.id, studiengang.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
     }
 
     /***********************************************************************************************
@@ -60,11 +86,11 @@ public class Studiengang {
         this.regelstudienzeit = regelstudienzeit;
     }
 
-    public Collection<Studium> getStudien() {
+    public List<Studium> getStudien() {
         return studien;
     }
 
-    public void setStudien(Collection<Studium> studien) {
+    public void setStudien(List<Studium> studien) {
         this.studien = studien;
     }
 }

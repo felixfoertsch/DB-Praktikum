@@ -87,10 +87,7 @@ public class MainController {
 
     @FXML
     public void testStudiengangInsert() {
-        var studiengang = new Studiengang();
-        studiengang.setName("Test");
-        studiengang.setAbschluss("Testabschluss");
-        studiengang.setRegelstudienzeit(111);
+        var studiengang = new Studiengang("Test", "Super-Abschluss", 5);
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();

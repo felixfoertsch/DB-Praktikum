@@ -4,12 +4,11 @@ import model.Aufgabe;
 import model.Raum;
 import model.person.Mitarbeiter;
 import model.relationen.KlausurTeilnahme;
-import model.veranstaltung.Grundvorlesung;
-import model.veranstaltung.Spezialvorlesung;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -24,12 +23,12 @@ public class Klausur {
     private LocalTime uhrzeitVon;
     private Double gesamtpunktzahl;
 
-    @ManyToOne
-    private Spezialvorlesung spezialvorlesung;
-    @ManyToOne
-    private Grundvorlesung grundvorlesung;
+    //    @ManyToOne
+//    private Spezialvorlesung spezialvorlesung;
+//    @ManyToOne
+//    private Grundvorlesung grundvorlesung;
     @OneToMany
-    private Collection<Mitarbeiter> aufsichten;
+    private ArrayList<Mitarbeiter> aufsichten;
     @ManyToMany
     private Collection<Raum> orte;
     @OneToMany
@@ -78,27 +77,27 @@ public class Klausur {
         this.gesamtpunktzahl = gesamtpunktzahl;
     }
 
-    public Spezialvorlesung getSpezialvorlesung() {
-        return spezialvorlesung;
-    }
+//    public Spezialvorlesung getSpezialvorlesung() {
+//        return spezialvorlesung;
+//    }
+//
+//    public void setSpezialvorlesung(Spezialvorlesung spezialvorlesung) {
+//        this.spezialvorlesung = spezialvorlesung;
+//    }
+//
+//    public Grundvorlesung getGrundvorlesung() {
+//        return grundvorlesung;
+//    }
+//
+//    public void setGrundvorlesung(Grundvorlesung grundvorlesung) {
+//        this.grundvorlesung = grundvorlesung;
+//    }
 
-    public void setSpezialvorlesung(Spezialvorlesung spezialvorlesung) {
-        this.spezialvorlesung = spezialvorlesung;
-    }
-
-    public Grundvorlesung getGrundvorlesung() {
-        return grundvorlesung;
-    }
-
-    public void setGrundvorlesung(Grundvorlesung grundvorlesung) {
-        this.grundvorlesung = grundvorlesung;
-    }
-
-    public Collection<Mitarbeiter> getAufsichten() {
+    public ArrayList<Mitarbeiter> getAufsichten() {
         return aufsichten;
     }
 
-    public void setAufsichten(Collection<Mitarbeiter> aufsichten) {
+    public void setAufsichten(ArrayList<Mitarbeiter> aufsichten) {
         this.aufsichten = aufsichten;
     }
 

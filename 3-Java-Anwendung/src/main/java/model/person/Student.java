@@ -1,17 +1,14 @@
 package model.person;
 
-import model.relationen.AufgabenBearbeitung;
-import model.relationen.KlausurTeilnahme;
-import model.relationen.SemPrakTeilnahme;
-import model.relationen.Studium;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "student")
-public class Student {
+public class Student implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,16 +19,31 @@ public class Student {
     private String nachname;
     private String uniMail;
 
-    @OneToMany
-    private Collection<KlausurTeilnahme> klausurTeilnahmen;
-    @OneToMany
-    private Collection<SemPrakTeilnahme> semPrakTeilnahmen;
-    @OneToMany
-    private Collection<Studium> studien;
-    @OneToMany
-    private Collection<AufgabenBearbeitung> aufgabenBearbeitungen;
+    protected Student() {
+    }
 
-    public Student() {
+    public Student(String matrikelNr, String vorname, String nachname, String uniMail) {
+        this.matrikelNr = matrikelNr;
+        this.vorname = vorname;
+        this.nachname = nachname;
+        this.uniMail = uniMail;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Student student = (Student) o;
+        return Objects.equals(this.id, student.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
     }
 
     /***********************************************************************************************
@@ -80,35 +92,4 @@ public class Student {
         this.uniMail = uniMail;
     }
 
-    public Collection<KlausurTeilnahme> getKlausurTeilnahmen() {
-        return klausurTeilnahmen;
-    }
-
-    public void setKlausurTeilnahmen(Collection<KlausurTeilnahme> klausurTeilnahmen) {
-        this.klausurTeilnahmen = klausurTeilnahmen;
-    }
-
-    public Collection<SemPrakTeilnahme> getSemPrakTeilnahmen() {
-        return semPrakTeilnahmen;
-    }
-
-    public void setSemPrakTeilnahmen(Collection<SemPrakTeilnahme> semPrakTeilnahme) {
-        this.semPrakTeilnahmen = semPrakTeilnahme;
-    }
-
-    public Collection<Studium> getStudien() {
-        return studien;
-    }
-
-    public void setStudien(Collection<Studium> studiumMap) {
-        this.studien = studiumMap;
-    }
-
-    public Collection<AufgabenBearbeitung> getAufgabenBearbeitungen() {
-        return aufgabenBearbeitungen;
-    }
-
-    public void setAufgabenBearbeitungen(Collection<AufgabenBearbeitung> aufgabenBearbeitungen) {
-        this.aufgabenBearbeitungen = aufgabenBearbeitungen;
-    }
 }

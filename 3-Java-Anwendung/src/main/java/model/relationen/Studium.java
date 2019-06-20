@@ -1,8 +1,9 @@
 package model.relationen;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import model.Studiengang;
+import model.person.Student;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Year;
 import java.util.Objects;
@@ -12,14 +13,25 @@ import java.util.Objects;
 public class Studium implements Serializable {
 
     @Id
-    private Integer studentId;
+    @ManyToOne
+    private Student student;
     @Id
-    private Integer studiengangId;
+    @ManyToOne
+    private Studiengang studiengang;
+
     private Year imma;
     private Year exma;
     private Integer semester;
 
-    public Studium() {
+    protected Studium() {
+    }
+
+    public Studium(Student student, Studiengang studiengang, Year imma, Year exma, Integer semester) {
+        this.student = student;
+        this.studiengang = studiengang;
+        this.imma = imma;
+        this.exma = exma;
+        this.semester = semester;
     }
 
     @Override
@@ -30,13 +42,14 @@ public class Studium implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Studium that = (Studium) o;
-        return studentId.equals(that.studentId) && studiengangId.equals(that.studiengangId);
+        Studium studium = (Studium) o;
+        return Objects.equals(this.student, studium.getStudent()) &&
+                Objects.equals(this.studiengang, studium.getStudiengang());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentId, studiengangId);
+        return Objects.hash(this.student, this.studiengang);
     }
 
     /***********************************************************************************************
@@ -45,20 +58,20 @@ public class Studium implements Serializable {
      *
      */
 
-    public Integer getStudentId() {
-        return studentId;
+    public Student getStudent() {
+        return student;
     }
 
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
-    public Integer getStudiengangId() {
-        return studiengangId;
+    public Studiengang getStudiengang() {
+        return studiengang;
     }
 
-    public void setStudiengangId(Integer studiengangId) {
-        this.studiengangId = studiengangId;
+    public void setStudiengang(Studiengang studiengang) {
+        this.studiengang = studiengang;
     }
 
     public Year getImma() {
@@ -84,4 +97,6 @@ public class Studium implements Serializable {
     public void setSemester(Integer semester) {
         this.semester = semester;
     }
+
+
 }
