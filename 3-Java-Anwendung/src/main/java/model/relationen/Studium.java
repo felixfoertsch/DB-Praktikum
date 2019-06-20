@@ -19,14 +19,14 @@ public class Studium implements Serializable {
     @ManyToOne
     private Studiengang studiengang;
 
-    private Year imma;
-    private Year exma;
+    private Integer imma;
+    private Integer exma;
     private Integer semester;
 
     protected Studium() {
     }
 
-    public Studium(Student student, Studiengang studiengang, Year imma, Year exma, Integer semester) {
+    public Studium(Student student, Studiengang studiengang, Integer imma, Integer exma, Integer semester) {
         this.student = student;
         this.studiengang = studiengang;
         this.imma = imma;
@@ -74,19 +74,19 @@ public class Studium implements Serializable {
         this.studiengang = studiengang;
     }
 
-    public Year getImma() {
+    public Integer getImma() {
         return imma;
     }
 
-    public void setImma(Year imma) {
+    public void setImma(Integer imma) {
         this.imma = imma;
     }
 
-    public Year getExma() {
+    public Integer getExma() {
         return exma;
     }
 
-    public void setExma(Year exma) {
+    public void setExma(Integer exma) {
         this.exma = exma;
     }
 
