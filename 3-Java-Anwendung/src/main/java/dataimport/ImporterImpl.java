@@ -681,9 +681,9 @@ public class ImporterImpl implements Importer {
 
             String typ;
             if (klausur.getTyp().equals("zk")) {
-                typ = "INSERT INTO zwischenklausur (klausurId) VALUES (?)";
+                typ = "INSERT INTO zwischenklausur (klausur_id) VALUES (?)";
             } else {
-                typ = "INSERT INTO abschlussklausur (klausurId) VALUES (?)";
+                typ = "INSERT INTO abschlussklausur (klausur_id) VALUES (?)";
             }
             PreparedStatement insertKlausurTyp = c.prepareStatement(typ);
             insertKlausurTyp.setObject(1, klausur.getId());
@@ -691,7 +691,7 @@ public class ImporterImpl implements Importer {
             insertKlausurTyp.close();
 
             if (klausur.getTyp().equals("wh")) {
-                typ = "INSERT INTO wiederholungsklausur (klausurId) VALUES (?)";
+                typ = "INSERT INTO wiederholungsklausur (klausur_id) VALUES (?)";
                 PreparedStatement insertWdh = c.prepareStatement(typ);
                 insertWdh.setObject(1, klausur.getId());
                 insertWdh.executeUpdate();
@@ -720,37 +720,37 @@ public class ImporterImpl implements Importer {
 
             String typ;
             if (veranstaltung.getTyp().equals("V")) {
-                typ = "INSERT INTO grundvorlesung (veranstaltungId) VALUES (?)";
+                typ = "INSERT INTO grundvorlesung (veranstaltung_id) VALUES (?)";
                 PreparedStatement insertVATyp = c.prepareStatement(typ);
                 insertVATyp.setObject(1, veranstaltung.getId());
                 insertVATyp.executeUpdate();
                 insertVATyp.close();
             } else if (veranstaltung.getTyp().equals("SV")) {
-                typ = "INSERT INTO spezialvorlesung (veranstaltungId) VALUES (?)";
+                typ = "INSERT INTO spezialvorlesung (veranstaltung_id) VALUES (?)";
                 PreparedStatement insertVATyp = c.prepareStatement(typ);
                 insertVATyp.setObject(1, veranstaltung.getId());
                 insertVATyp.executeUpdate();
                 insertVATyp.close();
             } else if (veranstaltung.getTyp().equals("P")) {
-                typ = "INSERT INTO praktikum (veranstaltungId) VALUES (?)";
+                typ = "INSERT INTO praktikum (veranstaltung_id) VALUES (?)";
                 PreparedStatement insertVATyp = c.prepareStatement(typ);
                 insertVATyp.setObject(1, veranstaltung.getId());
                 insertVATyp.executeUpdate();
                 insertVATyp.close();
             } else if (veranstaltung.getTyp().equals("OS") || veranstaltung.getTyp().equals("PS")) {
-                typ = "INSERT INTO seminar (veranstaltungId) VALUES (?)";
+                typ = "INSERT INTO seminar (veranstaltung_id) VALUES (?)";
                 PreparedStatement insertVATyp = c.prepareStatement(typ);
                 insertVATyp.setObject(1, veranstaltung.getId());
                 insertVATyp.executeUpdate();
                 insertVATyp.close();
                 if (veranstaltung.getTyp().equals("OS")) {
-                    typ = "INSERT INTO oberseminar (veranstaltungId) VALUES (?)";
+                    typ = "INSERT INTO oberseminar (veranstaltung_id) VALUES (?)";
                     PreparedStatement insertSeminarTyp = c.prepareStatement(typ);
                     insertSeminarTyp.setObject(1, veranstaltung.getId());
                     insertSeminarTyp.executeUpdate();
                     insertSeminarTyp.close();
                 } else {
-                    typ = "INSERT INTO problemseminar (veranstaltungId) VALUES (?)";
+                    typ = "INSERT INTO problemseminar (veranstaltung_id) VALUES (?)";
                     PreparedStatement insertSeminarTyp = c.prepareStatement(typ);
                     insertSeminarTyp.setObject(1, veranstaltung.getId());
                     insertSeminarTyp.executeUpdate();
@@ -763,7 +763,7 @@ public class ImporterImpl implements Importer {
 
         for (Uebung uebung : uebungen) {
             Veranstaltung zugehoerigeGV = veranstaltungMap.get(uebung.getKennung());
-            String typ = "INSERT INTO uebung (veranstaltungId, grundvorlesungid) VALUES (?, ?)";
+            String typ = "INSERT INTO uebung (veranstaltung_id, grundvorlesung_id) VALUES (?, ?)";
             PreparedStatement insertUebung = c.prepareStatement(typ);
             insertUebung.setObject(1, uebung.getId());
             insertUebung.setObject(2, zugehoerigeGV.getId());
@@ -775,7 +775,7 @@ public class ImporterImpl implements Importer {
 
     private void persistAbhaltung(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Veranstaltung> veranstaltungMap = universitaet.getVeranstaltungen();
-        String insert = "INSERT INTO abhaltung (raumid, veranstaltungid, wochentag, zeit) VALUES (?, ?, ?, ?)";
+        String insert = "INSERT INTO abhaltung (raum_id, veranstaltung_id, wochentag, zeit) VALUES (?, ?, ?, ?)";
         PreparedStatement insertAbhaltung = c.prepareStatement(insert);
 
         for (Veranstaltung va : veranstaltungMap.values()) {
@@ -798,8 +798,8 @@ public class ImporterImpl implements Importer {
     private void persistKlausurVeranstaltungLink(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Klausur> klausurMap = universitaet.getKlausuren();
         Map<String, Veranstaltung> veranstaltungMap = universitaet.getVeranstaltungen();
-        String insertSV = "UPDATE klausur SET spezialvorlesungId = ? WHERE id = ?";
-        String insertGV = "UPDATE klausur SET grundvorlesungId = ? WHERE id = ?";
+        String insertSV = "UPDATE klausur SET spezialvorlesung_id = ? WHERE id = ?";
+        String insertGV = "UPDATE klausur SET grundvorlesung_id = ? WHERE id = ?";
         PreparedStatement insertSVId = c.prepareStatement(insertSV);
         PreparedStatement insertGVId = c.prepareStatement(insertGV);
 
@@ -825,7 +825,7 @@ public class ImporterImpl implements Importer {
 
     private void persistMitarbeiter(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Mitarbeiter> mitarbeiterMap = universitaet.getMitarbeiter();
-        String insert = "INSERT INTO mitarbeiter (vorname, nachname, email, raumId) VALUES (?, ?, ?, ?)";
+        String insert = "INSERT INTO mitarbeiter (vorname, nachname, email, raum_id) VALUES (?, ?, ?, ?)";
         PreparedStatement insertMitarbeiter = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
 
         for (Mitarbeiter mitarbeiter : mitarbeiterMap.values()) {
@@ -843,7 +843,7 @@ public class ImporterImpl implements Importer {
 
     private void persistAufsicht(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Klausur> klausurMap = universitaet.getKlausuren();
-        String insert = "INSERT INTO aufsicht (klausurid, mitarbeiterid) VALUES (?, ?)";
+        String insert = "INSERT INTO aufsicht (klausur_id, mitarbeiter_id) VALUES (?, ?)";
         PreparedStatement insertAufsicht = c.prepareStatement(insert);
 
         for (Klausur klausur : klausurMap.values()) {
@@ -877,7 +877,7 @@ public class ImporterImpl implements Importer {
 
     private void persistKlausurAufgaben(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Klausur> klausurMap = universitaet.getKlausuren();
-        String insert = "INSERT INTO aufgabe (klausurid, rang, maxpunkte) VALUES (?, ?, ?)";
+        String insert = "INSERT INTO aufgabe (klausur_id, rang, maxpunkte) VALUES (?, ?, ?)";
         PreparedStatement insertAufgabe = c.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
 
         for (Klausur klausur : klausurMap.values()) {
@@ -913,7 +913,7 @@ public class ImporterImpl implements Importer {
 
     private void persistBearbeitung(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Student> studentMap = universitaet.getStudenten();
-        String insert = "INSERT INTO bearbeitung (studentid, aufgabeid, punkte) VALUES (?, ?, ?)";
+        String insert = "INSERT INTO bearbeitung (student_id, aufgabe_id, punkte) VALUES (?, ?, ?)";
         PreparedStatement insertBearbeitung = c.prepareStatement(insert);
 
         for (Student student : studentMap.values()) {
@@ -934,7 +934,7 @@ public class ImporterImpl implements Importer {
 
     private void persistBetreut(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Veranstaltung> veranstaltungMap = universitaet.getVeranstaltungen();
-        String insert = "INSERT INTO betreut (mitarbeiterid, veranstaltungid) VALUES (?, ?)";
+        String insert = "INSERT INTO betreut (mitarbeiter_id, veranstaltung_id) VALUES (?, ?)";
         PreparedStatement insertBetreut = c.prepareStatement(insert);
 
         for (Veranstaltung v : veranstaltungMap.values()) {
@@ -949,7 +949,7 @@ public class ImporterImpl implements Importer {
 
     private void persistOrt(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Klausur> klausurMap = universitaet.getKlausuren();
-        String insert = "INSERT INTO ort (klausurid, raumid) VALUES (?, ?)";
+        String insert = "INSERT INTO ort (klausur_id, raum_id) VALUES (?, ?)";
         PreparedStatement insertOrt = c.prepareStatement(insert);
 
         for (Klausur k : klausurMap.values()) {
@@ -964,7 +964,7 @@ public class ImporterImpl implements Importer {
 
     private void persistStudium(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Student> studentMap = universitaet.getStudenten();
-        String insert = "INSERT INTO studium (studiengangid, studentid, imma, exma, semester) VALUES (?, ?, ?, ?, ?)";
+        String insert = "INSERT INTO studium (studiengang_id, student_id, imma, exma, semester) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement insertStudium = c.prepareStatement(insert);
 
         for (Student student : studentMap.values()) {
@@ -991,8 +991,8 @@ public class ImporterImpl implements Importer {
 
     private void persistStudentTeilnahmeKlausurVeranstaltung(Universitaet universitaet, Connection c) throws Exception {
         Map<String, Student> studentMap = universitaet.getStudenten();
-        String insertTK = "INSERT INTO studentTeilnahmeKlausur (studentid, klausurid, erschienen, entschuldigt, punkte, note) VALUES (?, ?, ?, ?, ?, ?)";
-        String insertTV = "INSERT INTO studentTeilnahmeVeranstaltung (studentid, veranstaltungid, note)  VALUES (?, ?, ?)";
+        String insertTK = "INSERT INTO studentTeilnahmeKlausur (student_id, klausur_id, erschienen, entschuldigt, punkte, note) VALUES (?, ?, ?, ?, ?, ?)";
+        String insertTV = "INSERT INTO studentTeilnahmeVeranstaltung (student_id, veranstaltung_id, note)  VALUES (?, ?, ?)";
         PreparedStatement insertTKstmt = c.prepareStatement(insertTK);
         PreparedStatement insertTVstmt = c.prepareStatement(insertTV);
 

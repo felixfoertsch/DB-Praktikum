@@ -35,7 +35,7 @@ public class KlausurenController {
         System.out.println(k.getName());
 
 
-        List studien = session.createQuery("from Studiengang ").list();
+        List studien = session.createQuery("from Studium ").list();
         System.out.println("STOP");
 
         session.close();
