@@ -22,7 +22,7 @@ public class AufgabenBearbeitung implements Serializable {
     private Aufgabe aufgabe;
     private Double punkte;
 
-    protected AufgabenBearbeitung() {
+    public AufgabenBearbeitung() {
     }
 
     public AufgabenBearbeitung(Student student, Aufgabe aufgabe, Double punkte) {

@@ -27,7 +27,7 @@ abstract public class Veranstaltung implements Serializable {
     @ManyToMany(mappedBy = "veranstaltungen")
     private List<Mitarbeiter> betreuer;
 
-    protected Veranstaltung() {
+    public Veranstaltung() {
     }
 
     public Veranstaltung(String name, Integer jahr, String semester, Integer maxTeilnehmer) {

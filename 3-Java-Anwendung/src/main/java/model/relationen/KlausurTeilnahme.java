@@ -26,7 +26,7 @@ public class KlausurTeilnahme implements Serializable {
     private Double punkte;
     private Double note;
 
-    protected KlausurTeilnahme() {
+    public KlausurTeilnahme() {
     }
 
     public KlausurTeilnahme(Student student, Klausur klausur, Boolean erschienen, Boolean entschuldigt, Double punkte, Double note) {

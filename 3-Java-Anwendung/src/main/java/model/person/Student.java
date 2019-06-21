@@ -36,7 +36,7 @@ public class Student implements Serializable {
     @OneToMany(mappedBy = "student")
     private List<SemPrakTeilnahme> semPrakTeilnahmen;
 
-    protected Student() {
+    public Student() {
     }
 
     public Student(String matrikelNr, String vorname, String nachname, String uniMail) {

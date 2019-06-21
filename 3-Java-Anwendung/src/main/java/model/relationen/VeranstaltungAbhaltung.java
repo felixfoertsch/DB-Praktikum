@@ -25,7 +25,7 @@ public class VeranstaltungAbhaltung implements Serializable {
     private LocalTime zeit;
     private String wochentag;
 
-    protected VeranstaltungAbhaltung() {
+    public VeranstaltungAbhaltung() {
     }
 
     public VeranstaltungAbhaltung(Raum raum, Veranstaltung veranstaltung, LocalTime zeit, String wochentag) {

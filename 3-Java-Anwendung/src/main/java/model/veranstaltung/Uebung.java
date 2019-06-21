@@ -1,22 +1,21 @@
 package model.veranstaltung;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "uebung")
 @PrimaryKeyJoinColumn(name = "veranstaltung_id")
 public class Uebung extends Veranstaltung {
 
-//    @ManyToOne
-//    private Grundvorlesung grundvorlesung;
+    @ManyToOne
+    @JoinColumn(
+            name = "grundvorlesung_id",
+            foreignKey = @ForeignKey(name = "veranstaltung_id")
+    )
+    private Grundvorlesung grundvorlesung;
 
-    protected Uebung() {
+    public Uebung() {
     }
-
-
 
     /***********************************************************************************************
      *
@@ -24,5 +23,11 @@ public class Uebung extends Veranstaltung {
      *
      */
 
+    public Grundvorlesung getGrundvorlesung() {
+        return grundvorlesung;
+    }
 
+    public void setGrundvorlesung(Grundvorlesung grundvorlesung) {
+        this.grundvorlesung = grundvorlesung;
+    }
 }

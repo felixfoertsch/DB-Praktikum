@@ -16,7 +16,7 @@ abstract public class Seminar extends Veranstaltung {
     @OneToMany(mappedBy = "veranstaltung")
     private List<SemPrakTeilnahme> semPrakTeilnahmen;
 
-    protected Seminar() {
+    public Seminar() {
     }
 
     /***********************************************************************************************
@@ -25,5 +25,11 @@ abstract public class Seminar extends Veranstaltung {
      *
      */
 
+    public List<SemPrakTeilnahme> getSemPrakTeilnahmen() {
+        return semPrakTeilnahmen;
+    }
 
+    public void setSemPrakTeilnahmen(List<SemPrakTeilnahme> semPrakTeilnahmen) {
+        this.semPrakTeilnahmen = semPrakTeilnahmen;
+    }
 }

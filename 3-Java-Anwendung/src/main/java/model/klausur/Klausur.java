@@ -43,21 +43,21 @@ public class Klausur implements Serializable {
     @ManyToMany(mappedBy = "klausuren")
     private List<Mitarbeiter> aufsichten;
 
-//    @ManyToOne
-//    @JoinColumn(
-//            name = "spezialvorlesung_id",
-//            foreignKey = @ForeignKey(name = "veranstaltung_id")
-//    )
-//    private Spezialvorlesung spezialvorlesung;
-//
-//    @ManyToOne
-//    @JoinColumn(
-//            name = "grundvorlesung_id",
-//            foreignKey = @ForeignKey(name = "veranstaltung_id")
-//    )
-//    private Grundvorlesung grundvorlesung;
+    @ManyToOne
+    @JoinColumn(
+            name = "spezialvorlesung_id",
+            foreignKey = @ForeignKey(name = "veranstaltung_id")
+    )
+    private Spezialvorlesung spezialvorlesung;
 
-    protected Klausur() {
+    @ManyToOne
+    @JoinColumn(
+            name = "grundvorlesung_id",
+            foreignKey = @ForeignKey(name = "veranstaltung_id")
+    )
+    private Grundvorlesung grundvorlesung;
+
+    public Klausur() {
     }
 
     public Klausur(LocalDate datum, LocalTime uhrzeitVon, Double gesamtpunktzahl) {
@@ -154,4 +154,19 @@ public class Klausur implements Serializable {
         this.klausurTeilnahmen = klausurTeilnahmen;
     }
 
+    public Spezialvorlesung getSpezialvorlesung() {
+        return spezialvorlesung;
+    }
+
+    public void setSpezialvorlesung(Spezialvorlesung spezialvorlesung) {
+        this.spezialvorlesung = spezialvorlesung;
+    }
+
+    public Grundvorlesung getGrundvorlesung() {
+        return grundvorlesung;
+    }
+
+    public void setGrundvorlesung(Grundvorlesung grundvorlesung) {
+        this.grundvorlesung = grundvorlesung;
+    }
 }

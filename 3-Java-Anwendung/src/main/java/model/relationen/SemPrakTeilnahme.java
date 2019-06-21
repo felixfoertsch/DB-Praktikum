@@ -22,7 +22,7 @@ public class SemPrakTeilnahme implements Serializable {
     private Veranstaltung veranstaltung;
     private Double note;
 
-    protected SemPrakTeilnahme() {
+    public SemPrakTeilnahme() {
     }
 
     public SemPrakTeilnahme(Student student, Veranstaltung veranstaltung, Double note) {

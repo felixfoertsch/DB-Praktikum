@@ -35,14 +35,13 @@ public class Mitarbeiter implements Serializable {
             @JoinColumn(name = "veranstaltung_id")})
     private List<Veranstaltung> veranstaltungen;
 
-    protected Mitarbeiter() {
+    public Mitarbeiter() {
     }
 
-    public Mitarbeiter(String vorname, String nachname, String email, Raum raum) {
+    public Mitarbeiter(String vorname, String nachname, String email) {
         this.vorname = vorname;
         this.nachname = nachname;
         this.email = email;
-        this.raum = raum;
     }
 
     @Override

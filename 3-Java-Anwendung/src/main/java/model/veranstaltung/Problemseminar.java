@@ -8,7 +8,6 @@ import javax.persistence.Table;
 @Table(name = "problemseminar")
 @PrimaryKeyJoinColumn(name = "veranstaltung_id")
 public class Problemseminar extends Seminar {
-
-    protected Problemseminar() {
+    public Problemseminar() {
     }
 }

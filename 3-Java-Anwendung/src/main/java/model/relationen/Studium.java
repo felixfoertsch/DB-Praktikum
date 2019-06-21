@@ -25,7 +25,7 @@ public class Studium implements Serializable {
     private Integer exma;
     private Integer semester;
 
-    protected Studium() {
+    public Studium() {
     }
 
     public Studium(Student student, Studiengang studiengang, Integer imma, Integer exma, Integer semester) {
@@ -99,6 +99,5 @@ public class Studium implements Serializable {
     public void setSemester(Integer semester) {
         this.semester = semester;
     }
-
 
 }

@@ -13,13 +13,11 @@ import java.util.List;
 @PrimaryKeyJoinColumn(name = "veranstaltung_id")
 public class Spezialvorlesung extends Veranstaltung {
 
-//    @OneToMany(mappedBy = "spezialvorlesung")
-//    private List<Klausur> klausuren;
+    @OneToMany(mappedBy = "spezialvorlesung")
+    private List<Klausur> klausuren;
 
-    protected Spezialvorlesung() {
+    public Spezialvorlesung() {
     }
-
-
 
     /***********************************************************************************************
      *
@@ -27,5 +25,11 @@ public class Spezialvorlesung extends Veranstaltung {
      *
      */
 
+    public List<Klausur> getKlausuren() {
+        return klausuren;
+    }
 
+    public void setKlausuren(List<Klausur> klausuren) {
+        this.klausuren = klausuren;
+    }
 }

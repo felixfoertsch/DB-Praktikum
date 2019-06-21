@@ -8,8 +8,6 @@ import javax.persistence.Table;
 @Table(name = "zwischenklausur")
 @PrimaryKeyJoinColumn(name = "klausur_id")
 public class Zwischenklausur extends Klausur {
-
     public Zwischenklausur() {
     }
-
 }

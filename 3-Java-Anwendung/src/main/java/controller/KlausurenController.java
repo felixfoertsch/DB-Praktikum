@@ -69,28 +69,27 @@ public class KlausurenController {
             }
         }
 
-        List<VeranstaltungAbhaltung> va = session.createQuery("from VeranstaltungAbhaltung ").list();
+        List<Mitarbeiter> mitarbeiters = session.createQuery("from Mitarbeiter").list();
+        for (Mitarbeiter mitarbeiter : mitarbeiters) {
+            System.out.println(mitarbeiter.getNachname() + ": \n");
+            for (Veranstaltung v : mitarbeiter.getVeranstaltungen()) {
+                System.out.println(v.getName());
+            }
+        }
+
+        List<Student> studies = session.createQuery("from Student").list();
+        for (Student student : studies) {
+            for (SemPrakTeilnahme semPrakTeilnahme : student.getSemPrakTeilnahmen()) {
+                System.out.println(student.getNachname() + " " + semPrakTeilnahme.getNote());
+            }
+        }
+
+        List<VeranstaltungAbhaltung> va = session.createQuery("from VeranstaltungAbhaltung").list();
 
         for (VeranstaltungAbhaltung v : va) {
             System.out.println(v.getWochentag());
             System.out.println(v.getVeranstaltung().getName());
         }
-
-//        List<Mitarbeiter> mitarbeiters = session.createQuery("from Mitarbeiter").list();
-//        for (Mitarbeiter mitarbeiter : mitarbeiters) {
-//            System.out.println(mitarbeiter.getNachname() + ": \n");
-//            for (Veranstaltung v : mitarbeiter.getVeranstaltungen()) {
-//                System.out.println(v.getName());
-//            }
-//        }
-
-//        List<Student> studies = session.createQuery("from Student").list();
-//        for (Student student : studies) {
-//            for (SemPrakTeilnahme semPrakTeilnahme : student.getSemPrakTeilnahmen()) {
-//                System.out.println(student.getNachname() + " " + semPrakTeilnahme.getNote());
-//            }
-//        }
-
 
         System.out.println("STOP");
 
