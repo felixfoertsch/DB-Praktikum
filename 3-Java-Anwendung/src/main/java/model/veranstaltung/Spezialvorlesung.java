@@ -6,18 +6,20 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "spezialvorlesung")
 @PrimaryKeyJoinColumn(name = "veranstaltung_id")
 public class Spezialvorlesung extends Veranstaltung {
 
-//    @OneToMany
-//    private Collection<Klausur> klausuren;
+//    @OneToMany(mappedBy = "spezialvorlesung")
+//    private List<Klausur> klausuren;
 
-    public Spezialvorlesung() {
+    protected Spezialvorlesung() {
     }
+
+
 
     /***********************************************************************************************
      *

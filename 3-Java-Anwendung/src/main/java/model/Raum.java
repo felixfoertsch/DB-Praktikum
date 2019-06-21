@@ -114,4 +114,12 @@ public class Raum implements Serializable {
     public void setMitarbeiter(List<Mitarbeiter> mitarbeiter) {
         this.mitarbeiter = mitarbeiter;
     }
+
+    public List<VeranstaltungAbhaltung> getAbhaltungen() {
+        return abhaltungen;
+    }
+
+    public void setAbhaltungen(List<VeranstaltungAbhaltung> abhaltungen) {
+        this.abhaltungen = abhaltungen;
+    }
 }

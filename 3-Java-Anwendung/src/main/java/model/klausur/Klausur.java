@@ -4,6 +4,8 @@ import model.Aufgabe;
 import model.Raum;
 import model.person.Mitarbeiter;
 import model.relationen.KlausurTeilnahme;
+import model.veranstaltung.Grundvorlesung;
+import model.veranstaltung.Spezialvorlesung;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -29,7 +31,7 @@ public class Klausur implements Serializable {
     @OneToMany(mappedBy = "klausur")
     private List<KlausurTeilnahme> klausurTeilnahmen;
 
-    // Explicit Relation with additional data: see AufgabenBearbeitung class.
+    // Explicit Relation with additional data: see Aufgabe class.
     @OneToMany(mappedBy = "klausur")
     private List<Aufgabe> aufgaben;
 
@@ -37,12 +39,22 @@ public class Klausur implements Serializable {
     @ManyToMany(mappedBy = "klausuren")
     private List<Raum> raum;
 
+    // Look into the Mitarbeiter class for the mapping instructions.
     @ManyToMany(mappedBy = "klausuren")
     private List<Mitarbeiter> aufsichten;
 
 //    @ManyToOne
+//    @JoinColumn(
+//            name = "spezialvorlesung_id",
+//            foreignKey = @ForeignKey(name = "veranstaltung_id")
+//    )
 //    private Spezialvorlesung spezialvorlesung;
+//
 //    @ManyToOne
+//    @JoinColumn(
+//            name = "grundvorlesung_id",
+//            foreignKey = @ForeignKey(name = "veranstaltung_id")
+//    )
 //    private Grundvorlesung grundvorlesung;
 
     protected Klausur() {
@@ -141,4 +153,5 @@ public class Klausur implements Serializable {
     public void setKlausurTeilnahmen(List<KlausurTeilnahme> klausurTeilnahmen) {
         this.klausurTeilnahmen = klausurTeilnahmen;
     }
+
 }

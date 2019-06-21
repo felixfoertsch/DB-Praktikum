@@ -42,7 +42,7 @@
 
         <mapping class="model.relationen.AufgabenBearbeitung"/>
         <mapping class="model.relationen.KlausurTeilnahme"/>
-<!--        <mapping class="model.relationen.SemPrakTeilnahme"/>-->
+        <mapping class="model.relationen.SemPrakTeilnahme"/>
         <mapping class="model.relationen.Studium"/>
         <mapping class="model.relationen.VeranstaltungAbhaltung"/>
 

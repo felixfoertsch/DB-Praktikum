@@ -1,7 +1,7 @@
 package model.veranstaltung;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -10,11 +10,13 @@ import javax.persistence.Table;
 @PrimaryKeyJoinColumn(name = "veranstaltung_id")
 public class Uebung extends Veranstaltung {
 
-//    @OneToOne
+//    @ManyToOne
 //    private Grundvorlesung grundvorlesung;
 
-    public Uebung() {
+    protected Uebung() {
     }
+
+
 
     /***********************************************************************************************
      *

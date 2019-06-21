@@ -8,6 +8,8 @@ import model.Raum;
 import model.Studiengang;
 import model.klausur.Klausur;
 import model.person.Mitarbeiter;
+import model.person.Student;
+import model.relationen.SemPrakTeilnahme;
 import model.relationen.VeranstaltungAbhaltung;
 import model.veranstaltung.Veranstaltung;
 import org.hibernate.Session;
@@ -74,13 +76,20 @@ public class KlausurenController {
             System.out.println(v.getVeranstaltung().getName());
         }
 
-        List<Mitarbeiter> mitarbeiters = session.createQuery("from Mitarbeiter").list();
-        for (Mitarbeiter mitarbeiter : mitarbeiters) {
-            System.out.println(mitarbeiter.getNachname() + ": \n");
-            for (Veranstaltung v : mitarbeiter.getVeranstaltungen()) {
-                System.out.println(v.getName());
-            }
-        }
+//        List<Mitarbeiter> mitarbeiters = session.createQuery("from Mitarbeiter").list();
+//        for (Mitarbeiter mitarbeiter : mitarbeiters) {
+//            System.out.println(mitarbeiter.getNachname() + ": \n");
+//            for (Veranstaltung v : mitarbeiter.getVeranstaltungen()) {
+//                System.out.println(v.getName());
+//            }
+//        }
+
+//        List<Student> studies = session.createQuery("from Student").list();
+//        for (Student student : studies) {
+//            for (SemPrakTeilnahme semPrakTeilnahme : student.getSemPrakTeilnahmen()) {
+//                System.out.println(student.getNachname() + " " + semPrakTeilnahme.getNote());
+//            }
+//        }
 
 
         System.out.println("STOP");

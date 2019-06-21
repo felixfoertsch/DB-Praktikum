@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -14,13 +13,16 @@ import java.util.List;
 @PrimaryKeyJoinColumn(name = "veranstaltung_id")
 public class Grundvorlesung extends Veranstaltung {
 
-//    @OneToMany
+//    @OneToMany(mappedBy = "grundvorlesung")
 //    private List<Uebung> uebungen;
-//    @OneToMany
+//
+//    @OneToMany(mappedBy = "grundvorlesung")
 //    private List<Klausur> klausuren;
 
-    public Grundvorlesung() {
+    protected Grundvorlesung() {
     }
+
+
 
     /***********************************************************************************************
      *

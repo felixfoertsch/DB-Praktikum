@@ -2,6 +2,7 @@ package model.person;
 
 import model.relationen.AufgabenBearbeitung;
 import model.relationen.KlausurTeilnahme;
+import model.relationen.SemPrakTeilnahme;
 import model.relationen.Studium;
 import org.hibernate.annotations.NaturalId;
 
@@ -31,6 +32,9 @@ public class Student implements Serializable {
 
     @OneToMany(mappedBy = "student")
     private List<AufgabenBearbeitung> aufgabenBearbeitungen;
+
+    @OneToMany(mappedBy = "student")
+    private List<SemPrakTeilnahme> semPrakTeilnahmen;
 
     protected Student() {
     }
@@ -105,4 +109,35 @@ public class Student implements Serializable {
         this.uniMail = uniMail;
     }
 
+    public List<Studium> getStudien() {
+        return studien;
+    }
+
+    public void setStudien(List<Studium> studien) {
+        this.studien = studien;
+    }
+
+    public List<KlausurTeilnahme> getKlausurTeilnahmen() {
+        return klausurTeilnahmen;
+    }
+
+    public void setKlausurTeilnahmen(List<KlausurTeilnahme> klausurTeilnahmen) {
+        this.klausurTeilnahmen = klausurTeilnahmen;
+    }
+
+    public List<AufgabenBearbeitung> getAufgabenBearbeitungen() {
+        return aufgabenBearbeitungen;
+    }
+
+    public void setAufgabenBearbeitungen(List<AufgabenBearbeitung> aufgabenBearbeitungen) {
+        this.aufgabenBearbeitungen = aufgabenBearbeitungen;
+    }
+
+    public List<SemPrakTeilnahme> getSemPrakTeilnahmen() {
+        return semPrakTeilnahmen;
+    }
+
+    public void setSemPrakTeilnahmen(List<SemPrakTeilnahme> semPrakTeilnahmeen) {
+        this.semPrakTeilnahmen = semPrakTeilnahmeen;
+    }
 }

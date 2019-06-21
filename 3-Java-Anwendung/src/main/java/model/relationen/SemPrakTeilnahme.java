@@ -1,7 +1,11 @@
 package model.relationen;
 
+import model.person.Student;
+import model.veranstaltung.Veranstaltung;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
@@ -11,12 +15,20 @@ import java.util.Objects;
 public class SemPrakTeilnahme implements Serializable {
 
     @Id
-    private Integer studentId;
+    @ManyToOne
+    private Student student;
     @Id
-    private Integer veranstaltungId;
+    @ManyToOne
+    private Veranstaltung veranstaltung;
     private Double note;
 
-    public SemPrakTeilnahme() {
+    protected SemPrakTeilnahme() {
+    }
+
+    public SemPrakTeilnahme(Student student, Veranstaltung veranstaltung, Double note) {
+        this.student = student;
+        this.veranstaltung = veranstaltung;
+        this.note = note;
     }
 
     @Override
@@ -27,13 +39,14 @@ public class SemPrakTeilnahme implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SemPrakTeilnahme that = (SemPrakTeilnahme) o;
-        return studentId.equals(that.studentId) && veranstaltungId.equals(that.veranstaltungId);
+        SemPrakTeilnahme semPrakTeilnahme = (SemPrakTeilnahme) o;
+        return Objects.equals(this.student, semPrakTeilnahme.getStudent()) &&
+                Objects.equals(this.veranstaltung, semPrakTeilnahme.getVeranstaltung());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentId, veranstaltungId);
+        return Objects.hash(this.student, this.veranstaltung);
     }
 
     /***********************************************************************************************
@@ -42,27 +55,27 @@ public class SemPrakTeilnahme implements Serializable {
      *
      */
 
-    public Integer getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
-    }
-
-    public Integer getVeranstaltungId() {
-        return veranstaltungId;
-    }
-
-    public void setVeranstaltungId(Integer veranstaltungId) {
-        this.veranstaltungId = veranstaltungId;
-    }
-
     public Double getNote() {
         return note;
     }
 
     public void setNote(Double note) {
         this.note = note;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public Veranstaltung getVeranstaltung() {
+        return veranstaltung;
+    }
+
+    public void setVeranstaltung(Veranstaltung veranstaltung) {
+        this.veranstaltung = veranstaltung;
     }
 }
