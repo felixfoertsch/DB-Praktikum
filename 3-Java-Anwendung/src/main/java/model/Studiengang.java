@@ -21,7 +21,7 @@ public class Studiengang implements Serializable {
     @OneToMany(mappedBy = "studiengang")
     private List<Studium> studien;
 
-    protected Studiengang() {
+    public Studiengang() {
     }
 
     public Studiengang(String name, String abschluss, Integer regelstudienzeit) {

@@ -3,8 +3,8 @@ SELECT (
                    (SELECT COUNT(*) FROM student)::FLOAT -
                    (SELECT COUNT(*)
                     FROM student
-                             JOIN studium ON student.id = studium.studentid
-                             JOIN studiengang ON studium.studiengangid = studiengang.id
+                             JOIN studium ON student.id = studium.student_id
+                             JOIN studiengang ON studium.studiengang_id = studiengang.id
                     WHERE studiengang.name = 'Informatik')::FLOAT) /
        (SELECT COUNT(*) FROM student)::FLOAT AS prozent;
 
@@ -15,13 +15,13 @@ SELECT name
 FROM veranstaltung
 WHERE id = (SELECT gesamtid
             FROM (SELECT gesamtid, AVG(uhrzeitvon) AS avguhrzeitvon
-                  FROM (SELECT spezialvorlesungid AS gesamtid, uhrzeitvon
+                  FROM (SELECT spezialvorlesung_id AS gesamtid, uhrzeitvon
                         FROM klausur
-                        WHERE spezialvorlesungid IS NOT NULL
+                        WHERE spezialvorlesung_id IS NOT NULL
                         UNION ALL
-                        SELECT grundvorlesungid AS gesamtid, uhrzeitvon
+                        SELECT grundvorlesung_id AS gesamtid, uhrzeitvon
                         FROM klausur
-                        WHERE grundvorlesungid IS NOT NULL) AS unionklausur
+                        WHERE grundvorlesung_id IS NOT NULL) AS unionklausur
                   GROUP BY gesamtid
                   ORDER BY avguhrzeitvon
                   LIMIT 1) AS first);
@@ -29,16 +29,16 @@ WHERE id = (SELECT gesamtid
 -- 3. Wie viele Studierende haben im Wintersemester 2017 an der DBS1-Abschlussklausur teilgenommen?
 SELECT COUNT(*)
 FROM klausur
-         JOIN studentteilnahmeklausur s ON s.klausurid = klausur.id
+         JOIN studentteilnahmeklausur s ON s.klausur_id = klausur.id
          JOIN (SELECT DISTINCT gesamtid
-               FROM (SELECT spezialvorlesungid AS gesamtid
+               FROM (SELECT spezialvorlesung_id AS gesamtid
                      FROM klausur
-                     WHERE spezialvorlesungid IS NOT NULL
+                     WHERE spezialvorlesung_id IS NOT NULL
                      UNION ALL
-                     SELECT grundvorlesungid AS gesamtid
+                     SELECT grundvorlesung_id AS gesamtid
                      FROM klausur
-                     WHERE grundvorlesungid IS NOT NULL) AS innerfoo) AS foo
-              ON gesamtid = spezialvorlesungid OR gesamtid = grundvorlesungid
+                     WHERE grundvorlesung_id IS NOT NULL) AS innerfoo) AS foo
+              ON gesamtid = spezialvorlesung_id OR gesamtid = grundvorlesung_id
          JOIN veranstaltung v ON gesamtid = v.id
 WHERE jahr = 2017
   AND semester = 'WiSe'
@@ -49,10 +49,10 @@ WHERE jahr = 2017
 -- Finde alle Mitarbeiter, die AKs beaufsichtigt haben. Gib restliche Mitarbeiter zurück.
 SELECT vorname, nachname
 FROM mitarbeiter
-WHERE id NOT IN (SELECT mitarbeiterid
+WHERE id NOT IN (SELECT mitarbeiter_id
                  FROM klausur
-                          JOIN abschlussklausur a ON klausur.id = a.klausurid
-                          JOIN aufsicht a2 ON klausur.id = a2.klausurid);
+                          JOIN abschlussklausur a ON klausur.id = a.klausur_id
+                          JOIN aufsicht a2 ON klausur.id = a2.klausur_id);
 
 -- 5. Welche Veranstaltungsreihen wurden immer zur selben Zeit abgehalten?
 -- Annahmen: Wochentag egal, Veranstaltungsreihe = gleicher Name
@@ -62,7 +62,7 @@ SELECT name
 FROM (SELECT name,
              zeit
       FROM veranstaltung
-               JOIN abhaltung ON veranstaltung.id = abhaltung.veranstaltungid
+               JOIN abhaltung ON veranstaltung.id = abhaltung.veranstaltung_id
       GROUP BY name, zeit) AS groupedveranstaltungen
 GROUP BY name
 HAVING COUNT(name) < 2;
@@ -73,72 +73,81 @@ HAVING COUNT(name) < 2;
 -- Alle Studenten, die GV besucht haben minus die, die SV besucht haben
 SELECT DISTINCT s2.id, s2.vorname, s2.nachname
 FROM klausur
-         JOIN studentteilnahmeklausur s ON klausur.id = s.klausurid
-         JOIN student s2 ON s.studentid = s2.id
-WHERE grundvorlesungid IS NOT NULL
+         JOIN studentteilnahmeklausur s ON klausur.id = s.klausur_id
+         JOIN student s2 ON s.student_id = s2.id
+WHERE grundvorlesung_id IS NOT NULL
     EXCEPT
 SELECT DISTINCT s2.id, s2.vorname, s2.nachname
 FROM klausur
-         JOIN studentteilnahmeklausur s ON klausur.id = s.klausurid
-         JOIN student s2 ON s.studentid = s2.id
-WHERE spezialvorlesungid IS NOT NULL;
+         JOIN studentteilnahmeklausur s ON klausur.id = s.klausur_id
+         JOIN student s2 ON s.student_id = s2.id
+WHERE spezialvorlesung_id IS NOT NULL;
 
 -- 7. Erstellen Sie eine Liste aller Studierenden geordnet nach der Anzahl der erfolgreich teilgenommenen Klausuren sowie Prüfungsleistungen.
 -- erfolgreich = Note zwischen 1.0 und 4.0 (nicht erschienen hat Note 0.0)
 SELECT id, vorname, nachname, teilnahmen
-FROM (SELECT studentid, COUNT(studentid) AS teilnahmen
-      FROM (SELECT studentid
+FROM (SELECT student_id, COUNT(student_id) AS teilnahmen
+      FROM (SELECT student_id
             FROM studentteilnahmeklausur
             WHERE note >= 1.0
               AND note <= 4.0
             UNION ALL
-            SELECT studentid
+            SELECT student_id
             FROM studentteilnahmeveranstaltung
             WHERE note >= 1.0
               AND note <= 4.0) AS veranstaltungen
-      GROUP BY studentid) AS gesamt
-         JOIN student ON gesamt.studentid = student.id
+      GROUP BY student_id) AS gesamt
+         JOIN student ON gesamt.student_id = student.id
 ORDER BY teilnahmen DESC;
 
 -- 8. Welche Studenten haben im Jahr 2016 und 2017 jeweils mindestens zwei Veranstaltungen zusammen besucht.
-WITH veranstaltungen1617 AS (
-    SELECT *
-    FROM veranstaltung
-    WHERE jahr = 2016 OR jahr = 2017),
-     veranstaltungsMatching AS (-- Welche Studenten nehmen an welchen SemPraks teil?
-         SELECT veranstaltungid, studentid, FALSE AS isKlausur
-         FROM veranstaltungen1617 AS v
-                  JOIN
-              studentteilnahmeveranstaltung
-              ON veranstaltungid = v.id
+WITH veranstaltungsMatching AS (-- Welche Studenten nehmen an welchen Veranstaltungen und in welchem Jahr teil?
+    SELECT veranstaltung_id,
+           student_id,
+           jahr
+    FROM veranstaltung AS v
+             JOIN studentteilnahmeveranstaltung
+                  ON veranstaltung_id = v.id
 
-         UNION
-         -- Welche Studenten nehmen an welchen Vorlesungen teil?
-         SELECT DISTINCT veranstaltungid,
-                         studentteilnahmeklausur.studentid,
-                         TRUE AS isKlausur -- DISTINCT, da manche Stud. 2 Pruefungen in einer Veranstaltung schreiben
-         FROM ( -- Welche Klausuren gehören zu welcher Veranstaltung
-                  SELECT klausur.id AS klausurid, coalesce(spezialvorlesungid, grundvorlesungid) AS veranstaltungid
-                  FROM veranstaltungen1617 AS v
-                           JOIN
-                       klausur
-                       ON coalesce(spezialvorlesungid, grundvorlesungid) = v.id) AS k
-                  JOIN
-              studentteilnahmeklausur
-              ON studentteilnahmeklausur.klausurid = k.klausurid
-     )
+    UNION
+
+    SELECT DISTINCT veranstaltung_id,
+                    studentteilnahmeklausur.student_id,
+                    jahr
+    FROM (
+             SELECT klausur.id AS klausur_id,
+                    coalesce(spezialvorlesung_id, grundvorlesung_id) AS veranstaltung_id,
+                    jahr
+             FROM veranstaltung AS v
+                      JOIN klausur
+                           ON coalesce(spezialvorlesung_id, grundvorlesung_id) = v.id) AS k
+             JOIN studentteilnahmeklausur
+                  ON studentteilnahmeklausur.klausur_id = k.klausur_id
+)
 SELECT concat(linkerStudent.vorname, ' ', linkerStudent.nachname) AS student_1, -- Infos der Studierenden retrieven
+       linkerStudent.matrikelnr AS mnr_1,
        links AS id_1,
        concat(rechterStudent.vorname, ' ', rechterStudent.nachname) AS student_2,
-       rechts AS id_2,
-       gemVer
-FROM (SELECT a.studentid AS links, b.studentid AS rechts, COUNT(*) AS gemVer
-      FROM veranstaltungsMatching AS a
-               FULL JOIN veranstaltungsMatching AS b ON a.veranstaltungid = b.veranstaltungid
-      WHERE a.studentid < b.studentid -- Tie-Breaker
-      GROUP BY a.studentid, b.studentid
-      HAVING count(*) >= 2
-      ORDER BY count(*) DESC) AS ids
+       rechterStudent.matrikelnr AS mnr_2,
+       rechts AS id_2
+FROM (
+         SELECT DISTINCT a.student_id AS links, b.student_id rechts -- DISTINCT, da lernpartner-Eigenschaft in mehrere
+         FROM veranstaltungsMatching AS a
+                  FULL JOIN veranstaltungsMatching AS b ON a.veranstaltung_id = b.veranstaltung_id
+         WHERE a.student_id < b.student_id
+           AND a.jahr = 2016
+         GROUP BY a.student_id, b.student_id -- a und b sind in einer Veranstaltung, und durch a.jahr im selben Jahr
+         HAVING count(*) >= 2
+
+         INTERSECT  -- 2016 und 2017 JEWEILS min. 2 Veranstaltungen besucht
+
+         SELECT DISTINCT a.student_id AS links, b.student_id
+         FROM veranstaltungsMatching AS a
+                  FULL JOIN veranstaltungsMatching AS b ON a.veranstaltung_id = b.veranstaltung_id
+         WHERE a.student_id < b.student_id
+           AND a.jahr = 2017
+         GROUP BY a.student_id, b.student_id
+         HAVING count(*) >= 2) AS ids
          JOIN student AS linkerStudent ON ids.links = linkerStudent.id
          JOIN student AS rechterStudent ON ids.rechts = rechterstudent.id;
 
@@ -154,33 +163,33 @@ FROM (SELECT a.studentid AS links, b.studentid AS rechts, COUNT(*) AS gemVer
 -- innerhalb eines Jahres 3 Veranstaltungen zusammen besucht
 CREATE OR REPLACE VIEW lernpartner AS
     WITH veranstaltungsMatching AS (-- Welche Studenten nehmen an welchen Veranstaltungen und in welchem Jahr teil?
-        SELECT veranstaltungid,
-               studentid,
+        SELECT veranstaltung_id,
+               student_id,
                jahr
         FROM veranstaltung AS v
                  JOIN studentteilnahmeveranstaltung
-                      ON veranstaltungid = v.id
+                      ON veranstaltung_id = v.id
 
         UNION
 
-        SELECT DISTINCT veranstaltungid,
-                        studentteilnahmeklausur.studentid,
+        SELECT DISTINCT veranstaltung_id,
+                        studentteilnahmeklausur.student_id,
                         jahr
         FROM (
-                 SELECT klausur.id AS klausurid,
-                        coalesce(spezialvorlesungid, grundvorlesungid) AS veranstaltungid,
+                 SELECT klausur.id AS klausur_id,
+                        coalesce(spezialvorlesung_id, grundvorlesung_id) AS veranstaltung_id,
                         jahr
                  FROM veranstaltung AS v
                           JOIN klausur
-                               ON coalesce(spezialvorlesungid, grundvorlesungid) = v.id) AS k
+                               ON coalesce(spezialvorlesung_id, grundvorlesung_id) = v.id) AS k
                  JOIN studentteilnahmeklausur
-                      ON studentteilnahmeklausur.klausurid = k.klausurid
+                      ON studentteilnahmeklausur.klausur_id = k.klausur_id
     )
-    SELECT DISTINCT a.studentid AS links, b.studentid rechts -- DISTINCT, da lernpartner-Eigenschaft in mehrere
+    SELECT DISTINCT a.student_id AS links, b.student_id rechts -- DISTINCT, da lernpartner-Eigenschaft in mehrere
     FROM veranstaltungsMatching AS a
-             FULL JOIN veranstaltungsMatching AS b ON a.veranstaltungid = b.veranstaltungid
-    WHERE a.studentid < b.studentid
-    GROUP BY a.jahr, a.studentid, b.studentid -- a und b sind in einer Veranstaltung, und durch a.jahr im selben Jahr
+             FULL JOIN veranstaltungsMatching AS b ON a.veranstaltung_id = b.veranstaltung_id
+    WHERE a.student_id < b.student_id
+    GROUP BY a.jahr, a.student_id, b.student_id -- a und b sind in einer Veranstaltung, und durch a.jahr im selben Jahr
     HAVING count(*) >= 3;
 
 

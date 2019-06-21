@@ -37,7 +37,7 @@ public class Raum implements Serializable {
     @OneToMany(mappedBy = "raum")
     private List<VeranstaltungAbhaltung> abhaltungen;
 
-    protected Raum() {
+    public Raum() {
     }
 
     public Raum(String bezeichnung) {
