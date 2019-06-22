@@ -5,11 +5,13 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="controller.KlausurenController" fx:id="klausurenPane">
     <center>
-        <TableView fx:id="tableView">
+        <TableView fx:id="table">
             <columns>
-                <TableColumn prefWidth="75.0" text="C1"/>
-                <TableColumn prefWidth="75.0" text="C2"/>
-                <TableColumn prefWidth="75.0" text="C3"/>
+                <TableColumn prefWidth="30.0" text="ID" fx:id="id"/>
+                <TableColumn prefWidth="290.0" text="Zugehörige VA" fx:id="va"/>
+                <TableColumn prefWidth="100.0" text="Datum" fx:id="date"/>
+                <TableColumn prefWidth="100.0" text="Uhrzeit" fx:id="time"/>
+                <TableColumn prefWidth="100.0" text="Punkte Σ" fx:id="points"/>
             </columns>
         </TableView>
     </center>

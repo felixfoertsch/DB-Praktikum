@@ -1,32 +1,54 @@
 package controller;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.util.Callback;
+import model.veranstaltung.Grundvorlesung;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import model.Aufgabe;
-import model.Raum;
-import model.Studiengang;
 import model.klausur.Klausur;
-import model.person.Mitarbeiter;
-import model.person.Student;
-import model.relationen.SemPrakTeilnahme;
-import model.relationen.VeranstaltungAbhaltung;
-import model.veranstaltung.Veranstaltung;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.ResourceBundle;
 
 
-public class KlausurenController {
-    @FXML
-    Pane klausurenPane;
-    @FXML
-    TableView tableView;
+public class KlausurenController implements Initializable {
 
     private SessionFactory sessionFactory;
 
+    @FXML
+    Pane klausurenPane;
+    @FXML
+    TableView<Klausur> table;
+    @FXML
+    TableColumn<Klausur, Integer> id;
+    @FXML
+    TableColumn<Klausur, String> va;
+    @FXML
+    TableColumn<Klausur, LocalDate> date;
+    @FXML
+    TableColumn<Klausur, LocalTime> time;
+    @FXML
+    TableColumn<Klausur, Double> points;
+
     public KlausurenController() {
+
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
     }
 
@@ -37,62 +59,23 @@ public class KlausurenController {
     @FXML
     void populateTable() {
         Session session = sessionFactory.openSession();
-        Studiengang s = session.load(Studiengang.class, 2);
-        System.out.println(s.getName());
+        List<Klausur> klausurenData = session.createQuery("from Klausur").list();
+        ObservableList<Klausur> klausuren = FXCollections.observableArrayList(klausurenData);
+        table.setItems(klausuren);
+        id.setCellValueFactory(new PropertyValueFactory<Klausur, Integer>("id"));
+        date.setCellValueFactory(new PropertyValueFactory<Klausur, LocalDate>("datum"));
+        time.setCellValueFactory(new PropertyValueFactory<Klausur, LocalTime>("uhrzeitVon"));
+        points.setCellValueFactory(new PropertyValueFactory<Klausur, Double>("gesamtpunktzahl"));
 
-
-        List studien = session.createQuery("from AufgabenBearbeitung ").list();
-
-        Klausur k = session.load(Klausur.class, 2);
-        for (Aufgabe a : k.getAufgaben()) {
-            System.out.println(a.getKlausur());
-        }
-        for (Raum r : k.getRaum()) {
-            System.out.println(r.getBezeichnung());
-            for (Mitarbeiter m : r.getMitarbeiter()) {
-                System.out.println(m.getNachname());
+        va.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Klausur, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Klausur, String> k) {
+                // p.getValue() returns the PersonType instance for a particular TableView row
+                if (k.getValue() != null && k.getValue().getGrundvorlesung() != null) {
+                    return new SimpleStringProperty(k.getValue().getGrundvorlesung().getName());
+                } else {
+                    return new SimpleStringProperty("<Keine GV>");
+                }
             }
-        }
-
-        Mitarbeiter m = session.load(Mitarbeiter.class, 1);
-        System.out.println(m.getNachname());
-
-        List<Klausur> klausuren = session.createQuery("from Klausur").list();
-
-        for (Klausur klausur : klausuren) {
-            for (Raum r : klausur.getRaum()) {
-                System.out.println(r.getBezeichnung());
-            }
-
-            for (Mitarbeiter aufsicht : klausur.getAufsichten()) {
-                System.out.println(aufsicht.getNachname());
-            }
-        }
-
-        List<Mitarbeiter> mitarbeiters = session.createQuery("from Mitarbeiter").list();
-        for (Mitarbeiter mitarbeiter : mitarbeiters) {
-            System.out.println(mitarbeiter.getNachname() + ": \n");
-            for (Veranstaltung v : mitarbeiter.getVeranstaltungen()) {
-                System.out.println(v.getName());
-            }
-        }
-
-        List<Student> studies = session.createQuery("from Student").list();
-        for (Student student : studies) {
-            for (SemPrakTeilnahme semPrakTeilnahme : student.getSemPrakTeilnahmen()) {
-                System.out.println(student.getNachname() + " " + semPrakTeilnahme.getNote());
-            }
-        }
-
-        List<VeranstaltungAbhaltung> va = session.createQuery("from VeranstaltungAbhaltung").list();
-
-        for (VeranstaltungAbhaltung v : va) {
-            System.out.println(v.getWochentag());
-            System.out.println(v.getVeranstaltung().getName());
-        }
-
-        System.out.println("STOP");
-
-        session.close();
+        });
     }
 }

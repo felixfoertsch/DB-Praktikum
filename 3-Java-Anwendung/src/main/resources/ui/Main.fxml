@@ -25,6 +25,7 @@
                         <Menu text="Test">
                             <MenuItem onAction="#testStudiengangInsert" text="Insert Hard Coded Studiengang" />
                             <MenuItem onAction="#testStudiengangGet" text="Get Studiengang Id 1" />
+                            <MenuItem onAction="#testEverything" text="Supertest" />
                         </Menu>
                         <Menu text="Help">
                             <MenuItem onAction="#aboutButtonClicked" text="About" />
