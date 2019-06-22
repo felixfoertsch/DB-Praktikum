@@ -2,17 +2,15 @@ package controller;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.util.Callback;
-import model.veranstaltung.Grundvorlesung;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.util.Callback;
 import model.klausur.Klausur;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -25,8 +23,6 @@ import java.util.ResourceBundle;
 
 
 public class KlausurenController implements Initializable {
-
-    private SessionFactory sessionFactory;
 
     @FXML
     Pane klausurenPane;
@@ -42,6 +38,7 @@ public class KlausurenController implements Initializable {
     TableColumn<Klausur, LocalTime> time;
     @FXML
     TableColumn<Klausur, Double> points;
+    private SessionFactory sessionFactory;
 
     public KlausurenController() {
 
@@ -69,11 +66,12 @@ public class KlausurenController implements Initializable {
 
         va.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Klausur, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Klausur, String> k) {
-                // p.getValue() returns the PersonType instance for a particular TableView row
                 if (k.getValue() != null && k.getValue().getGrundvorlesung() != null) {
                     return new SimpleStringProperty(k.getValue().getGrundvorlesung().getName());
+                } else if (k.getValue() != null && k.getValue().getSpezialvorlesung() != null) {
+                    return new SimpleStringProperty(k.getValue().getSpezialvorlesung().getName());
                 } else {
-                    return new SimpleStringProperty("<Keine GV>");
+                    return new SimpleStringProperty("<Keine zugehörige VA>");
                 }
             }
         });
