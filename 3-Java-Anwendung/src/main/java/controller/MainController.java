@@ -54,6 +54,7 @@ public class MainController {
 
         KlausurenController kc = loader.getController();
         kc.injectSessionFactory(sessionFactory);
+        kc.populateTable();
 
         mainBorderPane.setCenter(pane);
     }

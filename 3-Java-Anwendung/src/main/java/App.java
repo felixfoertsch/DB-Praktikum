@@ -18,8 +18,13 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void init() throws Exception {
+        super.init();
         setUpHibernate();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Main.fxml"));
         Stage stage = loader.load();
 

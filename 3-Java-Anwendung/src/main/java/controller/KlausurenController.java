@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class KlausurenController implements Initializable {
+public class KlausurenController{
 
     @FXML
     Pane klausurenPane;
@@ -41,11 +41,6 @@ public class KlausurenController implements Initializable {
     private SessionFactory sessionFactory;
 
     public KlausurenController() {
-
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
 
     }
 
