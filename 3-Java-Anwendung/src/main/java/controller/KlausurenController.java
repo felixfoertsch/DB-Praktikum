@@ -59,20 +59,18 @@ public class KlausurenController implements Initializable {
         List<Klausur> klausurenData = session.createQuery("from Klausur").list();
         ObservableList<Klausur> klausuren = FXCollections.observableArrayList(klausurenData);
         table.setItems(klausuren);
-        id.setCellValueFactory(new PropertyValueFactory<Klausur, Integer>("id"));
-        date.setCellValueFactory(new PropertyValueFactory<Klausur, LocalDate>("datum"));
-        time.setCellValueFactory(new PropertyValueFactory<Klausur, LocalTime>("uhrzeitVon"));
-        points.setCellValueFactory(new PropertyValueFactory<Klausur, Double>("gesamtpunktzahl"));
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        date.setCellValueFactory(new PropertyValueFactory<>("datum"));
+        time.setCellValueFactory(new PropertyValueFactory<>("uhrzeitVon"));
+        points.setCellValueFactory(new PropertyValueFactory<>("gesamtpunktzahl"));
 
-        va.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Klausur, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Klausur, String> k) {
-                if (k.getValue() != null && k.getValue().getGrundvorlesung() != null) {
-                    return new SimpleStringProperty(k.getValue().getGrundvorlesung().getName());
-                } else if (k.getValue() != null && k.getValue().getSpezialvorlesung() != null) {
-                    return new SimpleStringProperty(k.getValue().getSpezialvorlesung().getName());
-                } else {
-                    return new SimpleStringProperty("<Keine zugehörige VA>");
-                }
+        va.setCellValueFactory(k -> {
+            if (k.getValue() != null && k.getValue().getGrundvorlesung() != null) {
+                return new SimpleStringProperty(k.getValue().getGrundvorlesung().getName());
+            } else if (k.getValue() != null && k.getValue().getSpezialvorlesung() != null) {
+                return new SimpleStringProperty(k.getValue().getSpezialvorlesung().getName());
+            } else {
+                return new SimpleStringProperty("<Keine zugehörige VA>");
             }
         });
     }
