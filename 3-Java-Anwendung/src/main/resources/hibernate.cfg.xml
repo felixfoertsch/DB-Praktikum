@@ -20,6 +20,8 @@
         <!-- JDBC connection pool (use the built-in) -->
         <property name="connection.pool_size">1</property>
 
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
+
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
 
@@ -58,7 +60,5 @@
         <mapping class="model.Aufgabe"/>
         <mapping class="model.Raum"/>
         <mapping class="model.Studiengang"/>
-
-
     </session-factory>
 </hibernate-configuration>

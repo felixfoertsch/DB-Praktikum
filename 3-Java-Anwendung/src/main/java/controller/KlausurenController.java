@@ -4,14 +4,20 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.klausur.Klausur;
 import org.controlsfx.control.MasterDetailPane;
 import org.controlsfx.control.PropertySheet;
+import org.controlsfx.property.BeanPropertyUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -24,7 +30,7 @@ public class KlausurenController {
     @FXML
     TabPane klausurTabPane;
     @FXML
-    PropertySheet klausurPropertySheet;
+    Tab klausurPropertySheet;
     @FXML
     TableView<Klausur> table;
     @FXML
@@ -40,6 +46,7 @@ public class KlausurenController {
 
 
     private SessionFactory sessionFactory;
+    private List<Klausur> klausuren;
 
     public KlausurenController() {
 
@@ -51,10 +58,8 @@ public class KlausurenController {
 
     @FXML
     void populateTable() {
-
-        Session session = sessionFactory.openSession();
-        List<Klausur> klausurenData = session.createQuery("from Klausur").list();
-        ObservableList<Klausur> klausuren = FXCollections.observableArrayList(klausurenData);
+        fetchKlausuren();
+        ObservableList<Klausur> klausuren = FXCollections.observableArrayList(this.klausuren);
         table.setItems(klausuren);
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         date.setCellValueFactory(new PropertyValueFactory<>("datum"));
@@ -75,9 +80,30 @@ public class KlausurenController {
 
     @FXML
     public void showDetails() {
-        // [TablePosition [ row: 6, column: javafx.scene.control.TableColumn@5b0de3ac, tableView: TableView[id=table, styleClass=table-view] ]]
-        System.out.println(table.getSelectionModel().getSelectedCells().toString());
-        klausurenMasterDetailPane.showDetailNodeProperty().setValue(true);
+        Transaction tx = null;
+        try (Session session = sessionFactory.openSession()) {
+            tx = session.beginTransaction();
+            Integer selectedKlausurId = table.getSelectionModel().getSelectedItem().getId();
+            Klausur selectedKlausur = session.get(Klausur.class, selectedKlausurId);
+            PropertySheet propertySheet = new PropertySheet(BeanPropertyUtils.getProperties(selectedKlausur));
+            klausurPropertySheet.setContent(propertySheet);
+            klausurenMasterDetailPane.showDetailNodeProperty().setValue(true);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            throw e;
+        }
+    }
 
+    private void fetchKlausuren() {
+        Transaction tx = null;
+        try (Session session = sessionFactory.openSession()) {
+            tx = session.beginTransaction();
+            this.klausuren = session.createQuery("from Klausur").list();
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            throw e;
+        }
     }
 }
