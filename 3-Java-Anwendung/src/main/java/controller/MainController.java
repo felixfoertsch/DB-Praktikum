@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -21,6 +22,7 @@ import model.person.Student;
 import model.relationen.SemPrakTeilnahme;
 import model.relationen.VeranstaltungAbhaltung;
 import model.veranstaltung.Veranstaltung;
+import org.controlsfx.control.MasterDetailPane;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -50,7 +52,7 @@ public class MainController {
     @FXML
     private void viewKlausuren() throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Klausuren.fxml"));
-        Pane pane = loader.load();
+        MasterDetailPane pane = loader.load();
 
         KlausurenController kc = loader.getController();
         kc.injectSessionFactory(sessionFactory);

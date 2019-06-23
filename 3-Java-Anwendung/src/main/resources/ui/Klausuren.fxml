@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.BorderPane?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
-            fx:controller="controller.KlausurenController" fx:id="klausurenPane">
-    <center>
-        <TableView fx:id="table">
+<?import org.controlsfx.control.MasterDetailPane?>
+<?import org.controlsfx.control.PropertySheet?>
+<MasterDetailPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
+                  fx:controller="controller.KlausurenController" fx:id="klausurenMasterDetailPane" showDetailNode="false"
+                  animated="true" dividerPosition="0.5">
+    <masterNode>
+        <TableView fx:id="table" onMousePressed="#showDetails">
             <columns>
                 <TableColumn prefWidth="30.0" text="ID" fx:id="id"/>
-                <TableColumn prefWidth="290.0" text="Zugehörige VA" fx:id="va"/>
+                <TableColumn prefWidth="215.0" text="Zugehörige VA" fx:id="va"/>
                 <TableColumn prefWidth="100.0" text="Datum" fx:id="date"/>
-                <TableColumn prefWidth="100.0" text="Uhrzeit" fx:id="time"/>
-                <TableColumn prefWidth="100.0" text="Punkte Σ" fx:id="points"/>
+                <TableColumn prefWidth="60.0" text="Uhrzeit" fx:id="time"/>
+                <TableColumn prefWidth="60.0" text="Pkt. Σ" fx:id="points"/>
             </columns>
         </TableView>
-    </center>
-    <bottom>
-        <Button onAction="#populateTable" text="populate"/>
-    </bottom>
-</BorderPane>
+    </masterNode>
+    <detailNode>
+        <TabPane fx:id="klausurTabPane">
+            <Tab text="Klausurdetails" closable="false">
+                <PropertySheet fx:id="klausurPropertySheet"/>
+            </Tab>
+            <Tab text="Noten eingeben" closable="false"/>
+        </TabPane>
+    </detailNode>
+</MasterDetailPane>
