@@ -1,7 +1,8 @@
 package controller;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
 import model.relationen.KlausurTeilnahme;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -9,7 +10,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.klausur.Klausur;
-import model.person.Student;
 import org.controlsfx.control.MasterDetailPane;
 import org.controlsfx.control.PropertySheet;
 import org.controlsfx.control.table.TableRowExpanderColumn;
@@ -18,7 +18,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -28,12 +28,9 @@ public class KlausurenController {
 
     @FXML
     MasterDetailPane klausurenMasterDetailPane;
+    // Master
     @FXML
-    TabPane klausurTabPane;
-    @FXML
-    Tab klausurPropertySheet;
-    @FXML
-    TableView<Klausur> table;
+    TableView<Klausur> klausurTableView;
     @FXML
     TableColumn<Klausur, Integer> id;
     @FXML
@@ -45,17 +42,29 @@ public class KlausurenController {
     @FXML
     TableColumn<Klausur, Double> points;
 
+    // Detail
     @FXML
-    TableView<KlausurTeilnahme> klausurTeilnehmer;
-    @FXML
-    TableColumn<KlausurTeilnahme, String> name;
-    @FXML
-    TableColumn<KlausurTeilnahme, String> matrnr;
-    @FXML
-    TableColumn<KlausurTeilnahme, String> note;
-    @FXML
-    TableColumn<KlausurTeilnahme, String> punkte;
+    TabPane klausurTabPane;
 
+    // Tab: Details
+    @FXML
+    Tab klausurPropertySheet;
+
+    // Tab: Teilnehmer
+    @FXML
+    Tab klausurTeilnehmerTab;
+    @FXML
+    TableView<KlausurTeilnahme> klausurTeilnehmerTableView;
+    @FXML
+    TableColumn<Klausur, Integer> klausurTeilnehmerId;
+    @FXML
+    TableColumn<KlausurTeilnahme, String> klausurTeilnehmerName;
+    @FXML
+    TableColumn<KlausurTeilnahme, String> klausurTeilnehmerMatrNr;
+    @FXML
+    TableColumn<KlausurTeilnahme, String> klausurTeilnehmerPunkte;
+    @FXML
+    TableColumn<KlausurTeilnahme, String> klausurTeilnehmerNote;
 
     private SessionFactory sessionFactory;
     private List<Klausur> klausuren;
@@ -69,10 +78,10 @@ public class KlausurenController {
     }
 
     @FXML
-    void populateTable() {
+    void configureAndPopulateMaster() {
         fetchKlausuren();
         ObservableList<Klausur> klausuren = FXCollections.observableArrayList(this.klausuren);
-        table.setItems(klausuren);
+        klausurTableView.setItems(klausuren);
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         date.setCellValueFactory(new PropertyValueFactory<>("datum"));
         time.setCellValueFactory(new PropertyValueFactory<>("uhrzeitVon"));
@@ -87,9 +96,17 @@ public class KlausurenController {
                 return new SimpleStringProperty("<Keine zugehörige VA>");
             }
         });
-        table.getSortOrder().add(date);
+        klausurTableView.getSortOrder().add(date);
+
+        // Listener for the selected row!
+        klausurTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                configureDetail(newSelection);
+            }
+        });
     }
 
+    @Transactional
     private void fetchKlausuren() {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
@@ -103,59 +120,37 @@ public class KlausurenController {
     }
 
     @FXML
-    public void showDetails() {
-        Klausur selectedKlausur = fetchKlausurByRowSelection();
-        showPropertyTab(selectedKlausur);
-        showTeilnehmerTab(selectedKlausur);
+    private void configureDetail(Klausur klausur) {
+        setPropertyTab(klausur);
+        setTeilnehmerTab(klausur);
 
         klausurenMasterDetailPane.showDetailNodeProperty().setValue(true);
     }
 
-    private Klausur fetchKlausurByRowSelection() {
-        Transaction tx = null;
-        try (Session session = sessionFactory.openSession()) {
-            tx = session.beginTransaction();
-            Integer selectedKlausurId = table.getSelectionModel().getSelectedItem().getId();
-            Klausur selectedKlausur = session.get(Klausur.class, selectedKlausurId);
-            tx.commit();
-            return selectedKlausur;
-        } catch (Exception e) {
-            if (tx != null) tx.rollback();
-            throw e;
-        }
-    }
-
-    private void showPropertyTab(Klausur klausur) {
+    private void setPropertyTab(Klausur klausur) {
         PropertySheet propertySheet = new PropertySheet(BeanPropertyUtils.getProperties(klausur));
         klausurPropertySheet.setContent(propertySheet);
     }
 
-    private void showTeilnehmerTab(Klausur klausur) {
+    private void setTeilnehmerTab(Klausur klausur) {
 
-        ObservableList<KlausurTeilnahme> kt = FXCollections.observableArrayList(klausur.getKlausurTeilnahmen());
-        klausurTeilnehmer.setItems(kt);
-        name.setCellValueFactory(l -> {
+        klausurTeilnehmerName.setCellValueFactory(l -> {
             if (l.getValue() != null && l.getValue().getStudent() != null) {
                 return new SimpleStringProperty(l.getValue().getStudent().getVorname() + " " + l.getValue().getStudent().getNachname());
             } else {
                 return new SimpleStringProperty("N/A");
             }
         });
-        matrnr.setCellValueFactory(l -> {
+
+        klausurTeilnehmerMatrNr.setCellValueFactory(l -> {
             if (l.getValue() != null && l.getValue().getStudent() != null) {
                 return new SimpleStringProperty(l.getValue().getStudent().getMatrikelNr());
             } else {
                 return new SimpleStringProperty("N/A");
             }
         });
-        note.setCellValueFactory(l -> {
-            if (l.getValue() != null && l.getValue().getStudent() != null) {
-                return new SimpleStringProperty(l.getValue().getNote().toString());
-            } else {
-                return new SimpleStringProperty("N/A");
-            }
-        });
-        punkte.setCellValueFactory(l -> {
+
+        klausurTeilnehmerPunkte.setCellValueFactory(l -> {
             if (l.getValue() != null && l.getValue().getStudent() != null) {
                 return new SimpleStringProperty(l.getValue().getPunkte().toString());
             } else {
@@ -163,36 +158,18 @@ public class KlausurenController {
             }
         });
 
-        TableRowExpanderColumn<KlausurTeilnahme> expander = new TableRowExpanderColumn<>(param -> {
-            HBox editor = new HBox(10);
-            TextField text = new TextField(param.getValue().getPunkte().toString());
-            Button save = new Button("Save");
-            save.setOnAction(event -> {
-                savePunkte(text.getText(), param.getValue());
-                param.toggleExpanded();
-            });
-            editor.getChildren().addAll(text, save);
-            return editor;
+        klausurTeilnehmerNote.setCellValueFactory(l -> {
+            if (l.getValue() != null && l.getValue().getStudent() != null) {
+                return new SimpleStringProperty(l.getValue().getNote().toString());
+            } else {
+                return new SimpleStringProperty("N/A");
+            }
         });
 
-        klausurTeilnehmer.getColumns().add(expander);
-
-        klausurTeilnehmer.getSortOrder().add(name);
+        ObservableList<KlausurTeilnahme> kt = FXCollections.observableArrayList(klausur.getKlausurTeilnahmen());
+        klausurTeilnehmerTableView.setItems(kt);
+        klausurTeilnehmerTableView.getSortOrder().add(klausurTeilnehmerName);
+        klausurTeilnehmerTab.setContent(klausurTeilnehmerTableView);
     }
-
-    private void savePunkte(String punkteString, KlausurTeilnahme kt) {
-        Double punkte = new Double(punkteString);
-        Transaction tx = null;
-        try (Session session = sessionFactory.openSession()) {
-            tx = session.beginTransaction();
-            kt.setPunkte(punkte);
-            session.update(kt);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) tx.rollback();
-            throw e;
-        }
-    }
-
-
+    
 }

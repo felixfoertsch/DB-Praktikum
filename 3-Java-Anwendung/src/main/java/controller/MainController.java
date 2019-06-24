@@ -8,9 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Aufgabe;
@@ -56,7 +54,7 @@ public class MainController {
 
         KlausurenController kc = loader.getController();
         kc.injectSessionFactory(sessionFactory);
-        kc.populateTable();
+        kc.configureAndPopulateMaster();
 
         mainBorderPane.setCenter(pane);
     }
