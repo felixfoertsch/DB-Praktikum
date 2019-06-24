@@ -68,7 +68,8 @@ public class MainController {
             universitaet = importer.parseCSVandCreateModel(files);
             importer.checkMultiplicities(universitaet);
             importer.persistModel(universitaet);
-        } catch (NullPointerException npe) {
+            viewKlausuren();
+        } catch (Exception npe) {
             System.out.println("Import canceled.");
         }
     }

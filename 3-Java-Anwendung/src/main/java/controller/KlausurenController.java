@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -56,7 +58,7 @@ public class KlausurenController {
     @FXML
     TableView<KlausurTeilnahme> klausurTeilnehmerTableView;
     @FXML
-    TableColumn<Klausur, Integer> klausurTeilnehmerId;
+    TableColumn<KlausurTeilnahme, String> klausurTeilnehmerId;
     @FXML
     TableColumn<KlausurTeilnahme, String> klausurTeilnehmerName;
     @FXML
@@ -134,6 +136,14 @@ public class KlausurenController {
 
     private void setTeilnehmerTab(Klausur klausur) {
 
+        klausurTeilnehmerId.setCellValueFactory(l -> {
+            if (l.getValue() != null && l.getValue() != null) {
+                return new SimpleStringProperty(l.getValue().getStudent().getId().toString());
+            } else {
+                return new SimpleStringProperty("N/A");
+            }
+        });
+
         klausurTeilnehmerName.setCellValueFactory(l -> {
             if (l.getValue() != null && l.getValue().getStudent() != null) {
                 return new SimpleStringProperty(l.getValue().getStudent().getVorname() + " " + l.getValue().getStudent().getNachname());
@@ -171,5 +181,5 @@ public class KlausurenController {
         klausurTeilnehmerTableView.getSortOrder().add(klausurTeilnehmerName);
         klausurTeilnehmerTab.setContent(klausurTeilnehmerTableView);
     }
-    
+
 }

@@ -4,9 +4,9 @@
 <?import org.controlsfx.control.MasterDetailPane?>
 <MasterDetailPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
                   fx:controller="controller.KlausurenController" fx:id="klausurenMasterDetailPane"
-                  animated="true" dividerPosition="0.5">
+                  animated="true" dividerPosition="0.4">
     <masterNode>
-        <TableView fx:id="klausurTableView" >
+        <TableView fx:id="klausurTableView">
             <columns>
                 <TableColumn prefWidth="30.0" text="ID" fx:id="id"/>
                 <TableColumn prefWidth="215.0" text="Zugehörige VA" fx:id="va"/>
@@ -20,9 +20,9 @@
         <TabPane fx:id="klausurTabPane">
             <Tab text="Details" closable="false" fx:id="klausurPropertySheet"/>
             <Tab text="Teilnehmer" closable="false" fx:id="klausurTeilnehmerTab">
-                <TableView fx:id="klausurTeilnehmerTableView" >
+                <TableView fx:id="klausurTeilnehmerTableView">
                     <columns>
-                        <TableColumn prefWidth="30.0" text="ID" fx:id="klausurTeilnehmerId"/>
+                        <TableColumn prefWidth="50.0" text="ID" fx:id="klausurTeilnehmerId"/>
                         <TableColumn prefWidth="215.0" text="Name" fx:id="klausurTeilnehmerName"/>
                         <TableColumn prefWidth="100.0" text="MatrNr" fx:id="klausurTeilnehmerMatrNr"/>
                         <TableColumn prefWidth="60.0" text="Punkte" fx:id="klausurTeilnehmerPunkte"/>
