@@ -85,17 +85,7 @@ public class KlausurenController {
     Label klausurNotenEingabeMatrNr;
     @FXML
     Label klausurNotenEingabeInfo;
-    // Form: KlausurTeilnahmeHinzufuegen
-    @FXML
-    CheckBox klausurNotenEingabeErschienenCheckBox;
-    @FXML
-    CheckBox klausurNotenEingabeEntschuldigtCheckBox;
-    @FXML
-    TextField klausurNotenEingabePunkteTextField;
-    @FXML
-    TextField klausurNotenEingabeNotenTextField;
-    @FXML
-    Button hinzufuegenButton;
+
 
     private Klausur selectedKlausur;
     private Student selectedStudent;
@@ -256,7 +246,14 @@ public class KlausurenController {
         KlausurTeilnahme kt = fetchKlausurTeilnahme(selectedStudent, selectedKlausur);
         if (kt == null) {
             try {
-                klausurNotenEingabeBorderPane.setBottom(FXMLLoader.load(getClass().getResource("/ui/KlausurTeilnahmeEingabe.fxml")));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/KlausurTeilnahmeEingabe.fxml"));
+                GridPane gridPane = loader.load();
+
+                KlausurTeilnahmeEingabeController ktec = loader.getController();
+                ktec.injectSessionFactory(sessionFactory);
+                ktec.injectKlausurTeilnahmeProperties(selectedStudent, selectedKlausur);
+
+                klausurNotenEingabeBorderPane.setBottom(gridPane);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -293,23 +290,4 @@ public class KlausurenController {
         }
     }
 
-    @FXML
-    public void hinzufuegenButtonPressed() {
-        Transaction tx = null;
-        try (Session session = sessionFactory.openSession()) {
-            tx = session.beginTransaction();
-            KlausurTeilnahme kt = new KlausurTeilnahme(
-                    selectedStudent, selectedKlausur,
-                    klausurNotenEingabeErschienenCheckBox.isSelected(),
-                    klausurNotenEingabeEntschuldigtCheckBox.isSelected(),
-                    Double.valueOf(klausurNotenEingabePunkteTextField.getText()),
-                    Double.valueOf(klausurNotenEingabeNotenTextField.getText()));
-            session.saveOrUpdate(kt);
-            tx.commit();
-        } catch (Exception e) {
-            System.out.println("N/A");
-            if (tx != null) tx.rollback();
-            throw e;
-        }
-    }
 }

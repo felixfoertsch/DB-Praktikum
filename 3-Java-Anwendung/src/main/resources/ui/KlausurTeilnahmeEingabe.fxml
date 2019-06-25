@@ -4,12 +4,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.GridPane?>
 <GridPane hgap="10" vgap="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
-          fx:controller="controller.KlausurenController">
+          fx:controller="controller.KlausurTeilnahmeEingabeController">
     <padding>
         <Insets topRightBottomLeft="10"/>
     </padding>
     <Label text="StudentIn hat nicht teilgenommen. Sie können sie jetzt hinzufügen:" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
-    <CheckBox fx:id="klausurNotenEingabeErschienenCheckBox" text="Erschienen" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <CheckBox fx:id="klausurNotenEingabeErschienenCheckBox" text="Erschienen" selected="true" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
     <CheckBox fx:id="klausurNotenEingabeEntschuldigtCheckBox" text="Entschuldigt" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
     <Label text="Punkte" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
     <TextField fx:id="klausurNotenEingabePunkteTextField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
