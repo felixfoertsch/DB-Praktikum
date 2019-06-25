@@ -4,8 +4,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import model.klausur.Klausur;
 import model.person.Student;
@@ -13,17 +15,14 @@ import model.relationen.KlausurTeilnahme;
 import org.controlsfx.control.MasterDetailPane;
 import org.controlsfx.control.PropertySheet;
 import org.controlsfx.property.BeanPropertyUtils;
-import org.hibernate.NaturalIdLoadAccess;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-
 
 public class KlausurenController {
 
@@ -71,12 +70,27 @@ public class KlausurenController {
     @FXML
     Tab klausurNotenEingabe;
     @FXML
+    BorderPane klausurNotenEingabeBorderPane;
+    @FXML
     GridPane klausurNotenEingabeSucheGridPane;
     @FXML
     TextField matrNrSucheTextField;
     @FXML
     GridPane klausurNotenEingabeGridPane;
-    Klausur selectedKlausur;
+    @FXML
+    Label klausurNotenEingabeVorname;
+    @FXML
+    Label klausurNotenEingabeNachname;
+    @FXML
+    Label klausurNotenEingabeMatrNr;
+    @FXML
+    Label klausurNotenEingabeInfo;
+    @FXML
+    Button hinzufuegenButton;
+
+    private Klausur selectedKlausur;
+    private Student selectedStudent;
+
 
     private SessionFactory sessionFactory;
     private List<Klausur> klausuren;
@@ -139,18 +153,18 @@ public class KlausurenController {
     @FXML
     private void configureDetail(Klausur klausur) {
         selectedKlausur = klausur;
-        setPropertyTab(klausur);
-        setTeilnehmerTab(klausur);
-        setNotenEingabeTab(klausur);
+        setupPropertyTab(klausur);
+        setupTeilnehmerTab(klausur);
+        setupNotenEingabeTab(klausur);
         klausurenMasterDetailPane.showDetailNodeProperty().setValue(true);
     }
 
-    private void setPropertyTab(Klausur klausur) {
+    private void setupPropertyTab(Klausur klausur) {
         PropertySheet propertySheet = new PropertySheet(BeanPropertyUtils.getProperties(klausur));
         klausurPropertySheet.setContent(propertySheet);
     }
 
-    private void setTeilnehmerTab(Klausur klausur) {
+    private void setupTeilnehmerTab(Klausur klausur) {
 
         klausurTeilnehmerId.setCellValueFactory(l -> {
             if (l.getValue() != null && l.getValue() != null) {
@@ -198,7 +212,11 @@ public class KlausurenController {
         klausurTeilnehmerTab.setContent(klausurTeilnehmerTableView);
     }
 
-    private void setNotenEingabeTab(Klausur klausur) {
+    private void setupNotenEingabeTab(Klausur klausur) {
+        klausurNotenEingabeVorname.setText("");
+        klausurNotenEingabeNachname.setText("");
+        klausurNotenEingabeMatrNr.setText("");
+        klausurNotenEingabeInfo.setText("");
 
         // Make TextField numeric only
         matrNrSucheTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -210,25 +228,65 @@ public class KlausurenController {
 
     @FXML
     private void suchenButtonPressed() {
-        if (matrNrSucheTextField.getText().isEmpty()) return;
-        Optional<Student> student = fetchStudentByMatrNr(matrNrSucheTextField.getText());
-        student.ifPresent(value -> System.out.println(value.getNachname()));
-        Integer klausurId = selectedKlausur.getId();
+        if (matrNrSucheTextField.getText().isEmpty()) {
+            return;
+        }
+        Optional<Student> optionalStudent = fetchStudentByMatrNr(matrNrSucheTextField.getText());
+        if (optionalStudent.isEmpty()) {
+            System.out.println("No Student with this MatrNr");
+            return;
+        }
+
+        selectedStudent = optionalStudent.get();
+
+        klausurNotenEingabeVorname.setText(selectedStudent.getVorname());
+        klausurNotenEingabeNachname.setText(selectedStudent.getNachname());
+        klausurNotenEingabeMatrNr.setText(selectedStudent.getMatrikelNr());
+
+        KlausurTeilnahme kt = fetchKlausurTeilnahme(selectedStudent, selectedKlausur);
+        if (kt == null) {
+            try {
+                klausurNotenEingabeBorderPane.setBottom(FXMLLoader.load(getClass().getResource("/ui/KlausurTeilnahmeEingabe.fxml")));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     private Optional<Student> fetchStudentByMatrNr(String matrnr) {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
-            Optional<Student> optionalStudent = session.byNaturalId(Student.class).using( "matrikelNr", matrnr ).loadOptional();
+            Optional<Student> optionalStudent = session.byNaturalId(Student.class).using("matrikelNr", matrnr).loadOptional();
             tx.commit();
             return optionalStudent;
         } catch (Exception e) {
-            System.out.println("No Student with this MatrNr");
             if (tx != null) tx.rollback();
             e.printStackTrace();
             throw e;
         }
+    }
+
+    private KlausurTeilnahme fetchKlausurTeilnahme(Student student, Klausur klausur) {
+        Transaction tx = null;
+        try (Session session = sessionFactory.openSession()) {
+            tx = session.beginTransaction();
+            KlausurTeilnahme kt = session.find(
+                    KlausurTeilnahme.class,
+                    new KlausurTeilnahme(student, klausur));
+            tx.commit();
+            return kt;
+        } catch (Exception e) {
+            System.out.println("N/A");
+            if (tx != null) tx.rollback();
+            throw e;
+        }
+    }
+
+    @FXML
+    public void hinzufuegenButtonPressed() {
+
     }
 
 }

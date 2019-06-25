@@ -29,6 +29,11 @@ public class KlausurTeilnahme implements Serializable {
     public KlausurTeilnahme() {
     }
 
+    public KlausurTeilnahme(Student student, Klausur klausur) {
+        this.student = student;
+        this.klausur = klausur;
+    }
+
     public KlausurTeilnahme(Student student, Klausur klausur, Boolean erschienen, Boolean entschuldigt, Double punkte, Double note) {
         this.student = student;
         this.klausur = klausur;
