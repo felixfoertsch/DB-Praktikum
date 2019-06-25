@@ -13,6 +13,7 @@ import model.relationen.KlausurTeilnahme;
 import org.controlsfx.control.MasterDetailPane;
 import org.controlsfx.control.PropertySheet;
 import org.controlsfx.property.BeanPropertyUtils;
+import org.hibernate.NaturalIdLoadAccess;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -21,6 +22,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 
 public class KlausurenController {
@@ -209,25 +211,22 @@ public class KlausurenController {
     @FXML
     private void suchenButtonPressed() {
         if (matrNrSucheTextField.getText().isEmpty()) return;
-        String matrnr = matrNrSucheTextField.getText();
+        Optional<Student> student = fetchStudentByMatrNr(matrNrSucheTextField.getText());
+        student.ifPresent(value -> System.out.println(value.getNachname()));
         Integer klausurId = selectedKlausur.getId();
-        Student student = fetchStudentByMatrNr(matrnr);
     }
 
-    private Student fetchStudentByMatrNr(String matrnr) {
+    private Optional<Student> fetchStudentByMatrNr(String matrnr) {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
-            Student student = session.createQuery(
-                    "select s " +
-                            "from Student s " +
-                            "where s.matrikelNr = :matrnr", Student.class)
-                    .setParameter( "matrnr", matrnr )
-                    .getSingleResult();
+            Optional<Student> optionalStudent = session.byNaturalId(Student.class).using( "matrikelNr", matrnr ).loadOptional();
             tx.commit();
-            return student;
+            return optionalStudent;
         } catch (Exception e) {
+            System.out.println("No Student with this MatrNr");
             if (tx != null) tx.rollback();
+            e.printStackTrace();
             throw e;
         }
     }
