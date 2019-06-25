@@ -85,6 +85,15 @@ public class KlausurenController {
     Label klausurNotenEingabeMatrNr;
     @FXML
     Label klausurNotenEingabeInfo;
+    // Form: KlausurTeilnahmeHinzufuegen
+    @FXML
+    CheckBox klausurNotenEingabeErschienenCheckBox;
+    @FXML
+    CheckBox klausurNotenEingabeEntschuldigtCheckBox;
+    @FXML
+    TextField klausurNotenEingabePunkteTextField;
+    @FXML
+    TextField klausurNotenEingabeNotenTextField;
     @FXML
     Button hinzufuegenButton;
 
@@ -217,6 +226,7 @@ public class KlausurenController {
         klausurNotenEingabeNachname.setText("");
         klausurNotenEingabeMatrNr.setText("");
         klausurNotenEingabeInfo.setText("");
+        klausurNotenEingabeBorderPane.setBottom(null);
 
         // Make TextField numeric only
         matrNrSucheTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -251,7 +261,6 @@ public class KlausurenController {
                 e.printStackTrace();
             }
         }
-
     }
 
     private Optional<Student> fetchStudentByMatrNr(String matrnr) {
@@ -286,7 +295,21 @@ public class KlausurenController {
 
     @FXML
     public void hinzufuegenButtonPressed() {
-
+        Transaction tx = null;
+        try (Session session = sessionFactory.openSession()) {
+            tx = session.beginTransaction();
+            KlausurTeilnahme kt = new KlausurTeilnahme(
+                    selectedStudent, selectedKlausur,
+                    klausurNotenEingabeErschienenCheckBox.isSelected(),
+                    klausurNotenEingabeEntschuldigtCheckBox.isSelected(),
+                    Double.valueOf(klausurNotenEingabePunkteTextField.getText()),
+                    Double.valueOf(klausurNotenEingabeNotenTextField.getText()));
+            session.saveOrUpdate(kt);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("N/A");
+            if (tx != null) tx.rollback();
+            throw e;
+        }
     }
-
 }

@@ -8,12 +8,12 @@
     <padding>
         <Insets topRightBottomLeft="10"/>
     </padding>
-    <Label text="Studentin hat nicht teilgenommen. Sie können sie jetzt hinzufügen:" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
-    <CheckBox text="Erschienen" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-    <CheckBox text="Entschuldigt" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <Label text="StudentIn hat nicht teilgenommen. Sie können sie jetzt hinzufügen:" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
+    <CheckBox fx:id="klausurNotenEingabeErschienenCheckBox" text="Erschienen" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <CheckBox fx:id="klausurNotenEingabeEntschuldigtCheckBox" text="Entschuldigt" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
     <Label text="Punkte" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-    <TextField GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-    <Label text="Notel" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-    <TextField GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+    <TextField fx:id="klausurNotenEingabePunkteTextField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+    <Label text="Note" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+    <TextField fx:id="klausurNotenEingabeNotenTextField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
     <Button text="Hinzufügen" fx:id="hinzufuegenButton" onAction="#hinzufuegenButtonPressed" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
 </GridPane>
