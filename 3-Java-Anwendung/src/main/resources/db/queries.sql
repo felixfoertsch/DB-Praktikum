@@ -1,4 +1,4 @@
--- 1. Wie viel Prozent der Studierenden sind nicht im Studiengang Informatik eingeschrieben?
+-- 1.1. Wie viel Prozent der Studierenden sind nicht im Studiengang Informatik eingeschrieben?
 SELECT (
                    (SELECT COUNT(*) FROM student)::FLOAT -
                    (SELECT COUNT(*)
@@ -9,24 +9,22 @@ SELECT (
        (SELECT COUNT(*) FROM student)::FLOAT AS prozent;
 
 
--- 2. Die Klausuren welcher Vorlesungsreihe (DBS1, DBS2, CDM, …) fanden durchschnittlich am frühsten statt?
+-- 1.2. Die Klausuren welcher Vorlesungsreihe (DBS1, DBS2, CDM, …) fanden durchschnittlich am frühsten statt?
 -- In Klausurtabelle früheste Klausuren finden (Spezial und Grundvorlesungen mergen, früheste VL raussuchen), erhaltene ID in Veranstaltungen suchen
-SELECT name
-FROM veranstaltung
-WHERE id = (SELECT gesamtid
-            FROM (SELECT gesamtid, AVG(uhrzeitvon) AS avguhrzeitvon
-                  FROM (SELECT spezialvorlesung_id AS gesamtid, uhrzeitvon
-                        FROM klausur
-                        WHERE spezialvorlesung_id IS NOT NULL
-                        UNION ALL
-                        SELECT grundvorlesung_id AS gesamtid, uhrzeitvon
-                        FROM klausur
-                        WHERE grundvorlesung_id IS NOT NULL) AS unionklausur
-                  GROUP BY gesamtid
-                  ORDER BY avguhrzeitvon
-                  LIMIT 1) AS first);
+SELECT name, AVG(uhrzeitvon) AS avguhrzeitvon
+FROM (SELECT spezialvorlesung_id AS gesamtId, uhrzeitvon
+      FROM klausur
+      WHERE spezialvorlesung_id IS NOT NULL
+      UNION ALL
+      SELECT grundvorlesung_id AS gesamtId, uhrzeitvon
+      FROM klausur
+      WHERE grundvorlesung_id IS NOT NULL) as unionKlausur
+         JOIN veranstaltung ON unionKlausur.gesamtId = veranstaltung.id
+GROUP BY name
+ORDER BY avguhrzeitvon
+LIMIT 1;
 
--- 3. Wie viele Studierende haben im Wintersemester 2017 an der DBS1-Abschlussklausur teilgenommen?
+-- 1.3. Wie viele Studierende haben im Wintersemester 2017 an der DBS1-Abschlussklausur teilgenommen?
 SELECT COUNT(*)
 FROM klausur
          JOIN studentteilnahmeklausur s ON s.klausur_id = klausur.id
@@ -45,7 +43,7 @@ WHERE jahr = 2017
   AND name = 'DBS1'
   AND erschienen = TRUE;
 
--- 4. Welche Mitarbeiter der Abteilung haben noch nie eine Abschlussklausur beaufsichtigt?
+-- 1.4. Welche Mitarbeiter der Abteilung haben noch nie eine Abschlussklausur beaufsichtigt?
 -- Finde alle Mitarbeiter, die AKs beaufsichtigt haben. Gib restliche Mitarbeiter zurück.
 SELECT vorname, nachname
 FROM mitarbeiter
@@ -54,7 +52,7 @@ WHERE id NOT IN (SELECT mitarbeiter_id
                           JOIN abschlussklausur a ON klausur.id = a.klausur_id
                           JOIN aufsicht a2 ON klausur.id = a2.klausur_id);
 
--- 5. Welche Veranstaltungsreihen wurden immer zur selben Zeit abgehalten?
+-- 1.5. Welche Veranstaltungsreihen wurden immer zur selben Zeit abgehalten?
 -- Annahmen: Wochentag egal, Veranstaltungsreihe = gleicher Name
 -- Also alle, die min. 1 mal vorkommen und zur selben Zeit stattfinden
 -- abhaltung join veranstaltung, group by name & zeit, alle raus bei denen Name öfter als 1 Mal vorkommt, weil die zu unterschiedlichen Zeiten abgehalten wurden.
@@ -67,7 +65,7 @@ FROM (SELECT name,
 GROUP BY name
 HAVING COUNT(name) < 2;
 
--- 6. Welche Studenten haben nur Grundvorlesungen besucht?
+-- 1.6. Welche Studenten haben nur Grundvorlesungen besucht?
 -- D.h. GV wurde besucht, aber SV wurde nicht besucht.
 -- Annahme: Besucht heißt, Klausur wurde in dem Modul geschrieben.
 -- Alle Studenten, die GV besucht haben minus die, die SV besucht haben
@@ -83,7 +81,7 @@ FROM klausur
          JOIN student s2 ON s.student_id = s2.id
 WHERE spezialvorlesung_id IS NOT NULL;
 
--- 7. Erstellen Sie eine Liste aller Studierenden geordnet nach der Anzahl der erfolgreich teilgenommenen Klausuren sowie Prüfungsleistungen.
+-- 1.7. Erstellen Sie eine Liste aller Studierenden geordnet nach der Anzahl der erfolgreich teilgenommenen Klausuren sowie Prüfungsleistungen.
 -- erfolgreich = Note zwischen 1.0 und 4.0 (nicht erschienen hat Note 0.0)
 SELECT id, vorname, nachname, teilnahmen
 FROM (SELECT student_id, COUNT(student_id) AS teilnahmen
@@ -100,7 +98,7 @@ FROM (SELECT student_id, COUNT(student_id) AS teilnahmen
          JOIN student ON gesamt.student_id = student.id
 ORDER BY teilnahmen DESC;
 
--- 8. Welche Studenten haben im Jahr 2016 und 2017 jeweils mindestens zwei Veranstaltungen zusammen besucht.
+-- 1.8. Welche Studenten haben im Jahr 2016 und 2017 jeweils mindestens zwei Veranstaltungen zusammen besucht.
 WITH veranstaltungsMatching AS (-- Welche Studenten nehmen an welchen Veranstaltungen und in welchem Jahr teil?
     SELECT veranstaltung_id,
            student_id,
@@ -151,7 +149,7 @@ FROM (
          JOIN student AS linkerStudent ON ids.links = linkerStudent.id
          JOIN student AS rechterStudent ON ids.rechts = rechterstudent.id;
 
--- 9. Erstellen Sie ein Ranking über alle Studierenden zur Ermittlung der Top-Studierenden. Beachten Sie dabei die nachfolgenden Anforderungen:
+-- 1.9. Erstellen Sie ein Ranking über alle Studierenden zur Ermittlung der Top-Studierenden. Beachten Sie dabei die nachfolgenden Anforderungen:
 -- Oberseminare und Zwischenklausuren sowie die entsprechenden Noten werden nicht berücksichtigt.
 -- Es sollen nur Studierende berücksichtigt werden, welche mindestens zwei   Veranstaltungen erfolgreich abgeschlossen haben.
 -- Seminar- und Praktikumsnoten ergeben sich jeweils aus dem Mittel der Noten aus den Prüfungsteilleistungen.
@@ -159,7 +157,7 @@ FROM (
 -- Studierende, welche mehr als drei Veranstaltungen erfolgreich abgeschlossen haben, sollen einen individuell definierbaren Bonus auf ihren Rankingdurchschnitt erhalten
 
 
--- NR.2
+-- 2.
 -- innerhalb eines Jahres 3 Veranstaltungen zusammen besucht
 CREATE OR REPLACE VIEW lernpartner AS
     WITH veranstaltungsMatching AS (-- Welche Studenten nehmen an welchen Veranstaltungen und in welchem Jahr teil?
@@ -238,3 +236,6 @@ FROM (
                   JOIN lernpartner on partnerFirstDegree.partnerId = lernpartner.rechts
      ) AS s
          JOIN student ON partnerSDId = id;
+
+
+-- 3.

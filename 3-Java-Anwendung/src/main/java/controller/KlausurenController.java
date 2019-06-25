@@ -1,20 +1,17 @@
 package controller;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import model.relationen.KlausurTeilnahme;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import model.klausur.Klausur;
+import model.person.Student;
+import model.relationen.KlausurTeilnahme;
 import org.controlsfx.control.MasterDetailPane;
 import org.controlsfx.control.PropertySheet;
-import org.controlsfx.control.table.TableRowExpanderColumn;
 import org.controlsfx.property.BeanPropertyUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -68,6 +65,17 @@ public class KlausurenController {
     @FXML
     TableColumn<KlausurTeilnahme, String> klausurTeilnehmerNote;
 
+    // Tab: Noteneingabe
+    @FXML
+    Tab klausurNotenEingabe;
+    @FXML
+    GridPane klausurNotenEingabeSucheGridPane;
+    @FXML
+    TextField matrNrSucheTextField;
+    @FXML
+    GridPane klausurNotenEingabeGridPane;
+    Klausur selectedKlausur;
+
     private SessionFactory sessionFactory;
     private List<Klausur> klausuren;
 
@@ -106,9 +114,14 @@ public class KlausurenController {
                 configureDetail(newSelection);
             }
         });
+
+        klausurTeilnehmerTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                System.out.println("BUH");
+            }
+        });
     }
 
-    @Transactional
     private void fetchKlausuren() {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
@@ -123,9 +136,10 @@ public class KlausurenController {
 
     @FXML
     private void configureDetail(Klausur klausur) {
+        selectedKlausur = klausur;
         setPropertyTab(klausur);
         setTeilnehmerTab(klausur);
-
+        setNotenEingabeTab(klausur);
         klausurenMasterDetailPane.showDetailNodeProperty().setValue(true);
     }
 
@@ -180,6 +194,42 @@ public class KlausurenController {
         klausurTeilnehmerTableView.setItems(kt);
         klausurTeilnehmerTableView.getSortOrder().add(klausurTeilnehmerName);
         klausurTeilnehmerTab.setContent(klausurTeilnehmerTableView);
+    }
+
+    private void setNotenEingabeTab(Klausur klausur) {
+
+        // Make TextField numeric only
+        matrNrSucheTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                matrNrSucheTextField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+    }
+
+    @FXML
+    private void suchenButtonPressed() {
+        if (matrNrSucheTextField.getText().isEmpty()) return;
+        String matrnr = matrNrSucheTextField.getText();
+        Integer klausurId = selectedKlausur.getId();
+        Student student = fetchStudentByMatrNr(matrnr);
+    }
+
+    private Student fetchStudentByMatrNr(String matrnr) {
+        Transaction tx = null;
+        try (Session session = sessionFactory.openSession()) {
+            tx = session.beginTransaction();
+            Student student = session.createQuery(
+                    "select s " +
+                            "from Student s " +
+                            "where s.matrikelNr = :matrnr", Student.class)
+                    .setParameter( "matrnr", matrnr )
+                    .getSingleResult();
+            tx.commit();
+            return student;
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            throw e;
+        }
     }
 
 }
