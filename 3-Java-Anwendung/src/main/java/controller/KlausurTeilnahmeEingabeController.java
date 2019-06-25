@@ -2,11 +2,9 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.util.converter.DoubleStringConverter;
 import model.Aufgabe;
 import model.klausur.Klausur;
 import model.person.Student;
@@ -15,6 +13,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class KlausurTeilnahmeEingabeController {
     private SessionFactory sessionFactory;
@@ -58,16 +57,18 @@ public class KlausurTeilnahmeEingabeController {
             klausurTeilnahmeEingabeGridPane.getChildren().remove(klausurNotenEingabePunkteTextField);
             klausurTeilnahmeEingabeGridPane.getChildren().remove(klausurNotenEingabePunkteLabel);
             klausurTeilnahmeEingabeGridPane.getChildren().remove(hinzufuegenButton);
+
             int rowcounter = 4;
             for (Aufgabe a : aufgaben) {
                 Label tempLabel = new Label("Aufgabe " + a.getRang());
-                TextField tempTextField = new TextField("0");
+                TextField tempTextField = new TextField("0.0");
                 tempTextField.textProperty().addListener((observable, oldValue, newValue) -> {
                     gesamtpunkte = gesamtpunkte - Double.valueOf(oldValue);
                     gesamtpunkte = gesamtpunkte + Double.valueOf(newValue);
                     System.out.println(gesamtpunkte);
                     punkteSummeLabel.setText(gesamtpunkte.toString());
                 });
+                tempTextField.setTextFormatter(getDoubleFormatter());
 
                 klausurTeilnahmeEingabeGridPane.add(tempLabel, 0, rowcounter);
                 klausurTeilnahmeEingabeGridPane.add(tempTextField, 1, rowcounter);
@@ -99,5 +100,20 @@ public class KlausurTeilnahmeEingabeController {
         // if AufgabenBearbeitung is not null add it
         session.getTransaction().commit();
         session.close();
+    }
+
+    private TextFormatter<Double> getDoubleFormatter() {
+        Pattern validDoubleText = Pattern.compile("((\\d*)|(\\d+\\.\\d*))");
+
+        TextFormatter<Double> textFormatter = new TextFormatter<>(
+                new DoubleStringConverter(), 0.0,
+                change -> {
+                    if (change.getControlNewText().isEmpty()) return null;
+                    String newText = change.getControlNewText() ;
+                    if (validDoubleText.matcher(newText).matches()) {
+                        return change ;
+                    } else return null ;
+                });
+        return textFormatter;
     }
 }
