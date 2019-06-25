@@ -251,7 +251,7 @@ public class KlausurenController {
 
                 KlausurTeilnahmeEingabeController ktec = loader.getController();
                 ktec.injectSessionFactory(sessionFactory);
-                ktec.injectKlausurTeilnahmeProperties(selectedStudent, selectedKlausur);
+                ktec.setupController(selectedStudent, selectedKlausur);
 
                 klausurNotenEingabeBorderPane.setBottom(gridPane);
             } catch (Exception e) {

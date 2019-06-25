@@ -40,7 +40,7 @@
                             <padding>
                                 <Insets topRightBottomLeft="10"/>
                             </padding>
-                            <Label text="Matrikelnummer:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                            <Label text="Matrikelnummer" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                             <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="matrNrSucheTextField"/>
                             <Button text="Suchen" GridPane.columnIndex="2" GridPane.rowIndex="1"
                                     onAction="#suchenButtonPressed"/>
@@ -51,10 +51,10 @@
                             <padding>
                                 <Insets topRightBottomLeft="10"/>
                             </padding>
-                            <Label text="Name: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                            <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                             <Label fx:id="klausurNotenEingabeVorname" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
                             <Label fx:id="klausurNotenEingabeNachname" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-                            <Label text="Matrikelnummer: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                            <Label text="Matrikelnummer" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                             <Label fx:id="klausurNotenEingabeMatrNr" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                             <Label fx:id="klausurNotenEingabeInfo" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="3"/>
                         </GridPane>
