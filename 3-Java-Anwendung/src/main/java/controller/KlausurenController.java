@@ -51,6 +51,10 @@ public class KlausurenController {
     @FXML
     Tab klausurPropertySheet;
 
+    // Tab: Statistik
+    @FXML
+    Tab klausurStatistikTab;
+
     // Tab: Teilnehmer
     @FXML
     Tab klausurTeilnehmerTab;
@@ -174,6 +178,7 @@ public class KlausurenController {
 
         selectedKlausur = k;
         setupPropertyTab(selectedKlausur);
+        setupStatistikTab(selectedKlausur);
         setupTeilnehmerTab(selectedKlausur);
         setupAbwensendTab(selectedKlausur);
         setupNotenEingabeTab(selectedKlausur);
@@ -183,6 +188,19 @@ public class KlausurenController {
     private void setupPropertyTab(Klausur klausur) {
         PropertySheet propertySheet = new PropertySheet(BeanPropertyUtils.getProperties(klausur));
         klausurPropertySheet.setContent(propertySheet);
+    }
+
+    private void setupStatistikTab(Klausur klausur) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/KlausurStatistik.fxml"));
+            GridPane gridPane = loader.load();
+            KlausurStatistikController c = loader.getController();
+            c.injectSessionFactory(sessionFactory);
+            c.setupController(klausur);
+            klausurStatistikTab.setContent(gridPane);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupTeilnehmerTab(Klausur klausur) {
@@ -359,21 +377,4 @@ public class KlausurenController {
             throw e;
         }
     }
-
-    private List<KlausurTeilnahme> fetchAbwensendeKlausurTeilnehmer(Klausur klausur) {
-        Transaction tx = null;
-        try (Session session = sessionFactory.openSession()) {
-            tx = session.beginTransaction();
-            List<KlausurTeilnahme> klausurTeilnahmen = session.createQuery(
-                    "select kt from KlausurTeilnahme kt where klausur_id = :klausur_id", KlausurTeilnahme.class)
-                    .setParameter("klausur_id", klausur.getId()).list();
-            tx.commit();
-            return klausurTeilnahmen;
-        } catch (Exception e) {
-            System.out.println("N/A");
-            if (tx != null) tx.rollback();
-            throw e;
-        }
-    }
-
 }

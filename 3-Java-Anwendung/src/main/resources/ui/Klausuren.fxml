@@ -4,7 +4,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.MasterDetailPane?>
-<?import javafx.scene.text.Text?>
 <MasterDetailPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
                   fx:controller="controller.KlausurenController" fx:id="klausurenMasterDetailPane"
                   showDetailNode="false" animated="true" dividerPosition="0.5">
@@ -22,6 +21,7 @@
     <detailNode>
         <TabPane fx:id="klausurTabPane">
             <Tab text="Details" closable="false" fx:id="klausurPropertySheet"/>
+            <Tab text="Statistik" closable="false" fx:id="klausurStatistikTab"/>
             <Tab text="Teilnehmer" closable="false" fx:id="klausurTeilnehmerTab">
                 <TableView fx:id="klausurTeilnehmerTableView">
                     <columns>
