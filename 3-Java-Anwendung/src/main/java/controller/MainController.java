@@ -60,6 +60,18 @@ public class MainController {
     }
 
     @FXML
+    private void viewTopStudenten() throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/TopStudenten.fxml"));
+        BorderPane pane = loader.load();
+
+        TopStudentenController tsc = loader.getController();
+        tsc.injectSessionFactory(sessionFactory);
+        tsc.setupController();
+
+        mainBorderPane.setCenter(pane);
+    }
+
+    @FXML
     public void importButtonClicked(Event e) {
         var importer = new ImporterImpl();
         var universitaet = new Universitaet();

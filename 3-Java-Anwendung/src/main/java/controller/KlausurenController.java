@@ -55,6 +55,10 @@ public class KlausurenController {
     @FXML
     Tab klausurStatistikTab;
 
+    // Tab: Top Studenten
+    @FXML
+    Tab klausurTopStudentenTab;
+
     // Tab: Teilnehmer
     @FXML
     Tab klausurTeilnehmerTab;
