@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.MasterDetailPane?>
 <MasterDetailPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
-                  fx:controller="controller.KlausurenController" fx:id="klausurenMasterDetailPane"
+                  fx:controller="controller.klausuren.KlausurenController" fx:id="klausurenMasterDetailPane"
                   showDetailNode="false" animated="true" dividerPosition="0.5">
     <masterNode>
         <TableView fx:id="klausurTableView">
@@ -22,55 +20,9 @@
         <TabPane fx:id="klausurTabPane">
             <Tab text="Details" closable="false" fx:id="klausurPropertySheet"/>
             <Tab text="Statistik" closable="false" fx:id="klausurStatistikTab"/>
-            <Tab text="Teilnehmer" closable="false" fx:id="klausurTeilnehmerTab">
-                <TableView fx:id="klausurTeilnehmerTableView">
-                    <columns>
-                        <TableColumn prefWidth="50.0" text="ID" fx:id="klausurTeilnehmerId"/>
-                        <TableColumn prefWidth="215.0" text="Name" fx:id="klausurTeilnehmerName"/>
-                        <TableColumn prefWidth="100.0" text="MatrNr" fx:id="klausurTeilnehmerMatrNr"/>
-                        <TableColumn prefWidth="60.0" text="Punkte" fx:id="klausurTeilnehmerPunkte"/>
-                        <TableColumn prefWidth="60.0" text="Note" fx:id="klausurTeilnehmerNote"/>
-                    </columns>
-                </TableView>
-            </Tab>
-            <Tab text="Abwesende Studierende" closable="false" fx:id="klausurTeilnehmerAbwesendTab">
-                <TableView fx:id="klausurTeilnehmerAbwesendTableView">
-                    <columns>
-                        <TableColumn prefWidth="50.0" text="ID" fx:id="klausurTeilnehmerAbwesendId"/>
-                        <TableColumn prefWidth="215.0" text="Name" fx:id="klausurTeilnehmerAbwesendName"/>
-                        <TableColumn prefWidth="100.0" text="MatrNr" fx:id="klausurTeilnehmerAbwesendMatrNr"/>
-                        <TableColumn prefWidth="100.0" text="Entschuldigt" fx:id="klausurTeilnehmerAbwesendEntschuldigt"/>
-                    </columns>
-                </TableView>
-            </Tab>
-            <Tab text="Noten eingeben" closable="false" fx:id="klausurNotenEingabe">
-                <BorderPane fx:id="klausurNotenEingabeBorderPane">
-                    <top>
-                        <GridPane fx:id="klausurNotenEingabeSucheGridPane" hgap="10" vgap="10">
-                            <padding>
-                                <Insets topRightBottomLeft="10"/>
-                            </padding>
-                            <Label text="Matrikelnummer" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="matrNrSucheTextField"/>
-                            <Button text="Suchen" GridPane.columnIndex="2" GridPane.rowIndex="1"
-                                    onAction="#suchenButtonPressed"/>
-                        </GridPane>
-                    </top>
-                    <center>
-                        <GridPane fx:id="klausurNotenEingabeGridPane" hgap="10" vgap="10">
-                            <padding>
-                                <Insets topRightBottomLeft="10"/>
-                            </padding>
-                            <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                            <Label fx:id="klausurNotenEingabeVorname" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                            <Label fx:id="klausurNotenEingabeNachname" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-                            <Label text="Matrikelnummer" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                            <Label fx:id="klausurNotenEingabeMatrNr" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                            <Label fx:id="klausurNotenEingabeInfo" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="3"/>
-                        </GridPane>
-                    </center>
-                </BorderPane>
-            </Tab>
+            <Tab text="Teilnehmer" closable="false" fx:id="klausurTeilnehmerTab"/>
+            <Tab text="Abwesende Studierende" closable="false" fx:id="klausurTeilnehmerAbwesendTab"/>
+            <Tab text="Noten eingeben" closable="false" fx:id="klausurNotenEingabeTab"/>
         </TabPane>
     </detailNode>
 </MasterDetailPane>
