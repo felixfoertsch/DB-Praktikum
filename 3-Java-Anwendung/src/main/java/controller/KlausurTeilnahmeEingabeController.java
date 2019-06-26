@@ -8,11 +8,14 @@ import javafx.util.converter.DoubleStringConverter;
 import model.Aufgabe;
 import model.klausur.Klausur;
 import model.person.Student;
+import model.relationen.AufgabenBearbeitung;
 import model.relationen.KlausurTeilnahme;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class KlausurTeilnahmeEingabeController {
@@ -36,6 +39,8 @@ public class KlausurTeilnahmeEingabeController {
     TextField klausurNotenEingabeNotenTextField;
     @FXML
     Button hinzufuegenButton;
+    private Map<Integer, TextField> aufgabenMap = new HashMap<>();
+
     private Label punkteSummeLabel = new Label("");
     private Double gesamtpunkte = 0.0;
 
@@ -70,6 +75,7 @@ public class KlausurTeilnahmeEingabeController {
                     punkteSummeLabel.setText(gesamtpunkte.toString());
                 });
                 tempTextField.setTextFormatter(getDoubleFormatterWithMax(a.getMaxPunkte()));
+                aufgabenMap.put(a.getRang(), tempTextField);
 
                 klausurTeilnahmeEingabeGridPane.add(tempLabel, 0, rowcounter);
                 klausurTeilnahmeEingabeGridPane.add(tempTextField, 1, rowcounter);
@@ -113,14 +119,15 @@ public class KlausurTeilnahmeEingabeController {
         kt.setPunkte(gesamtpunkte);
         kt.setNote(Double.valueOf(klausurNotenEingabeNotenTextField.getText()));
 
-        for (Aufgabe a : aufgaben) {
-
-        }
-
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(kt);
-        // if AufgabenBearbeitung is not null add it
+
+        for (Aufgabe a : aufgaben) {
+            String aufgabenPunkte = aufgabenMap.get(a.getRang()).getText();
+            AufgabenBearbeitung ab = new AufgabenBearbeitung(selectedStudent, a, Double.valueOf(aufgabenPunkte));
+            session.save(ab);
+        }
         session.getTransaction().commit();
         session.close();
     }
