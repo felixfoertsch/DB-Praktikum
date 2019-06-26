@@ -84,4 +84,8 @@ public class HibernateService {
         session.getTransaction().commit();
         session.close();
     }
+
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
 }

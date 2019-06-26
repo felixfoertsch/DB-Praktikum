@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.TopStudentenController" fx:id="klausurTopStudentenBorderPane">
+    <top>
+        <GridPane hgap="10" vgap="10">
+            <padding>
+                <Insets topRightBottomLeft="10"/>
+            </padding>
+            <Label text="Gewichtung Klausuren:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="weightKlausur" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <Label text="Gewichtung Praktika:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="weightPraktikum" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+            <Label text="Gewichtung Seminare:" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+            <TextField fx:id="weightSeminar" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+            <Label text="Bonus:" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+            <TextField fx:id="bonus" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+            <Button text="Top Studenten berechnen" fx:id="listTopButton" onAction="#listTopButtonPressed" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        </GridPane>
+    </top>
+    <center>
+        <TableView fx:id="topStudentTableView">
+            <columns>
+                <TableColumn prefWidth="50.0" text="ID" fx:id="topStudentId"/>
+                <TableColumn prefWidth="50.0" text="Score" fx:id="topStudentScore"/>
+                <TableColumn prefWidth="100.0" text="MatrNr" fx:id="topStudentMatrNr"/>
+                <TableColumn prefWidth="100.0" text="Vorname" fx:id="topStudentVorname"/>
+                <TableColumn prefWidth="100.0" text="Nachname" fx:id="topStudentNachname"/>
+                <TableColumn prefWidth="250.0" text="Unimail" fx:id="topStudentUnimail"/>
+            </columns>
+
+        </TableView>
+    </center>
+</BorderPane>
