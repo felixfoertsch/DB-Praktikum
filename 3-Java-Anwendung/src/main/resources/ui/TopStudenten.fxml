@@ -26,6 +26,7 @@
         <TableView fx:id="topStudentTableView">
             <columns>
                 <TableColumn prefWidth="50.0" text="ID" fx:id="topStudentId"/>
+                <TableColumn prefWidth="50.0" text="Score" fx:id="topStudentScore"/>
                 <TableColumn prefWidth="100.0" text="MatrNr" fx:id="topStudentMatrNr"/>
                 <TableColumn prefWidth="100.0" text="Vorname" fx:id="topStudentVorname"/>
                 <TableColumn prefWidth="100.0" text="Nachname" fx:id="topStudentNachname"/>

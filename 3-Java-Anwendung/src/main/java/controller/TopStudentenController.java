@@ -56,6 +56,8 @@ public class TopStudentenController {
     TableColumn<Student, String> topStudentNachname;
     @FXML
     TableColumn<Student, String> topStudentUnimail;
+    @FXML
+    TableColumn<Student, String> topStudentScore;
 
     void injectSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -92,6 +94,7 @@ public class TopStudentenController {
         query.setParameter(2, Integer.parseInt(weightPraktikum.getText()));
         query.setParameter(3, Integer.parseInt(weightSeminar.getText()));
         query.setParameter(4, Double.parseDouble(bonus.getText()));
+
         List<Student> topStudenten = query.getResultList();
 
         System.out.println(Arrays.toString(topStudenten.toArray()));
@@ -107,6 +110,7 @@ public class TopStudentenController {
         topStudentVorname.setCellValueFactory(new PropertyValueFactory<>("vorname"));
         topStudentNachname.setCellValueFactory(new PropertyValueFactory<>("nachname"));
         topStudentUnimail.setCellValueFactory(new PropertyValueFactory<>("uniMail"));
+        topStudentScore.setCellValueFactory(new PropertyValueFactory<>("score"));
 
 
     }

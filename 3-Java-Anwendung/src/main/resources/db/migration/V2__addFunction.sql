@@ -4,29 +4,30 @@ CREATE OR REPLACE FUNCTION topStudenten(weightKlausur INTEGER, weightPrak INTEGE
                       matrikelnr TEXT,
                       vorname TEXT,
                       nachname TEXT,
-                      unimail TEXT
+                      unimail TEXT,
+                      score DOUBLE PRECISION
                   )
 AS
 $$
 BEGIN
     RETURN QUERY
-        SELECT student.id, student.matrikelnr, student.vorname, student.nachname, student.unimail
+        SELECT student.id, student.matrikelnr, student.vorname, student.nachname, student.unimail, c.score - c.bonus AS score
         FROM (SELECT student_id,
                      anzver,
                      CASE WHEN anzver >= 3 THEN bonusNote ELSE 0 END AS bonus,
-                     score
+                     b.score
               FROM (SELECT student_id,
                            COUNT(*) as anzver,
                            SUM(note * weight)/SUM(weight) AS score
-                    FROM (SELECT student_id, -- 967 rows
+                    FROM (SELECT student_id,
                                  note,
-                                 weightKlausur AS weight -- weight bestimmt, wie oft die Note in die Wertung eingeht (ganzzahlig)
+                                 weightKlausur AS weight
                           FROM studentteilnahmeklausur
                           WHERE klausur_id IN (TABLE abschlussklausur)
                             AND note >= 1.0
-                            AND note <= 4.0-- Es existieren im Datensatz keine Teilnahmen an Zwischenklausuren
+                            AND note <= 4.0
                           UNION ALL
-                          SELECT student_id, -- 273 rows
+                          SELECT student_id,
                                  note,
                                  weightPrak AS weight
                           FROM studentteilnahmeveranstaltung
@@ -34,7 +35,7 @@ BEGIN
                             AND note >= 1.0
                             AND note <= 4.0
                           UNION ALL
-                          SELECT student_id, -- 40 rows
+                          SELECT student_id,
                                  note,
                                  weightSem AS weight
                           FROM studentteilnahmeveranstaltung
@@ -45,7 +46,7 @@ BEGIN
                     GROUP BY student_id
                     HAVING COUNT(*) >= 2) AS b) AS c
                  JOIN student ON student_id = student.id
-        ORDER BY score;
+        ORDER BY c.score;
 END;
 $$ LANGUAGE plpgsql;
 
