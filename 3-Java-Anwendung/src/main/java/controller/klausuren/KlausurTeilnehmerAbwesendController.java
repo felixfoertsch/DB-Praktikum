@@ -1,4 +1,4 @@
-package controller;
+package controller.klausuren;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -26,7 +26,7 @@ public class KlausurTeilnehmerAbwesendController {
     @FXML
     TableColumn<KlausurTeilnahme, String> klausurTeilnehmerAbwesendEntschuldigt;
 
-    void setupController(Klausur klausur) {
+    public void setupController(Klausur klausur) {
         List<KlausurTeilnahme> abwensendeKlausurTeilnehmer = new ArrayList<>();
 
         for (KlausurTeilnahme kt : klausur.getKlausurTeilnahmen()) {

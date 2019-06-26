@@ -1,4 +1,4 @@
-package controller;
+package controller.klausuren;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -75,7 +75,7 @@ public class KlausurNotenEingabeController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/KlausurTeilnahmeEingabe.fxml"));
                 GridPane gridPane = loader.load();
 
-                KlausurTeilnehmerEingabeController c = loader.getController();
+                KlausurNotenEingabeAufgabenController c = loader.getController();
                 c.setupController(hibernateService, selectedStudent, selectedKlausur);
 
                 klausurNotenEingabeBorderPane.setBottom(gridPane);

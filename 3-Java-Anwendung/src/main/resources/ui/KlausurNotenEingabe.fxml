@@ -6,7 +6,7 @@
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.KlausurNotenEingabeController" fx:id="klausurNotenEingabeBorderPane">
+            fx:controller="controller.klausuren.KlausurNotenEingabeController" fx:id="klausurNotenEingabeBorderPane">
     <top>
         <GridPane fx:id="klausurNotenEingabeSucheGridPane" hgap="10" vgap="10">
             <padding>

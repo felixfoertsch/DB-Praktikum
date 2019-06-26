@@ -1,5 +1,6 @@
 package controller;
 
+import controller.klausuren.KlausurenController;
 import dataimport.ImporterImpl;
 import dataimport.model.Universitaet;
 import javafx.event.Event;
@@ -10,9 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.klausur.Klausur;
 import org.controlsfx.control.MasterDetailPane;
-import org.hibernate.Session;
 import services.HibernateService;
 
 

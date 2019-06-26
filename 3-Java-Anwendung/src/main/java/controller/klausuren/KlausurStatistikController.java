@@ -1,4 +1,4 @@
-package controller;
+package controller.klausuren;
 
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
@@ -15,7 +15,7 @@ public class KlausurStatistikController {
     @FXML
     private GridPane klausurStatistikGridPane;
 
-    void setupController(Klausur klausur) {
+    public void setupController(Klausur klausur) {
         createHistogram(klausur);
     }
 

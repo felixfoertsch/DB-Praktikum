@@ -1,4 +1,4 @@
-package controller;
+package controller.klausuren;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -13,7 +13,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import model.klausur.Klausur;
-import model.person.Student;
 import org.controlsfx.control.MasterDetailPane;
 import org.controlsfx.control.PropertySheet;
 import org.controlsfx.property.BeanPropertyUtils;
@@ -21,7 +20,6 @@ import services.HibernateService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 public class KlausurenController {
 
@@ -55,26 +53,19 @@ public class KlausurenController {
     @FXML
     Tab klausurNotenEingabeTab;
 
-    private Klausur selectedKlausur;
-    private Student selectedStudent;
-
-
     private HibernateService hibernateService;
-    private List<Klausur> klausuren;
 
     public KlausurenController() {
 
     }
 
-    void setupController(HibernateService hibernateService) {
+    public void setupController(HibernateService hibernateService) {
         this.hibernateService = hibernateService;
         configureAndPopulateMaster();
     }
 
-    @FXML
-    void configureAndPopulateMaster() {
-        klausuren = hibernateService.fetchKlausuren();
-        ObservableList<Klausur> klausuren = FXCollections.observableArrayList(this.klausuren);
+    private void configureAndPopulateMaster() {
+        ObservableList<Klausur> klausuren = FXCollections.observableArrayList(hibernateService.fetchKlausuren());
         klausurTableView.setItems(klausuren);
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         date.setCellValueFactory(new PropertyValueFactory<>("datum"));
@@ -103,12 +94,11 @@ public class KlausurenController {
     @FXML
     private void configureDetail(Klausur klausur) {
         Klausur k = hibernateService.fetchKlausurById(klausur.getId());
-        selectedKlausur = k;
-        setupPropertyTab(selectedKlausur);
-        setupStatistikTab(selectedKlausur);
-        setupTeilnehmerTab(selectedKlausur);
-        setupAbwesendTab(selectedKlausur);
-        setupNotenEingabeTab(selectedKlausur);
+        setupPropertyTab(k);
+        setupStatistikTab(k);
+        setupTeilnehmerTab(k);
+        setupAbwesendTab(k);
+        setupNotenEingabeTab(k);
         klausurenMasterDetailPane.showDetailNodeProperty().setValue(true);
     }
 

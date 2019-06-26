@@ -1,4 +1,4 @@
-package controller;
+package controller.klausuren;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -28,10 +28,7 @@ public class KlausurTeilnehmerController {
     @FXML
     TableColumn<KlausurTeilnahme, String> klausurTeilnehmerNote;
 
-    @FXML
-    private GridPane klausurStatistikGridPane;
-
-    void setupController(Klausur klausur) {
+    public void setupController(Klausur klausur) {
         klausurTeilnehmerTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 System.out.println("BUH");

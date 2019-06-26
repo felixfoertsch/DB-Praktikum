@@ -1,4 +1,4 @@
-package controller;
+package controller.klausuren;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -16,13 +16,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class KlausurTeilnehmerEingabeController {
+public class KlausurNotenEingabeAufgabenController {
     private HibernateService hibernateService;
     private Student selectedStudent;
     private Klausur selectedKlausur;
     private List<Aufgabe> aufgaben;
+    private Map<Integer, TextField> aufgabenMap = new HashMap<>();
+    private Label punkteSummeLabel = new Label("");
+    private Double gesamtpunkte = 0.0;
 
-    // Form: KlausurTeilnahmeHinzufuegen
     @FXML
     GridPane klausurTeilnahmeEingabeGridPane;
     @FXML
@@ -37,12 +39,8 @@ public class KlausurTeilnehmerEingabeController {
     TextField klausurNotenEingabeNotenTextField;
     @FXML
     Button hinzufuegenButton;
-    private Map<Integer, TextField> aufgabenMap = new HashMap<>();
 
-    private Label punkteSummeLabel = new Label("");
-    private Double gesamtpunkte = 0.0;
-
-    void setupController(HibernateService hibernateService, Student student, Klausur klausur) {
+    public void setupController(HibernateService hibernateService, Student student, Klausur klausur) {
         this.hibernateService = hibernateService;
         this.selectedStudent = student;
         this.selectedKlausur = klausur;
@@ -54,7 +52,7 @@ public class KlausurTeilnehmerEingabeController {
             klausurTeilnahmeEingabeGridPane.add(keineAufgaben, 0, 5);
             klausurTeilnahmeEingabeGridPane.add(hinzufuegenButton, 0, 6);
         } else {
-            klausurNotenEingabeNotenTextField.setTextFormatter(getDoubleFormatterWithMax(5.0));
+            klausurNotenEingabeNotenTextField.setTextFormatter(getDoubleFormatterWithMaxValue(5.0));
             klausurTeilnahmeEingabeGridPane.getChildren().remove(klausurNotenEingabePunkteTextField);
             klausurTeilnahmeEingabeGridPane.getChildren().remove(klausurNotenEingabePunkteLabel);
             klausurTeilnahmeEingabeGridPane.getChildren().remove(hinzufuegenButton);
@@ -69,7 +67,7 @@ public class KlausurTeilnehmerEingabeController {
                     System.out.println(gesamtpunkte);
                     punkteSummeLabel.setText(gesamtpunkte.toString());
                 });
-                tempTextField.setTextFormatter(getDoubleFormatterWithMax(a.getMaxPunkte()));
+                tempTextField.setTextFormatter(getDoubleFormatterWithMaxValue(a.getMaxPunkte()));
                 aufgabenMap.put(a.getRang(), tempTextField);
 
                 klausurTeilnahmeEingabeGridPane.add(tempLabel, 0, rowcounter);
@@ -123,9 +121,9 @@ public class KlausurTeilnehmerEingabeController {
         }
     }
 
-    private TextFormatter<Double> getDoubleFormatterWithMax(Double maxPunkte) {
+    private TextFormatter<Double> getDoubleFormatterWithMaxValue(Double maxPunkte) {
         Pattern validDoubleText = Pattern.compile("((\\d*)|(\\d+\\.\\d*))");
-        TextFormatter<Double> textFormatter = new TextFormatter<>(
+        return new TextFormatter<>(
                 new DoubleStringConverter(), 0.0,
                 change -> {
                     if (change.getControlNewText().isEmpty()) return null;
@@ -135,6 +133,5 @@ public class KlausurTeilnehmerEingabeController {
                         return change;
                     } else return null;
                 });
-        return textFormatter;
     }
 }
