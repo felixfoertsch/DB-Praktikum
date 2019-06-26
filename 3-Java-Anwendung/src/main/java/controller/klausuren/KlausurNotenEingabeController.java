@@ -14,9 +14,6 @@ import services.HibernateService;
 import java.util.Optional;
 
 public class KlausurNotenEingabeController {
-    private HibernateService hibernateService;
-    private Klausur selectedKlausur;
-
     @FXML
     BorderPane klausurNotenEingabeBorderPane;
     @FXML
@@ -33,8 +30,10 @@ public class KlausurNotenEingabeController {
     Label klausurNotenEingabeMatrNr;
     @FXML
     Label klausurNotenEingabeInfo;
+    private HibernateService hibernateService;
+    private Klausur selectedKlausur;
 
-    public void setupController(HibernateService hibernateService, Klausur klausur){
+    public void setupController(HibernateService hibernateService, Klausur klausur) {
         this.hibernateService = hibernateService;
         this.selectedKlausur = klausur;
 

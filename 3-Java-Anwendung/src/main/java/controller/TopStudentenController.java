@@ -3,49 +3,29 @@ package controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
-import model.Aufgabe;
-import model.klausur.Klausur;
 import model.person.Student;
-import model.relationen.AufgabenBearbeitung;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import services.HibernateService;
 
-import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
 public class TopStudentenController {
-    private HibernateService hibernateService;
-    private Klausur klausur;
-    @FXML
-    private BorderPane klausurTopStudentenBorderPane;
-
     @FXML
     TextField weightKlausur;
-
     @FXML
     TextField weightPraktikum;
-
     @FXML
     TextField weightSeminar;
-
     @FXML
     TextField bonus;
-
     @FXML
     TableView<Student> topStudentTableView;
     @FXML
@@ -60,6 +40,7 @@ public class TopStudentenController {
     TableColumn<Student, String> topStudentUnimail;
     @FXML
     TableColumn<Student, String> topStudentScore;
+    private HibernateService hibernateService;
 
     void setupController(HibernateService hibernateService) {
         this.hibernateService = hibernateService;

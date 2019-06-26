@@ -4,7 +4,6 @@ import model.relationen.AufgabenBearbeitung;
 import model.relationen.KlausurTeilnahme;
 import model.relationen.SemPrakTeilnahme;
 import model.relationen.Studium;
-import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
