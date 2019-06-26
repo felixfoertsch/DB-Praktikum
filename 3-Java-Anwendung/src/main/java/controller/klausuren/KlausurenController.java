@@ -162,8 +162,8 @@ public class KlausurenController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/KlausurNotenVerteilung.fxml"));
             GridPane gridPane = loader.load();
-            KlausurNotenVerteilung c = loader.getController();
-            c.setupController(klausur);
+            KlausurNotenVerteilungController c = loader.getController();
+            c.setupController(hibernateService, klausur);
             klausurNotenVerteilungTab.setContent(gridPane);
         } catch (Exception e) {
             e.printStackTrace();

@@ -86,6 +86,14 @@ public class HibernateService {
         session.close();
     }
 
+    public void updateKlausur(Klausur klausur) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.update(klausur);
+        session.getTransaction().commit();
+        session.close();
+    }
+
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
