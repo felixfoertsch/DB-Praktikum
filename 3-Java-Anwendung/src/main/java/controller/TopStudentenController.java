@@ -91,6 +91,4 @@ public class TopStudentenController {
         topStudentUnimail.setCellValueFactory(new PropertyValueFactory<>("uniMail"));
         topStudentScore.setCellValueFactory(new PropertyValueFactory<>("score"));
     }
-
-
 }

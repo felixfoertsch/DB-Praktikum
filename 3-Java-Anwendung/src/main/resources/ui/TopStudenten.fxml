@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.TopStudentenController" fx:id="klausurTopStudentenBorderPane">
+            fx:controller="controller.TopStudentenController">
     <top>
         <GridPane hgap="10" vgap="10">
             <padding>
@@ -19,7 +19,7 @@
             <TextField fx:id="weightSeminar" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
             <Label text="Bonus:" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
             <TextField fx:id="bonus" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
-            <Button text="Top Studenten berechnen" fx:id="listTopButton" onAction="#listTopButtonPressed" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <Button text="Top Studenten berechnen" onAction="#listTopButtonPressed" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
         </GridPane>
     </top>
     <center>
@@ -32,7 +32,6 @@
                 <TableColumn prefWidth="100.0" text="Nachname" fx:id="topStudentNachname"/>
                 <TableColumn prefWidth="250.0" text="Unimail" fx:id="topStudentUnimail"/>
             </columns>
-
         </TableView>
     </center>
 </BorderPane>
