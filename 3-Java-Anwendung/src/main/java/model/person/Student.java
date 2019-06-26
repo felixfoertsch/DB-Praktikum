@@ -36,6 +36,7 @@ public class Student implements Serializable {
     @OneToMany(mappedBy = "student")
     private List<SemPrakTeilnahme> semPrakTeilnahmen;
 
+    @Transient
     private Float score;
 
     public Student() {
