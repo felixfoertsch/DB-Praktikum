@@ -7,12 +7,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import model.person.FetchStudent;
 import model.person.Student;
 import org.hibernate.Session;
 import services.HibernateService;
 
-import javax.persistence.ParameterMode;
-import javax.persistence.StoredProcedureQuery;
+import javax.persistence.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,19 +27,19 @@ public class TopStudentenController {
     @FXML
     TextField bonus;
     @FXML
-    TableView<Student> topStudentTableView;
+    TableView<FetchStudent> topStudentTableView;
     @FXML
-    TableColumn<Student, String> topStudentId;
+    TableColumn<FetchStudent, String> topStudentId;
     @FXML
-    TableColumn<Student, String> topStudentMatrNr;
+    TableColumn<FetchStudent, String> topStudentMatrNr;
     @FXML
-    TableColumn<Student, String> topStudentVorname;
+    TableColumn<FetchStudent, String> topStudentVorname;
     @FXML
-    TableColumn<Student, String> topStudentNachname;
+    TableColumn<FetchStudent, String> topStudentNachname;
     @FXML
-    TableColumn<Student, String> topStudentUnimail;
+    TableColumn<FetchStudent, String> topStudentUnimail;
     @FXML
-    TableColumn<Student, String> topStudentScore;
+    TableColumn<FetchStudent, String> topStudentScore;
     private HibernateService hibernateService;
 
     void setupController(HibernateService hibernateService) {
@@ -64,24 +64,18 @@ public class TopStudentenController {
         Session session = hibernateService.getSessionFactory().openSession();
         session.beginTransaction();
 
-        StoredProcedureQuery query = session.createStoredProcedureQuery("topstudenten", Student.class);
-        query.registerStoredProcedureParameter(1, int.class, ParameterMode.IN);
-        query.registerStoredProcedureParameter(2, int.class, ParameterMode.IN);
-        query.registerStoredProcedureParameter(3, int.class, ParameterMode.IN);
-        query.registerStoredProcedureParameter(4, double.class, ParameterMode.IN);
+        Query query = session.createNativeQuery("SELECT * FROM topstudenten(" +
+                weightKlausur.getText() + ", " +
+                weightPraktikum.getText() + ", " +
+                weightSeminar.getText() + ", " +
+                bonus.getText() + ")", "FetchStudentMapping");
 
-        query.setParameter(1, Integer.parseInt(weightKlausur.getText()));
-        query.setParameter(2, Integer.parseInt(weightPraktikum.getText()));
-        query.setParameter(3, Integer.parseInt(weightSeminar.getText()));
-        query.setParameter(4, Double.parseDouble(bonus.getText()));
+        List<FetchStudent> topStudenten = query.getResultList();
 
-        List<Student> topStudenten = query.getResultList();
-
-        System.out.println(Arrays.toString(topStudenten.toArray()));
         session.getTransaction().commit();
         session.close();
 
-        ObservableList<Student> observableTopStudenten = FXCollections.observableArrayList(topStudenten);
+        ObservableList<FetchStudent> observableTopStudenten = FXCollections.observableArrayList(topStudenten);
         topStudentTableView.setItems(observableTopStudenten);
 
         topStudentId.setCellValueFactory(new PropertyValueFactory<>("id"));
