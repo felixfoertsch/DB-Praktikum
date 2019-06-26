@@ -77,11 +77,16 @@ public class HibernateService {
         session.getTransaction().commit();
         session.close();
     }
+
     public void saveAufgabenBearbeitung(AufgabenBearbeitung aufgabenBearbeitung) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(aufgabenBearbeitung);
         session.getTransaction().commit();
         session.close();
+    }
+
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
     }
 }

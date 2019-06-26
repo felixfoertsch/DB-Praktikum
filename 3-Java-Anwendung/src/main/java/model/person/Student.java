@@ -36,14 +36,18 @@ public class Student implements Serializable {
     @OneToMany(mappedBy = "student")
     private List<SemPrakTeilnahme> semPrakTeilnahmen;
 
+    @Transient
+    private Float score;
+
     public Student() {
     }
 
-    public Student(String matrikelNr, String vorname, String nachname, String uniMail) {
+    public Student(String matrikelNr, String vorname, String nachname, String uniMail, Float score) {
         this.matrikelNr = matrikelNr;
         this.vorname = vorname;
         this.nachname = nachname;
         this.uniMail = uniMail;
+        this.score = score;
     }
 
     @Override
@@ -139,5 +143,14 @@ public class Student implements Serializable {
 
     public void setSemPrakTeilnahmen(List<SemPrakTeilnahme> semPrakTeilnahmeen) {
         this.semPrakTeilnahmen = semPrakTeilnahmeen;
+    }
+
+    @Transient
+    public Float getScore() {
+        return score;
+    }
+
+    public void setScore(Float score) {
+        this.score = score;
     }
 }

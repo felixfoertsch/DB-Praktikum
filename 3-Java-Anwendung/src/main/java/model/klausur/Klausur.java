@@ -6,8 +6,6 @@ import model.person.Mitarbeiter;
 import model.relationen.KlausurTeilnahme;
 import model.veranstaltung.Grundvorlesung;
 import model.veranstaltung.Spezialvorlesung;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;

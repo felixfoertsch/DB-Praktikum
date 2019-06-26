@@ -16,6 +16,7 @@
                         </Menu>
                         <Menu text="View">
                             <MenuItem onAction="#viewKlausuren" text="Klausuren"/>
+                            <MenuItem onAction="#viewTopStudenten" text="Top Studenten"/>
                         </Menu>
                         <Menu text="Help">
                             <MenuItem onAction="#aboutButtonClicked" text="About"/>

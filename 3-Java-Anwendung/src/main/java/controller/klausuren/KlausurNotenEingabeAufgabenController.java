@@ -17,14 +17,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class KlausurNotenEingabeAufgabenController {
-    private HibernateService hibernateService;
-    private Student selectedStudent;
-    private Klausur selectedKlausur;
-    private List<Aufgabe> aufgaben;
-    private Map<Integer, TextField> aufgabenMap = new HashMap<>();
-    private Label punkteSummeLabel = new Label("");
-    private Double gesamtpunkte = 0.0;
-
     @FXML
     GridPane klausurTeilnahmeEingabeGridPane;
     @FXML
@@ -39,6 +31,13 @@ public class KlausurNotenEingabeAufgabenController {
     TextField klausurNotenEingabeNotenTextField;
     @FXML
     Button hinzufuegenButton;
+    private HibernateService hibernateService;
+    private Student selectedStudent;
+    private Klausur selectedKlausur;
+    private List<Aufgabe> aufgaben;
+    private Map<Integer, TextField> aufgabenMap = new HashMap<>();
+    private Label punkteSummeLabel = new Label("");
+    private Double gesamtpunkte = 0.0;
 
     public void setupController(HibernateService hibernateService, Student student, Klausur klausur) {
         this.hibernateService = hibernateService;
