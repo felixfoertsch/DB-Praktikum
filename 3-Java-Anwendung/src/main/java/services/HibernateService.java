@@ -94,6 +94,14 @@ public class HibernateService {
         session.close();
     }
 
+    public void updateKlausurTeilnahme(KlausurTeilnahme klausurTeilnahme) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.update(klausurTeilnahme);
+        session.getTransaction().commit();
+        session.close();
+    }
+
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }

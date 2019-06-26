@@ -7,6 +7,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.GridPane;
 import javafx.util.converter.IntegerStringConverter;
 import model.klausur.Klausur;
+import model.relationen.KlausurTeilnahme;
 import services.HibernateService;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.regex.Pattern;
 
 
 public class KlausurNotenVerteilungController {
-    private String[] noten = {"1,0", "1,3", "1,7", "2,0", "2,3", "2,7", "3,0", "3,3", "3,7", "4,0", "5,0"};
+    private Double[] noten = {1.0, 1.3, 1.7, 2.0, 2.3, 2.7, 3.0, 3.3, 3.7, 4.0, 5.0};
     private HibernateService hibernateService;
     private Klausur selectedKlausur;
     private List<TextField> schluesselTextFields = new ArrayList<>();
@@ -28,7 +29,7 @@ public class KlausurNotenVerteilungController {
         this.selectedKlausur = klausur;
         int[] notenschluessel = decodeNotenschluesselString(klausur.getNotenschluessel());
         for (int i = 0; i < notenschluessel.length; i++) {
-            Label notenLabel = new Label(noten[i]);
+            Label notenLabel = new Label(String.valueOf(noten[i]));
             TextField schluesselTextField = new TextField();
             schluesselTextField.setTextFormatter(getDecimalFormatter());
             schluesselTextField.setText(String.valueOf(notenschluessel[i]));
@@ -54,9 +55,13 @@ public class KlausurNotenVerteilungController {
         for (TextField tf : schluesselTextFields) {
             stringBuilder.append(tf.getText()).append(",");
         }
-        stringBuilder.deleteCharAt(stringBuilder.length()-1);
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         String string = stringBuilder.toString();
         selectedKlausur.setNotenschluessel(string);
+        for (KlausurTeilnahme kt : selectedKlausur.getKlausurTeilnahmen()) {
+            updatePunkte(kt);
+            hibernateService.updateKlausurTeilnahme(kt);
+        }
         hibernateService.updateKlausur(selectedKlausur);
     }
 
@@ -81,6 +86,20 @@ public class KlausurNotenVerteilungController {
                         return change;
                     } else return null;
                 });
+    }
+
+    private void updatePunkte(KlausurTeilnahme klausurTeilnahme) {
+        Double erreichtePunkte = klausurTeilnahme.getPunkte();
+        double erreichtePunkteInProzent = erreichtePunkte / selectedKlausur.getGesamtpunktzahl() * 100;
+        int index = 0;
+        int[] decoded = decodeNotenschluesselString(selectedKlausur.getNotenschluessel());
+        for (int i = 0; i < decoded.length; i++) {
+            if (erreichtePunkteInProzent >= decoded[i]) {
+                index = i;
+                break;
+            }
+        }
+        klausurTeilnahme.setNote(noten[index]);
     }
 
 }
