@@ -68,20 +68,33 @@ public class KlausurTeilnahmeEingabeController {
                     System.out.println(gesamtpunkte);
                     punkteSummeLabel.setText(gesamtpunkte.toString());
                 });
-                tempTextField.setTextFormatter(getDoubleFormatter());
+                tempTextField.setTextFormatter(getDoubleFormatterWithMax(a.getMaxPunkte()));
 
                 klausurTeilnahmeEingabeGridPane.add(tempLabel, 0, rowcounter);
                 klausurTeilnahmeEingabeGridPane.add(tempTextField, 1, rowcounter);
+                klausurTeilnahmeEingabeGridPane.add(new Label("/ " + a.getMaxPunkte().toString()), 2, rowcounter);
                 rowcounter++;
             }
+
             klausurTeilnahmeEingabeGridPane.add(klausurNotenEingabePunkteLabel, 0, rowcounter);
             klausurTeilnahmeEingabeGridPane.add(punkteSummeLabel, 1, rowcounter);
+            klausurTeilnahmeEingabeGridPane.add(new Label("/ " + selectedKlausur.getGesamtpunktzahl().toString()), 2, rowcounter);
             klausurTeilnahmeEingabeGridPane.add(hinzufuegenButton, 0, rowcounter + 1);
         }
     }
 
     @FXML
     private void hinzufuegenButtonPressed() {
+        if (gesamtpunkte > selectedKlausur.getGesamtpunktzahl()) {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setTitle("Fehler");
+            a.setHeaderText("Punktzahl überprüfen!");
+            a.setResizable(false);
+            a.setContentText("Punktzahl überschreitet Gesamtpunkzahl.");
+            a.showAndWait();
+            return;
+        }
+
         KlausurTeilnahme kt = new KlausurTeilnahme();
         kt.setEntschuldigt(klausurNotenEingabeEntschuldigtCheckBox.isSelected());
         kt.setErschienen(klausurNotenEingabeErschienenCheckBox.isSelected());
@@ -102,7 +115,7 @@ public class KlausurTeilnahmeEingabeController {
         session.close();
     }
 
-    private TextFormatter<Double> getDoubleFormatter() {
+    private TextFormatter<Double> getDoubleFormatterWithMax(Double maxPunkte) {
         Pattern validDoubleText = Pattern.compile("((\\d*)|(\\d+\\.\\d*))");
 
         TextFormatter<Double> textFormatter = new TextFormatter<>(
@@ -111,6 +124,7 @@ public class KlausurTeilnahmeEingabeController {
                     if (change.getControlNewText().isEmpty()) return null;
                     String newText = change.getControlNewText() ;
                     if (validDoubleText.matcher(newText).matches()) {
+                        if (Double.valueOf(change.getControlNewText()) > maxPunkte) return null;
                         return change ;
                     } else return null ;
                 });
