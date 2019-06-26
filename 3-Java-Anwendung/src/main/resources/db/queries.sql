@@ -8,6 +8,7 @@ SELECT (
         WHERE studiengang.name = 'Informatik')::FLOAT)
     /
 (SELECT COUNT(*) FROM student)::FLOAT AS prozent;
+-- => 1/3
 
 
 -- 1.2. Die Klausuren welcher Vorlesungsreihe (DBS1, DBS2, CDM, …) fanden durchschnittlich am frühsten statt?
@@ -24,6 +25,8 @@ FROM (SELECT spezialvorlesung_id AS gesamtId, uhrzeitvon
 GROUP BY name
 ORDER BY avguhrzeitvon
 LIMIT 1;
+-- => Data Mining
+
 
 -- 1.3. Wie viele Studierende haben im Wintersemester 2017 an der DBS1-Abschlussklausur teilgenommen?
 SELECT COUNT(*)
@@ -43,6 +46,8 @@ WHERE jahr = 2017
   AND semester = 'WiSe'
   AND name = 'DBS1'
   AND erschienen = TRUE;
+-- => 204
+
 
 -- 1.4. Welche Mitarbeiter der Abteilung haben noch nie eine Abschlussklausur beaufsichtigt?
 -- Finde alle Mitarbeiter, die AKs beaufsichtigt haben. Gib restliche Mitarbeiter zurück.
@@ -51,6 +56,20 @@ FROM mitarbeiter
 WHERE id NOT IN (SELECT DISTINCT mitarbeiter_id
                  FROM abschlussklausur
                           JOIN aufsicht a2 on abschlussklausur.klausur_id = a2.klausur_id);
+-- => 10 rows
+-- Vorname  Nachname
+--
+-- Daniel	Obraczka
+-- Kevin	Gomez
+-- M. Ali	Rostami
+-- Andrea	Hesse
+-- Moritz	Wilke
+-- Erhard	Rahm
+-- Georges	Alkhouri
+-- Martin	Grimmer
+-- Paul	    Hermann
+-- Alieh	Saeedi
+
 
 -- 1.5. Welche Veranstaltungsreihen wurden immer zur selben Zeit abgehalten?
 -- Annahmen: Wochentag egal, Veranstaltungsreihe = gleicher Name
@@ -64,6 +83,20 @@ FROM (SELECT name,
       GROUP BY name, zeit) AS groupedveranstaltungen
 GROUP BY name
 HAVING COUNT(name) < 2;
+-- => 23 rowsCDM
+-- name
+--
+-- Oberseminar Zingst
+-- Privacy for Big Data
+-- Big-Data-Streaming
+-- Data Mining
+-- DBS1 – B
+-- NoSQL-Datenbanken
+-- Deep Learning
+-- Cloud Data Management
+-- ScaDS-Ringvorlesung
+-- ...
+
 
 -- 1.6. Welche Studenten haben nur Grundvorlesungen besucht?
 -- D.h. GV wurde besucht, aber SV wurde nicht besucht.
@@ -80,6 +113,20 @@ FROM klausur
          JOIN studentteilnahmeklausur s ON klausur.id = s.klausur_id
          JOIN student s2 ON s.student_id = s2.id
 WHERE spezialvorlesung_id IS NOT NULL;
+-- => 593 rows
+-- id   vorname     nachname
+--
+-- 304	Alexander	Ruetten
+-- 16	Brigitte	Wunderlich
+-- 696	Stefan	    Engelhardt
+-- 740	Susanne	    Jahn
+-- 262	Christa	    Rutz
+-- 602	Silke	    Mueller
+-- 563	Ute	        Zeh
+-- 60	Johannes	Jacobs
+-- 136	Sarah	    Schaefer
+-- 683	Christa	    Burger
+-- ...
 
 -- 1.7. Erstellen Sie eine Liste aller Studierenden geordnet nach der Anzahl der erfolgreich teilgenommenen Klausuren sowie Prüfungsleistungen.
 -- erfolgreich = Note zwischen 1.0 und 4.0 (nicht erschienen hat Note 0.0)
@@ -97,6 +144,21 @@ FROM (SELECT student_id, COUNT(student_id) AS teilnahmen
       GROUP BY student_id) AS gesamt
          JOIN student ON gesamt.student_id = student.id
 ORDER BY teilnahmen DESC;
+-- => 610 rows
+-- id   vorname     nachname    teilnahmen
+--
+-- 313	Helmuth	    Mattes	    13
+-- 575	Siegfried	Gross	    10
+-- 617	Willi	    Burghardt	10
+-- 662	Marlene	    Hess	    10
+-- 485	Ludwig	    Gruenewald	9
+-- 153	Eva	        Kamp	    9
+-- 561	Toni	    Pfeffer	    9
+-- 426	Magdalena	Grundmann	8
+-- 405	Ralf	    Hanf	    8
+-- 797	Petra	    Beck	    8
+-- ...
+
 
 -- 1.8. Welche Studenten haben im Jahr 2016 und 2017 jeweils mindestens zwei Veranstaltungen zusammen besucht.
 WITH veranstaltungsMatching AS (-- Welche Studenten nehmen an welchen Veranstaltungen und in welchem Jahr teil?
@@ -150,6 +212,20 @@ FROM (
          HAVING count(*) >= 2) AS ids
          JOIN student AS linkerStudent ON ids.links = linkerStudent.id
          JOIN student AS rechterStudent ON ids.rechts = rechterstudent.id;
+-- => 97 rows
+-- student_1            mnr_1   id_1 student_2          mnr_2   id_2
+--
+-- Albert  Hofer	    2804376	5	 Maria   Trautmann	2660628	12
+-- Maria   Trautmann	2660628	12	 Eva     Kamp	    3350783	153
+-- Albert  Hofer	    2804376	5	 Eva     Kamp	    3350783	153
+-- Eva     Kamp	        3350783	153	 Helene  Kuhn	    2454758	181
+-- Maria   Trautmann	2660628	12	 Helene  Kuhn	    2454758	181
+-- Albert  Hofer	    2804376	5	 Helene  Kuhn	    2454758	181
+-- Michael Preuss	    2895523	197	 Helmuth Mattes	    3314611	313
+-- Helene  Kuhn	        2454758	181	 Helmuth Mattes	    3314611	313
+-- Eva     Kamp	        3350783	153	 Helmuth Mattes	    3314611	313
+-- Maria   Trautmann	2660628	12	 Helmuth Mattes	    3314611	313
+-- ...
 
 -- 1.9. Erstellen Sie ein Ranking über alle Studierenden zur Ermittlung der Top-Studierenden. Beachten Sie dabei die nachfolgenden Anforderungen:
 -- Oberseminare und Zwischenklausuren sowie die entsprechenden Noten werden nicht berücksichtigt.
@@ -195,4 +271,18 @@ FROM (SELECT student_id,
             HAVING COUNT(*) >= 2) AS b) AS c
          JOIN student ON student_id = id
 ORDER BY score;
+-- 323 rows
+-- matrikelnr   concat (name)           score
+--
+-- 3232461	    Peter Rother	        1
+-- 3179540	    Stefan Gruber	        1
+-- 3183854	    Dieter Eckhardt	        1
+-- 3891733	    Magdalena Grundmann	    1.04285714285714285714
+-- 3058961	    Wolfgang Dick	        1.06
+-- 3448296	    Christine Engelhardt    1.15
+-- 3182286	    Agnes Stemmler	        1.15
+-- 2507880	    Susanne Scheu	        1.15
+-- 3388808	    Andrea Bruhn	        1.15
+-- 3767291	    Walter Haller	        1.15
+-- ...
 
