@@ -42,3 +42,5 @@ Abgabe vor dem Testat
 Bitte vereinbaren Sie rechtzeitig vor der Abgabefrist einen Testat-Termin über Moodle oder per E-Mail mit Ihrem Betreuer. Spätestens 24 Stunden vor Ihrem Testat-Termin sind die nachfolgend beschriebenen Dateien auf Moodle hochzuladen oder Ihrem Betreuer per E-Mail zuzusenden. Bitte geben Sie im Betreff der E-Mail dbprak sowie die Gruppennummer an. Nehmen Sie dabei ihren Gruppenpartner mit ins CC, damit wir mit Reply-All beiden antworten können. Die Datenbank soll den Status nach der Durchführung von Teil 1 haben.
 Datei mit SQL-Anfragen/Methoden, Ergebnisdatensätze (ggf. gekürzt) und die jeweilige Anzahl der Ergebnistupel enthält. Die Anfragen sind zu nummerieren und gut lesbar zu formatieren.
 Datei mit SQL-Anweisung zur Erstellung der View und der Trigger
+
+Abgabe erledigt 26.06. 12:35 Uhr

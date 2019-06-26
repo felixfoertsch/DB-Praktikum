@@ -1,10 +1,10 @@
 Ihre Aufgabe ist die Implementierung einer Java-Anwendung zum Zugriff auf die Datenbank. Ziel ist es, Ihnen die Technik von 3-Ebenen-Anwendungen (Frontend/Datensicht, Mittelschicht, Backend/Datenbank) näher zu bringen, Möglichkeiten des datenbankunabhängigen Zugriffs kennenzulernen sowie erweiterte SQL-Konzepte anzuwenden.
 
-1. Objekt-relationales Mapping mit Hibernate:
+## 1. Objekt-relationales Mapping mit Hibernate:
 
 Überführen Sie Ihr Datenbankschema in ein objektorientiertes Modell und entsprechende Java-Klassen. Diese sollen dann mittels Hibernate auf die Datenbanktabellen abgebildet werden. Erstellen Sie dazu das entsprechende objekt-relationale Mapping unter Verwendung von Annotationen. Achten Sie auf die korrekte Abbildung von Vererbungshierachien und Beziehungen, insbesondere auf Beziehungen mit zusätzlichen Attributen.
 
-2. Java-Anwendung:
+## 2. Java-Anwendung:
 
 **Use Case I: Klausurergebnisse eintragen**
 
@@ -25,15 +25,15 @@ Anzeige Noten-Verteilung (Histogram) oder Anzeige Punkte-Noten-Verteilung oder A
 Gehe zu 3. solange nicht exit
 
 **Use Case III: Top-Studenten**
-
 Eingabe der Gewichtungen
 Anzeige der Liste aller Top-Studenten (Nutzung View)
-Programm-Teil A: API (Mittelschicht)
 
+
+## Programm-Teil A: API (Mittelschicht)
 Regelt den Zugriff auf die Datenbank
 Stellt notwendige Operationen für die obigen Use Cases bereit
-Programm-Teil B: GUI / Konsolen-Anwendung (Frontend)
 
+## Programm-Teil B: GUI / Konsolen-Anwendung (Frontend)
 Implementierung GUI bzw. Konsolen-Logik zur Abarbeitung/Ausführung der obigen Use Cases
 Abgabe vor dem Testat
 
