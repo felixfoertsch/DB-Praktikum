@@ -61,10 +61,10 @@ public class KlausurenController {
 
     public void setupController(HibernateService hibernateService) {
         this.hibernateService = hibernateService;
-        configureAndPopulateMaster();
+        configureMaster();
     }
 
-    private void configureAndPopulateMaster() {
+    private void configureMaster() {
         ObservableList<Klausur> klausuren = FXCollections.observableArrayList(hibernateService.fetchKlausuren());
         klausurTableView.setItems(klausuren);
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -83,7 +83,7 @@ public class KlausurenController {
         });
         klausurTableView.getSortOrder().add(date);
 
-        // Listener for the selected row!
+        // Add a listener for the selected row
         klausurTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 configureDetail(newSelection);
