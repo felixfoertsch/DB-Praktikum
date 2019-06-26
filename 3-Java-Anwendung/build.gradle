@@ -5,19 +5,19 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.7'
 }
 
+mainClassName = 'App'
 group 'de.felixfoertsch'
-version '1.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
+version '2.0'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile 'org.apache.commons:commons-csv:1.6' // https://mvnrepository.com/artifact/org.apache.commons/commons-csv
+    implementation 'org.apache.commons:commons-csv:1.6'
     compile 'org.postgresql:postgresql:42.2.5'
-    testCompile 'junit:junit:4.12'
+    implementation 'org.hibernate:hibernate-core:5.4.2.Final'
+    implementation 'org.controlsfx:controlsfx:11.0.0'
 }
 
 flyway {
@@ -27,8 +27,11 @@ flyway {
 }
 
 javafx {
-    version = '12'
+    version = '12.0.1'
     modules = ['javafx.controls', 'javafx.fxml']
 }
 
-mainClassName = 'App'
+compileJava {
+    sourceCompatibility = '12'
+    targetCompatibility = '12'
+}
