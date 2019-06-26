@@ -1,12 +1,13 @@
 -- 1.1. Wie viel Prozent der Studierenden sind nicht im Studiengang Informatik eingeschrieben?
 SELECT (
-                   (SELECT COUNT(*) FROM student)::FLOAT -
-                   (SELECT COUNT(*)
-                    FROM student
-                             JOIN studium ON student.id = studium.student_id
-                             JOIN studiengang ON studium.studiengang_id = studiengang.id
-                    WHERE studiengang.name = 'Informatik')::FLOAT) /
-       (SELECT COUNT(*) FROM student)::FLOAT AS prozent;
+       (SELECT COUNT(*) FROM student)::FLOAT -
+       (SELECT COUNT(*)
+        FROM student
+                 JOIN studium ON student.id = studium.student_id
+                 JOIN studiengang ON studium.studiengang_id = studiengang.id
+        WHERE studiengang.name = 'Informatik')::FLOAT)
+    /
+(SELECT COUNT(*) FROM student)::FLOAT AS prozent;
 
 
 -- 1.2. Die Klausuren welcher Vorlesungsreihe (DBS1, DBS2, CDM, …) fanden durchschnittlich am frühsten statt?
@@ -47,10 +48,9 @@ WHERE jahr = 2017
 -- Finde alle Mitarbeiter, die AKs beaufsichtigt haben. Gib restliche Mitarbeiter zurück.
 SELECT vorname, nachname
 FROM mitarbeiter
-WHERE id NOT IN (SELECT mitarbeiter_id
-                 FROM klausur
-                          JOIN abschlussklausur a ON klausur.id = a.klausur_id
-                          JOIN aufsicht a2 ON klausur.id = a2.klausur_id);
+WHERE id NOT IN (SELECT DISTINCT mitarbeiter_id
+                 FROM abschlussklausur
+                          JOIN aufsicht a2 on abschlussklausur.klausur_id = a2.klausur_id);
 
 -- 1.5. Welche Veranstaltungsreihen wurden immer zur selben Zeit abgehalten?
 -- Annahmen: Wochentag egal, Veranstaltungsreihe = gleicher Name
@@ -113,7 +113,7 @@ WITH veranstaltungsMatching AS (-- Welche Studenten nehmen an welchen Veranstalt
                     studentteilnahmeklausur.student_id,
                     jahr
     FROM (
-             SELECT klausur.id AS klausur_id,
+             SELECT klausur.id                                       AS klausur_id,
                     coalesce(spezialvorlesung_id, grundvorlesung_id) AS veranstaltung_id,
                     jahr
              FROM veranstaltung AS v
@@ -122,14 +122,15 @@ WITH veranstaltungsMatching AS (-- Welche Studenten nehmen an welchen Veranstalt
              JOIN studentteilnahmeklausur
                   ON studentteilnahmeklausur.klausur_id = k.klausur_id
 )
-SELECT concat(linkerStudent.vorname, ' ', linkerStudent.nachname) AS student_1, -- Infos der Studierenden retrieven
-       linkerStudent.matrikelnr AS mnr_1,
-       links AS id_1,
+SELECT concat(linkerStudent.vorname, ' ', linkerStudent.nachname)   AS student_1, -- Infos der Studierenden retrieven
+       linkerStudent.matrikelnr                                     AS mnr_1,
+       links                                                        AS id_1,
        concat(rechterStudent.vorname, ' ', rechterStudent.nachname) AS student_2,
-       rechterStudent.matrikelnr AS mnr_2,
-       rechts AS id_2
+       rechterStudent.matrikelnr                                    AS mnr_2,
+       rechts                                                       AS id_2
 FROM (
-         SELECT DISTINCT a.student_id AS links, b.student_id rechts -- DISTINCT, da lernpartner-Eigenschaft in mehrere
+         SELECT DISTINCT a.student_id AS links,
+                         b.student_id    rechts -- DISTINCT, da lernpartner-Eigenschaft in mehrere
          FROM veranstaltungsMatching AS a
                   FULL JOIN veranstaltungsMatching AS b ON a.veranstaltung_id = b.veranstaltung_id
          WHERE a.student_id < b.student_id
@@ -137,7 +138,8 @@ FROM (
          GROUP BY a.student_id, b.student_id -- a und b sind in einer Veranstaltung, und durch a.jahr im selben Jahr
          HAVING count(*) >= 2
 
-         INTERSECT  -- 2016 und 2017 JEWEILS min. 2 Veranstaltungen besucht
+         INTERSECT
+         -- 2016 und 2017 JEWEILS min. 2 Veranstaltungen besucht
 
          SELECT DISTINCT a.student_id AS links, b.student_id
          FROM veranstaltungsMatching AS a
@@ -155,87 +157,42 @@ FROM (
 -- Seminar- und Praktikumsnoten ergeben sich jeweils aus dem Mittel der Noten aus den Prüfungsteilleistungen.
 -- Ermöglichen Sie eine unterschiedliche Gewichtung von Seminar-, Praktikums- und Klausurnoten.
 -- Studierende, welche mehr als drei Veranstaltungen erfolgreich abgeschlossen haben, sollen einen individuell definierbaren Bonus auf ihren Rankingdurchschnitt erhalten
+SELECT matrikelnr,
+       concat(vorname, ' ', nachname),
+       score - bonus AS score
+FROM (SELECT student_id,
+             anzver,
+             CASE WHEN anzver >= 3 THEN 0 ELSE 0 END AS bonus,
+             score
+      FROM (SELECT student_id,
+                   COUNT(*) as anzver,
+                   SUM(note * weight)/SUM(weight) AS score
+            FROM (SELECT student_id, -- 967 rows
+                         note,
+                         1 AS weight -- weight bestimmt, wie oft die Note in die Wertung eingeht (ganzzahlig)
+                  FROM studentteilnahmeklausur
+                  WHERE klausur_id IN (TABLE abschlussklausur)
+                    AND note >= 1.0
+                    AND note <= 4.0-- Es existieren im Datensatz keine Teilnahmen an Zwischenklausuren
+                  UNION ALL
+                  SELECT student_id, -- 273 rows
+                         note,
+                         1 AS weight
+                  FROM studentteilnahmeveranstaltung
+                  WHERE veranstaltung_id IN (TABLE praktikum)
+                    AND note >= 1.0
+                    AND note <= 4.0
+                  UNION ALL
+                  SELECT student_id, -- 40 rows
+                         note,
+                         1 AS weight
+                  FROM studentteilnahmeveranstaltung
+                  WHERE veranstaltung_id IN (TABLE seminar EXCEPT (TABLE oberseminar))
+                    AND note >= 1.0
+                    AND note <= 4.0
+                 ) AS a
+            GROUP BY student_id
+            HAVING COUNT(*) >= 2) AS b) AS c
+         JOIN student ON student_id = id
+ORDER BY score;
 
-
--- 2.
--- innerhalb eines Jahres 3 Veranstaltungen zusammen besucht
-CREATE OR REPLACE VIEW lernpartner AS
-    WITH veranstaltungsMatching AS (-- Welche Studenten nehmen an welchen Veranstaltungen und in welchem Jahr teil?
-        SELECT veranstaltung_id,
-               student_id,
-               jahr
-        FROM veranstaltung AS v
-                 JOIN studentteilnahmeveranstaltung
-                      ON veranstaltung_id = v.id
-
-        UNION
-
-        SELECT DISTINCT veranstaltung_id,
-                        studentteilnahmeklausur.student_id,
-                        jahr
-        FROM (
-                 SELECT klausur.id AS klausur_id,
-                        coalesce(spezialvorlesung_id, grundvorlesung_id) AS veranstaltung_id,
-                        jahr
-                 FROM veranstaltung AS v
-                          JOIN klausur
-                               ON coalesce(spezialvorlesung_id, grundvorlesung_id) = v.id) AS k
-                 JOIN studentteilnahmeklausur
-                      ON studentteilnahmeklausur.klausur_id = k.klausur_id
-    )
-    SELECT DISTINCT a.student_id AS links, b.student_id rechts -- DISTINCT, da lernpartner-Eigenschaft in mehrere
-    FROM veranstaltungsMatching AS a
-             FULL JOIN veranstaltungsMatching AS b ON a.veranstaltung_id = b.veranstaltung_id
-    WHERE a.student_id < b.student_id
-    GROUP BY a.jahr, a.student_id, b.student_id -- a und b sind in einer Veranstaltung, und durch a.jahr im selben Jahr
-    HAVING count(*) >= 3;
-
-
--- Lerpartner ersten Grades
-SELECT id, concat(vorname, ' ', nachname), matrikelnr
-FROM(
-        SELECT rechts AS partnerId
-        FROM lernpartner
-                 JOIN student ON links = id
-        WHERE matrikelnr = '3153305'
-
-        UNION
-
-        SELECT links AS partnerId
-        FROM lernpartner
-                 JOIN student ON rechts = id
-        WHERE matrikelnr = '3153305'
-    ) AS s
-        JOIN student ON partnerId = id;
-
-
--- Lernpartner ersten und zweiten Grades
-WITH partnerFirstDegree AS (
-    SELECT rechts AS partnerId
-    FROM lernpartner
-             JOIN student ON links = id
-    WHERE matrikelnr = '3029075'
-
-    UNION
-
-    SELECT links AS partnerId
-    FROM lernpartner
-             JOIN student ON rechts = id
-    WHERE matrikelnr = '3029075'
-)
-SELECT DISTINCT id, concat(vorname, ' ', nachname), matrikelnr
-FROM (
-         SELECT rechts AS partnerSDId
-         FROM partnerFirstDegree
-                  JOIN lernpartner on partnerFirstDegree.partnerId = lernpartner.links
-
-         UNION
-
-         SELECT links AS partneSDId
-         FROM partnerFirstDegree
-                  JOIN lernpartner on partnerFirstDegree.partnerId = lernpartner.rechts
-     ) AS s
-         JOIN student ON partnerSDId = id;
-
-
--- 3.
