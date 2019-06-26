@@ -26,6 +26,7 @@ public class Klausur implements Serializable {
     private LocalDate datum;
     private LocalTime uhrzeitVon;
     private Double gesamtpunktzahl;
+    private String notenschluessel;
 
     // Explicit Relation with additional data: see KlausurTeilnahme class.
     @OneToMany(mappedBy = "klausur")
@@ -60,10 +61,11 @@ public class Klausur implements Serializable {
     public Klausur() {
     }
 
-    public Klausur(LocalDate datum, LocalTime uhrzeitVon, Double gesamtpunktzahl) {
+    public Klausur(LocalDate datum, LocalTime uhrzeitVon, Double gesamtpunktzahl, String notenschluessel) {
         this.datum = datum;
         this.uhrzeitVon = uhrzeitVon;
         this.gesamtpunktzahl = gesamtpunktzahl;
+        this.notenschluessel = notenschluessel;
     }
 
     @Override
@@ -168,5 +170,13 @@ public class Klausur implements Serializable {
 
     public void setGrundvorlesung(Grundvorlesung grundvorlesung) {
         this.grundvorlesung = grundvorlesung;
+    }
+
+    public String getNotenschluessel() {
+        return notenschluessel;
+    }
+
+    public void setNotenschluessel(String notenschluessel) {
+        this.notenschluessel = notenschluessel;
     }
 }
