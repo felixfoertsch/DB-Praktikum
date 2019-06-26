@@ -52,6 +52,8 @@ public class KlausurenController {
     Tab klausurTeilnehmerAbwesendTab;
     @FXML
     Tab klausurNotenEingabeTab;
+    @FXML
+    Tab klausurNotenVerteilungTab;
 
     private HibernateService hibernateService;
 
@@ -99,6 +101,7 @@ public class KlausurenController {
         setupTeilnehmerTab(k);
         setupAbwesendTab(k);
         setupNotenEingabeTab(k);
+        setupNotenVerteilungTab(k);
         klausurenMasterDetailPane.showDetailNodeProperty().setValue(true);
     }
 
@@ -155,4 +158,15 @@ public class KlausurenController {
         }
     }
 
+    private void setupNotenVerteilungTab(Klausur klausur) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/KlausurNotenVerteilung.fxml"));
+            GridPane gridPane = loader.load();
+            KlausurNotenVerteilung c = loader.getController();
+            c.setupController(klausur);
+            klausurNotenVerteilungTab.setContent(gridPane);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -27,24 +27,23 @@ public class KlausurStatistikController {
         barChart.setCategoryGap(0);
         barChart.setBarGap(0);
 
-        xAxis.setLabel("Range");
+        xAxis.setLabel("Noten");
         yAxis.setLabel("Relative Häufigkeit");
 
-        XYChart.Series series1 = new XYChart.Series();
-        series1.setName("Notenverteilung");
-        series1.getData().add(new XYChart.Data("1,0", notenverteilung[0]));
-        series1.getData().add(new XYChart.Data("1,3", notenverteilung[1]));
-        series1.getData().add(new XYChart.Data("1,7", notenverteilung[2]));
-        series1.getData().add(new XYChart.Data("2,0", notenverteilung[3]));
-        series1.getData().add(new XYChart.Data("2,3", notenverteilung[4]));
-        series1.getData().add(new XYChart.Data("2,7", notenverteilung[5]));
-        series1.getData().add(new XYChart.Data("3,0", notenverteilung[6]));
-        series1.getData().add(new XYChart.Data("3,3", notenverteilung[7]));
-        series1.getData().add(new XYChart.Data("3,7", notenverteilung[8]));
-        series1.getData().add(new XYChart.Data("4,0", notenverteilung[9]));
-        series1.getData().add(new XYChart.Data("5,0", notenverteilung[10]));
-
-        barChart.getData().addAll(series1);
+        XYChart.Series series = new XYChart.Series();
+        series.setName("Notenverteilung");
+        series.getData().add(new XYChart.Data("1,0", notenverteilung[0]));
+        series.getData().add(new XYChart.Data("1,3", notenverteilung[1]));
+        series.getData().add(new XYChart.Data("1,7", notenverteilung[2]));
+        series.getData().add(new XYChart.Data("2,0", notenverteilung[3]));
+        series.getData().add(new XYChart.Data("2,3", notenverteilung[4]));
+        series.getData().add(new XYChart.Data("2,7", notenverteilung[5]));
+        series.getData().add(new XYChart.Data("3,0", notenverteilung[6]));
+        series.getData().add(new XYChart.Data("3,3", notenverteilung[7]));
+        series.getData().add(new XYChart.Data("3,7", notenverteilung[8]));
+        series.getData().add(new XYChart.Data("4,0", notenverteilung[9]));
+        series.getData().add(new XYChart.Data("5,0", notenverteilung[10]));
+        barChart.getData().addAll(series);
 
         klausurStatistikGridPane.add(barChart, 0, 0);
     }
