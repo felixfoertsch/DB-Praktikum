@@ -54,6 +54,7 @@ public class KlausurTeilnahmeEingabeController {
             klausurTeilnahmeEingabeGridPane.add(keineAufgaben, 0, 5);
             klausurTeilnahmeEingabeGridPane.add(hinzufuegenButton, 0, 6);
         } else {
+            klausurNotenEingabeNotenTextField.setTextFormatter(getDoubleFormatterWithMax(5.0));
             klausurTeilnahmeEingabeGridPane.getChildren().remove(klausurNotenEingabePunkteTextField);
             klausurTeilnahmeEingabeGridPane.getChildren().remove(klausurNotenEingabePunkteLabel);
             klausurTeilnahmeEingabeGridPane.getChildren().remove(hinzufuegenButton);
@@ -94,13 +95,22 @@ public class KlausurTeilnahmeEingabeController {
             a.showAndWait();
             return;
         }
+        if (klausurNotenEingabeNotenTextField.getText().isEmpty()) {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setTitle("Fehler");
+            a.setHeaderText("Note überprüfen!");
+            a.setResizable(false);
+            a.setContentText("Die eingegebene Note ist ungültig.");
+            a.showAndWait();
+            return;
+        }
 
         KlausurTeilnahme kt = new KlausurTeilnahme();
         kt.setEntschuldigt(klausurNotenEingabeEntschuldigtCheckBox.isSelected());
         kt.setErschienen(klausurNotenEingabeErschienenCheckBox.isSelected());
         kt.setKlausur(selectedKlausur);
         kt.setStudent(selectedStudent);
-        kt.setPunkte(Double.valueOf(klausurNotenEingabePunkteTextField.getText()));
+        kt.setPunkte(gesamtpunkte);
         kt.setNote(Double.valueOf(klausurNotenEingabeNotenTextField.getText()));
 
         for (Aufgabe a : aufgaben) {
@@ -117,7 +127,6 @@ public class KlausurTeilnahmeEingabeController {
 
     private TextFormatter<Double> getDoubleFormatterWithMax(Double maxPunkte) {
         Pattern validDoubleText = Pattern.compile("((\\d*)|(\\d+\\.\\d*))");
-
         TextFormatter<Double> textFormatter = new TextFormatter<>(
                 new DoubleStringConverter(), 0.0,
                 change -> {
