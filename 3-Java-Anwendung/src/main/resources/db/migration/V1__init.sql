@@ -1,8 +1,8 @@
 CREATE TABLE klausur
 (
     id                 SERIAL PRIMARY KEY,
-    spezialvorlesungId INTEGER,
-    grundvorlesungId   INTEGER,
+    spezialvorlesung_id INTEGER,
+    grundvorlesung_id   INTEGER,
     datum              DATE,
     uhrzeitVon         TIME,
     gesamtpunktzahl    NUMERIC(3, 1)
@@ -10,17 +10,17 @@ CREATE TABLE klausur
 
 CREATE TABLE abschlussklausur
 (
-    klausurId INTEGER REFERENCES klausur ON DELETE CASCADE PRIMARY KEY
+    klausur_id INTEGER REFERENCES klausur ON DELETE CASCADE PRIMARY KEY
 );
 
 CREATE TABLE zwischenklausur
 (
-    klausurId INTEGER REFERENCES klausur ON DELETE CASCADE PRIMARY KEY
+    klausur_id INTEGER REFERENCES klausur ON DELETE CASCADE PRIMARY KEY
 );
 
 CREATE TABLE wiederholungsklausur
 (
-    klausurId INTEGER REFERENCES abschlussklausur ON DELETE CASCADE PRIMARY KEY
+    klausur_id INTEGER REFERENCES abschlussklausur ON DELETE CASCADE PRIMARY KEY
 );
 
 CREATE TABLE veranstaltung
@@ -34,39 +34,39 @@ CREATE TABLE veranstaltung
 
 CREATE TABLE seminar
 (
-    veranstaltungId INTEGER REFERENCES veranstaltung ON DELETE CASCADE PRIMARY KEY
+    veranstaltung_id INTEGER REFERENCES veranstaltung ON DELETE CASCADE PRIMARY KEY
 );
 
 CREATE TABLE oberseminar
 (
-    veranstaltungId INTEGER REFERENCES seminar ON DELETE CASCADE PRIMARY KEY
+    veranstaltung_id INTEGER REFERENCES seminar ON DELETE CASCADE PRIMARY KEY
 );
 
 CREATE TABLE problemseminar
 (
-    veranstaltungId INTEGER REFERENCES seminar ON DELETE CASCADE PRIMARY KEY
+    veranstaltung_id INTEGER REFERENCES seminar ON DELETE CASCADE PRIMARY KEY
 );
 
 CREATE TABLE praktikum
 (
-    veranstaltungId INTEGER REFERENCES veranstaltung ON DELETE CASCADE PRIMARY KEY
+    veranstaltung_id INTEGER REFERENCES veranstaltung ON DELETE CASCADE PRIMARY KEY
 );
 
 CREATE TABLE grundvorlesung
 (
-    veranstaltungId INTEGER REFERENCES veranstaltung ON DELETE CASCADE PRIMARY KEY
+    veranstaltung_id INTEGER REFERENCES veranstaltung ON DELETE CASCADE PRIMARY KEY
 
 );
 
 CREATE TABLE spezialvorlesung
 (
-    veranstaltungId INTEGER REFERENCES veranstaltung ON DELETE CASCADE PRIMARY KEY
+    veranstaltung_id INTEGER REFERENCES veranstaltung ON DELETE CASCADE PRIMARY KEY
 );
 
 CREATE TABLE uebung
 (
-    veranstaltungId  INTEGER REFERENCES veranstaltung ON DELETE CASCADE PRIMARY KEY,
-    grundvorlesungId INTEGER REFERENCES grundvorlesung ON DELETE CASCADE
+    veranstaltung_id  INTEGER REFERENCES veranstaltung ON DELETE CASCADE PRIMARY KEY,
+    grundvorlesung_id INTEGER REFERENCES grundvorlesung ON DELETE CASCADE
 );
 
 CREATE TABLE raum
@@ -81,7 +81,7 @@ CREATE TABLE mitarbeiter
     vorname  TEXT,
     nachname TEXT,
     email    TEXT,
-    raumId   INTEGER REFERENCES raum
+    raum_id   INTEGER REFERENCES raum
 );
 
 CREATE TABLE student
@@ -96,7 +96,7 @@ CREATE TABLE student
 CREATE TABLE aufgabe
 (
     id        SERIAL PRIMARY KEY,
-    klausurId INTEGER REFERENCES klausur ON DELETE CASCADE,
+    klausur_id INTEGER REFERENCES klausur ON DELETE CASCADE,
     rang      INTEGER,
     maxPunkte NUMERIC(3, 1)
 );
@@ -111,67 +111,67 @@ CREATE TABLE studiengang
 
 CREATE TABLE abhaltung
 (
-    raumId          INTEGER REFERENCES raum ON DELETE RESTRICT         NOT NULL,
-    veranstaltungId INTEGER REFERENCES veranstaltung ON DELETE CASCADE NOT NULL,
+    raum_id          INTEGER REFERENCES raum ON DELETE RESTRICT         NOT NULL,
+    veranstaltung_id INTEGER REFERENCES veranstaltung ON DELETE CASCADE NOT NULL,
     wochentag       TEXT,
     zeit            TIME,
-    PRIMARY KEY (raumId, veranstaltungId)
+    PRIMARY KEY (raum_id, veranstaltung_id)
 );
 
 CREATE TABLE aufsicht
 (
-    klausurId     INTEGER REFERENCES klausur ON DELETE CASCADE     NOT NULL,
-    mitarbeiterId INTEGER REFERENCES mitarbeiter ON DELETE CASCADE NOT NULL,
-    PRIMARY KEY (klausurId, mitarbeiterId)
+    klausur_id     INTEGER REFERENCES klausur ON DELETE CASCADE     NOT NULL,
+    mitarbeiter_id INTEGER REFERENCES mitarbeiter ON DELETE CASCADE NOT NULL,
+    PRIMARY KEY (klausur_id, mitarbeiter_id)
 );
 
 CREATE TABLE bearbeitung
 (
-    studentId INTEGER REFERENCES student ON DELETE CASCADE NOT NULL,
-    aufgabeId INTEGER REFERENCES aufgabe ON DELETE CASCADE NOT NULL,
+    student_id INTEGER REFERENCES student ON DELETE CASCADE NOT NULL,
+    aufgabe_id INTEGER REFERENCES aufgabe ON DELETE CASCADE NOT NULL,
     punkte    NUMERIC(3, 1),
-    PRIMARY KEY (studentId, aufgabeId)
+    PRIMARY KEY (student_id, aufgabe_id)
 );
 
 CREATE TABLE betreut
 (
-    mitarbeiterId   INTEGER REFERENCES mitarbeiter ON DELETE CASCADE   NOT NULL,
-    veranstaltungId INTEGER REFERENCES veranstaltung ON DELETE CASCADE NOT NULL,
-    PRIMARY KEY (mitarbeiterId, veranstaltungId)
+    mitarbeiter_id   INTEGER REFERENCES mitarbeiter ON DELETE CASCADE   NOT NULL,
+    veranstaltung_id INTEGER REFERENCES veranstaltung ON DELETE CASCADE NOT NULL,
+    PRIMARY KEY (mitarbeiter_id, veranstaltung_id)
 );
 
 CREATE TABLE ort
 (
-    klausurId INTEGER REFERENCES klausur ON DELETE CASCADE NOT NULL,
-    raumId    INTEGER REFERENCES raum ON DELETE CASCADE    NOT NULL,
-    PRIMARY KEY (klausurId, raumId)
+    klausur_id INTEGER REFERENCES klausur ON DELETE CASCADE NOT NULL,
+    raum_id    INTEGER REFERENCES raum ON DELETE CASCADE    NOT NULL,
+    PRIMARY KEY (klausur_id, raum_id)
 );
 
 CREATE TABLE studium
 (
-    studiengangId INTEGER REFERENCES studiengang ON DELETE RESTRICT NOT NULL,
-    studentId     INTEGER REFERENCES student ON DELETE CASCADE      NOT NULL,
+    studiengang_id INTEGER REFERENCES studiengang ON DELETE RESTRICT NOT NULL,
+    student_id     INTEGER REFERENCES student ON DELETE CASCADE      NOT NULL,
     imma          INTEGER,
     exma          INTEGER,
     semester      INTEGER,
-    PRIMARY KEY (studiengangId, studentId)
+    PRIMARY KEY (studiengang_id, student_id)
 );
 
 CREATE TABLE studentTeilnahmeKlausur
 (
-    studentId    INTEGER REFERENCES student ON DELETE CASCADE  NOT NULL,
-    klausurId    INTEGER REFERENCES klausur ON DELETE RESTRICT NOT NULL,
+    student_id    INTEGER REFERENCES student ON DELETE CASCADE  NOT NULL,
+    klausur_id    INTEGER REFERENCES klausur ON DELETE RESTRICT NOT NULL,
     erschienen   BOOLEAN,
     entschuldigt BOOLEAN,
     punkte       NUMERIC(3, 1),
     note         NUMERIC(2, 1),
-    PRIMARY KEY (studentId, klausurId)
+    PRIMARY KEY (student_id, klausur_id)
 );
 
 CREATE TABLE studentTeilnahmeVeranstaltung
 (
-    studentId       INTEGER REFERENCES student ON DELETE CASCADE        NOT NULL,
-    veranstaltungId INTEGER REFERENCES veranstaltung ON DELETE RESTRICT NOT NULL,
+    student_id       INTEGER REFERENCES student ON DELETE CASCADE        NOT NULL,
+    veranstaltung_id INTEGER REFERENCES veranstaltung ON DELETE RESTRICT NOT NULL,
     note            NUMERIC(2, 1),
-    PRIMARY KEY (studentId, veranstaltungId)
+    PRIMARY KEY (student_id, veranstaltung_id)
 );

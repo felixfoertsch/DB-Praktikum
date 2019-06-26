@@ -1,53 +1,92 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import model.klausur.Klausur;
+import model.relationen.AufgabenBearbeitung;
 
-public class Aufgabe {
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
+
+@Entity
+@Table(name = "aufgabe")
+public class Aufgabe implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer klausurId;
     private Integer rang;
-    private String klausurNr;
-    private Integer aufgabenNr;
     private Double maxPunkte;
-    private Map<String, AufgabenBearbeitung> aufgabenBearbeitungen;
 
-    public Aufgabe(String klausurNr, String aufgabenNr, String maxPunkte) {
-        this.aufgabenBearbeitungen = new HashMap<>();
-        this.klausurNr = klausurNr;
-        this.aufgabenNr = Integer.valueOf(aufgabenNr);
-        this.maxPunkte = Double.valueOf(maxPunkte);
+    @ManyToOne
+    private Klausur klausur;
+
+    // Explicit Relation with additional data: see AufgabenBearbeitung class.
+    @OneToMany(mappedBy = "aufgabe")
+    private List<AufgabenBearbeitung> aufgabenBearbeitungen;
+
+    public Aufgabe() {
     }
 
-    public String generateKey() {
-        return klausurNr + "_" + aufgabenNr;
+    public Aufgabe(Integer rang, Double maxPunkte, Klausur klausur) {
+        this.rang = rang;
+        this.maxPunkte = maxPunkte;
+        this.klausur = klausur;
     }
 
-    public void addAufgabenBearbeitung(AufgabenBearbeitung ab) { this.aufgabenBearbeitungen.put(ab.generateKey(), ab); }
-
-    public Map<String, AufgabenBearbeitung> getAufgabenBearbeitungen() {
-        return aufgabenBearbeitungen;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Aufgabe aufgabe = (Aufgabe) o;
+        return Objects.equals(this.id, aufgabe.id);
     }
 
-    public Integer getAufgabenNr() {
-        return aufgabenNr;
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
     }
 
-    public void setKlausurNr(String klausurNr) {
-        this.klausurNr = klausurNr;
-    }
+    /***********************************************************************************************
+     *
+     * Getters and Setters
+     *
+     */
 
-    public Double getMaxPunkte() {
-        return maxPunkte;
+    public Integer getId() {
+        return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getRang() {
+        return rang;
     }
+
+    public void setRang(Integer rang) {
+        this.rang = rang;
+    }
+
+    public Double getMaxPunkte() {
+        return maxPunkte;
+    }
+
+    public void setMaxPunkte(Double maxPunkte) {
+        this.maxPunkte = maxPunkte;
+    }
+
+    public Klausur getKlausur() {
+        return klausur;
+    }
+
+    public void setKlausur(Klausur klausur) {
+        this.klausur = klausur;
+    }
+
 }
