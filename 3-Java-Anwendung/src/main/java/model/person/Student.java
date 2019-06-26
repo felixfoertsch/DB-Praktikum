@@ -11,6 +11,18 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+@SqlResultSetMapping(name = "FetchStudentMapping", classes = {
+        @ConstructorResult(
+                targetClass = FetchStudent.class,
+                columns = {
+                        @ColumnResult(name = "id", type = Integer.class),
+                        @ColumnResult(name = "matrikelNr", type = String.class),
+                        @ColumnResult(name = "vorname", type = String.class),
+                        @ColumnResult(name = "nachname", type = String.class),
+                        @ColumnResult(name = "uniMail", type = String.class),
+                        @ColumnResult(name = "score", type = Float.class)
+                })
+})
 @Entity
 @Table(name = "student")
 public class Student implements Serializable {

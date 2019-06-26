@@ -1,4 +1,4 @@
-package controller;
+package controller.klausuren;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -9,21 +9,14 @@ import model.klausur.Klausur;
 import model.person.Student;
 import model.relationen.AufgabenBearbeitung;
 import model.relationen.KlausurTeilnahme;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import services.HibernateService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class KlausurTeilnahmeEingabeController {
-    private SessionFactory sessionFactory;
-    private Student selectedStudent;
-    private Klausur selectedKlausur;
-    private List<Aufgabe> aufgaben;
-
-    // Form: KlausurTeilnahmeHinzufuegen
+public class KlausurNotenEingabeAufgabenController {
     @FXML
     GridPane klausurTeilnahmeEingabeGridPane;
     @FXML
@@ -38,16 +31,16 @@ public class KlausurTeilnahmeEingabeController {
     TextField klausurNotenEingabeNotenTextField;
     @FXML
     Button hinzufuegenButton;
+    private HibernateService hibernateService;
+    private Student selectedStudent;
+    private Klausur selectedKlausur;
+    private List<Aufgabe> aufgaben;
     private Map<Integer, TextField> aufgabenMap = new HashMap<>();
-
     private Label punkteSummeLabel = new Label("");
     private Double gesamtpunkte = 0.0;
 
-    void injectSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-    void setupController(Student student, Klausur klausur) {
+    public void setupController(HibernateService hibernateService, Student student, Klausur klausur) {
+        this.hibernateService = hibernateService;
         this.selectedStudent = student;
         this.selectedKlausur = klausur;
         this.aufgaben = klausur.getAufgaben();
@@ -58,7 +51,7 @@ public class KlausurTeilnahmeEingabeController {
             klausurTeilnahmeEingabeGridPane.add(keineAufgaben, 0, 5);
             klausurTeilnahmeEingabeGridPane.add(hinzufuegenButton, 0, 6);
         } else {
-            klausurNotenEingabeNotenTextField.setTextFormatter(getDoubleFormatterWithMax(5.0));
+            klausurNotenEingabeNotenTextField.setTextFormatter(getDoubleFormatterWithMaxValue(5.0));
             klausurTeilnahmeEingabeGridPane.getChildren().remove(klausurNotenEingabePunkteTextField);
             klausurTeilnahmeEingabeGridPane.getChildren().remove(klausurNotenEingabePunkteLabel);
             klausurTeilnahmeEingabeGridPane.getChildren().remove(hinzufuegenButton);
@@ -73,7 +66,7 @@ public class KlausurTeilnahmeEingabeController {
                     System.out.println(gesamtpunkte);
                     punkteSummeLabel.setText(gesamtpunkte.toString());
                 });
-                tempTextField.setTextFormatter(getDoubleFormatterWithMax(a.getMaxPunkte()));
+                tempTextField.setTextFormatter(getDoubleFormatterWithMaxValue(a.getMaxPunkte()));
                 aufgabenMap.put(a.getRang(), tempTextField);
 
                 klausurTeilnahmeEingabeGridPane.add(tempLabel, 0, rowcounter);
@@ -118,22 +111,18 @@ public class KlausurTeilnahmeEingabeController {
         kt.setPunkte(gesamtpunkte);
         kt.setNote(Double.valueOf(klausurNotenEingabeNotenTextField.getText()));
 
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.save(kt);
+        hibernateService.saveKlausurTeilnahme(kt);
 
         for (Aufgabe a : aufgaben) {
             String aufgabenPunkte = aufgabenMap.get(a.getRang()).getText();
             AufgabenBearbeitung ab = new AufgabenBearbeitung(selectedStudent, a, Double.valueOf(aufgabenPunkte));
-            session.save(ab);
+            hibernateService.saveAufgabenBearbeitung(ab);
         }
-        session.getTransaction().commit();
-        session.close();
     }
 
-    private TextFormatter<Double> getDoubleFormatterWithMax(Double maxPunkte) {
+    private TextFormatter<Double> getDoubleFormatterWithMaxValue(Double maxPunkte) {
         Pattern validDoubleText = Pattern.compile("((\\d*)|(\\d+\\.\\d*))");
-        TextFormatter<Double> textFormatter = new TextFormatter<>(
+        return new TextFormatter<>(
                 new DoubleStringConverter(), 0.0,
                 change -> {
                     if (change.getControlNewText().isEmpty()) return null;
@@ -143,6 +132,5 @@ public class KlausurTeilnahmeEingabeController {
                         return change;
                     } else return null;
                 });
-        return textFormatter;
     }
 }
