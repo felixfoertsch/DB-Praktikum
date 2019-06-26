@@ -6,7 +6,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.converter.DoubleStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 import model.person.FetchStudent;
 import model.person.Student;
 import org.hibernate.Session;
@@ -15,6 +18,7 @@ import services.HibernateService;
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 public class TopStudentenController {
@@ -44,6 +48,10 @@ public class TopStudentenController {
 
     void setupController(HibernateService hibernateService) {
         this.hibernateService = hibernateService;
+        weightKlausur.setTextFormatter(getDecimalFormatter());
+        weightPraktikum.setTextFormatter(getDecimalFormatter());
+        weightSeminar.setTextFormatter(getDecimalFormatter());
+        bonus.setTextFormatter(getBoundDoubleFormatter());
     }
 
     @FXML
@@ -84,5 +92,33 @@ public class TopStudentenController {
         topStudentNachname.setCellValueFactory(new PropertyValueFactory<>("nachname"));
         topStudentUnimail.setCellValueFactory(new PropertyValueFactory<>("uniMail"));
         topStudentScore.setCellValueFactory(new PropertyValueFactory<>("score"));
+    }
+
+    private TextFormatter<Integer> getDecimalFormatter() {
+        Pattern validDecimalText = Pattern.compile("\\d*");
+        return new TextFormatter<>(
+                new IntegerStringConverter(), 1,
+                change -> {
+                    if (change.getControlNewText().isEmpty()) return change;
+                    String newText = change.getControlNewText();
+                    if (validDecimalText.matcher(newText).matches()) {
+                        if (Integer.valueOf(change.getControlNewText()) > 100) return null;
+                        return change;
+                    } else return null;
+                });
+    }
+
+    private TextFormatter<Double> getBoundDoubleFormatter() {
+        Pattern validDoubleText = Pattern.compile("((\\d*)|(\\d+\\.\\d*))");
+        return new TextFormatter<>(
+                new DoubleStringConverter(), 0.0,
+                change -> {
+                    if (change.getControlNewText().isEmpty()) return change;
+                    String newText = change.getControlNewText();
+                    if (validDoubleText.matcher(newText).matches()) {
+                        if (Double.valueOf(change.getControlNewText()) > 1 || Double.valueOf(change.getControlNewText()) < 0 ) return null;
+                        return change;
+                    } else return null;
+                });
     }
 }
