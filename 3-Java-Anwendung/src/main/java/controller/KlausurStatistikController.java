@@ -29,6 +29,8 @@ public class KlausurStatistikController {
     }
 
     public void createHistogram(Klausur klausur) {
+        prepareData();
+        groupData();
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
         final BarChart<String,Number> barChart = new BarChart<>(xAxis,yAxis);
@@ -40,16 +42,17 @@ public class KlausurStatistikController {
 
         XYChart.Series series1 = new XYChart.Series();
         series1.setName("Histogram");
-        series1.getData().add(new XYChart.Data("0-10", group[0]));
-        series1.getData().add(new XYChart.Data("10-20", group[1]));
-        series1.getData().add(new XYChart.Data("20-30", group[2]));
-        series1.getData().add(new XYChart.Data("30-40", group[3]));
-        series1.getData().add(new XYChart.Data("40-50", group[4]));
-        series1.getData().add(new XYChart.Data("50-60", group[5]));
-        series1.getData().add(new XYChart.Data("60-70", group[6]));
-        series1.getData().add(new XYChart.Data("70-80", group[7]));
-        series1.getData().add(new XYChart.Data("80-90", group[8]));
-        series1.getData().add(new XYChart.Data("90-100", group[9]));
+        series1.getData().add(new XYChart.Data("1,0", group[0]));
+        series1.getData().add(new XYChart.Data("1,3", group[1]));
+        series1.getData().add(new XYChart.Data("1,7", group[2]));
+        series1.getData().add(new XYChart.Data("2,0", group[3]));
+        series1.getData().add(new XYChart.Data("2,3", group[4]));
+        series1.getData().add(new XYChart.Data("2,7", group[5]));
+        series1.getData().add(new XYChart.Data("3,0", group[6]));
+        series1.getData().add(new XYChart.Data("3,3", group[7]));
+        series1.getData().add(new XYChart.Data("3,7", group[8]));
+        series1.getData().add(new XYChart.Data("4,0", group[9]));
+        series1.getData().add(new XYChart.Data("5,0", group[10]));
 
         barChart.getData().addAll(series1);
 
@@ -58,7 +61,7 @@ public class KlausurStatistikController {
 
     int DATA_SIZE = 1000;
     int data[] = new int[DATA_SIZE];
-    int group[] = new int[10];
+    int group[] = new int[11];
 
     private void prepareData(){
 
@@ -69,7 +72,7 @@ public class KlausurStatistikController {
     }
 
     private void groupData(){
-        for(int i=0; i<10; i++){
+        for(int i=0; i<11; i++){
             group[i]=0;
         }
         for(int i=0; i<DATA_SIZE; i++){
@@ -93,6 +96,8 @@ public class KlausurStatistikController {
                 group[8]++;
             }else if(data[i]<=100){
                 group[9]++;
+            } else if(data[i]<=110){
+                group[10]++;
             }
         }
     }
