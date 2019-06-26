@@ -32,8 +32,15 @@ public class KlausurNotenVerteilungController {
             TextField schluesselTextField = new TextField();
             schluesselTextField.setTextFormatter(getDecimalFormatter());
             schluesselTextField.setText(String.valueOf(notenschluessel[i]));
+
             double punkte = klausur.getGesamtpunktzahl() * notenschluessel[i] * 0.01;
             Label punkteLabel = new Label(String.valueOf(punkte));
+            schluesselTextField.textProperty().addListener((obs, oldSelection, newSelection) -> {
+                if (newSelection != null) {
+                    double tmpPunkte = klausur.getGesamtpunktzahl() * Double.valueOf(newSelection) * 0.01;
+                    punkteLabel.setText(String.valueOf(tmpPunkte));
+                }
+            });
             klausurNotenVerteilungGridPane.add(notenLabel, 0, i + 1);
             klausurNotenVerteilungGridPane.add(schluesselTextField, 1, i + 1);
             schluesselTextFields.add(schluesselTextField);

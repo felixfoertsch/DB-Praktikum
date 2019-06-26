@@ -27,12 +27,6 @@ public class KlausurTeilnehmerController {
     TableColumn<KlausurTeilnahme, String> klausurTeilnehmerNote;
 
     public void setupController(Klausur klausur) {
-        klausurTeilnehmerTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                System.out.println("BUH");
-            }
-        });
-
         klausurTeilnehmerId.setCellValueFactory(l -> {
             if (l.getValue() != null && l.getValue() != null) {
                 return new SimpleStringProperty(l.getValue().getStudent().getId().toString());
