@@ -12,7 +12,7 @@ public class KlausurNotenVerteilungController {
     @FXML
     private GridPane klausurNotenVerteilungGridPane;
 
-    public void setupController(Klausur klausur, HibernateService hibernateService) {
+    public void setupController(HibernateService hibernateService, Klausur klausur) {
         this.hibernateService = hibernateService;
         decodeNotenschluesselString(klausur.getNotenschluessel());
     }

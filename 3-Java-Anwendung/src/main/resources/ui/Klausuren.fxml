@@ -4,7 +4,7 @@
 <?import org.controlsfx.control.MasterDetailPane?>
 <MasterDetailPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
                   fx:controller="controller.klausuren.KlausurenController" fx:id="klausurenMasterDetailPane"
-                  showDetailNode="false" animated="true" dividerPosition="0.4">
+                  showDetailNode="false" animated="true" dividerPosition="0.5">
     <masterNode>
         <TableView fx:id="klausurTableView">
             <columns>
