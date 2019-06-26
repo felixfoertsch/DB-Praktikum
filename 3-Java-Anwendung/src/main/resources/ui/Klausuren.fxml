@@ -33,6 +33,16 @@
                     </columns>
                 </TableView>
             </Tab>
+            <Tab text="Abwesende Studierende" closable="false" fx:id="klausurTeilnehmerAbwesendTab">
+                <TableView fx:id="klausurTeilnehmerAbwesendTableView">
+                    <columns>
+                        <TableColumn prefWidth="50.0" text="ID" fx:id="klausurTeilnehmerAbwesendId"/>
+                        <TableColumn prefWidth="215.0" text="Name" fx:id="klausurTeilnehmerAbwesendName"/>
+                        <TableColumn prefWidth="100.0" text="MatrNr" fx:id="klausurTeilnehmerAbwesendMatrNr"/>
+                        <TableColumn prefWidth="100.0" text="Entschuldigt" fx:id="klausurTeilnehmerAbwesendEntschuldigt"/>
+                    </columns>
+                </TableView>
+            </Tab>
             <Tab text="Noten eingeben" closable="false" fx:id="klausurNotenEingabe">
                 <BorderPane fx:id="klausurNotenEingabeBorderPane">
                     <top>

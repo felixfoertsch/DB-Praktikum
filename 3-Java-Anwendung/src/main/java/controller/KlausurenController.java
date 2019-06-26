@@ -21,6 +21,7 @@ import org.hibernate.Transaction;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,6 +66,20 @@ public class KlausurenController {
     TableColumn<KlausurTeilnahme, String> klausurTeilnehmerPunkte;
     @FXML
     TableColumn<KlausurTeilnahme, String> klausurTeilnehmerNote;
+
+    // Tab: Abwesend
+    @FXML
+    Tab klausurTeilnehmerAbwesendTab;
+    @FXML
+    TableView<KlausurTeilnahme> klausurTeilnehmerAbwesendTableView;
+    @FXML
+    TableColumn<KlausurTeilnahme, String> klausurTeilnehmerAbwesendId;
+    @FXML
+    TableColumn<KlausurTeilnahme, String> klausurTeilnehmerAbwesendName;
+    @FXML
+    TableColumn<KlausurTeilnahme, String> klausurTeilnehmerAbwesendMatrNr;
+    @FXML
+    TableColumn<KlausurTeilnahme, String> klausurTeilnehmerAbwesendEntschuldigt;
 
     // Tab: Noteneingabe
     @FXML
@@ -141,7 +156,7 @@ public class KlausurenController {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
-            this.klausuren = session.createQuery("from Klausur").list();
+            this.klausuren = session.createQuery("from Klausur").getResultList();
             tx.commit();
         } catch (Exception e) {
             if (tx != null) tx.rollback();
@@ -151,10 +166,17 @@ public class KlausurenController {
 
     @FXML
     private void configureDetail(Klausur klausur) {
-        selectedKlausur = klausur;
-        setupPropertyTab(klausur);
-        setupTeilnehmerTab(klausur);
-        setupNotenEingabeTab(klausur);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Klausur k = session.byId(Klausur.class).load(klausur.getId());
+        session.getTransaction().commit();
+        session.close();
+
+        selectedKlausur = k;
+        setupPropertyTab(selectedKlausur);
+        setupTeilnehmerTab(selectedKlausur);
+        setupAbwensendTab(selectedKlausur);
+        setupNotenEingabeTab(selectedKlausur);
         klausurenMasterDetailPane.showDetailNodeProperty().setValue(true);
     }
 
@@ -164,7 +186,6 @@ public class KlausurenController {
     }
 
     private void setupTeilnehmerTab(Klausur klausur) {
-
         klausurTeilnehmerId.setCellValueFactory(l -> {
             if (l.getValue() != null && l.getValue() != null) {
                 return new SimpleStringProperty(l.getValue().getStudent().getId().toString());
@@ -209,6 +230,55 @@ public class KlausurenController {
         klausurTeilnehmerTableView.setItems(kt);
         klausurTeilnehmerTableView.getSortOrder().add(klausurTeilnehmerName);
         klausurTeilnehmerTab.setContent(klausurTeilnehmerTableView);
+    }
+
+    private void setupAbwensendTab(Klausur klausur) {
+
+        List<KlausurTeilnahme> abwensendeKlausurTeilnehmer = new ArrayList<>();
+
+        for (KlausurTeilnahme kt : klausur.getKlausurTeilnahmen()) {
+            if (!kt.getErschienen()) {
+                abwensendeKlausurTeilnehmer.add(kt);
+            }
+        }
+
+        klausurTeilnehmerAbwesendId.setCellValueFactory(l -> {
+            if (l.getValue() != null && l.getValue() != null) {
+                return new SimpleStringProperty(l.getValue().getStudent().getId().toString());
+            } else {
+                return new SimpleStringProperty("N/A");
+            }
+        });
+
+        klausurTeilnehmerAbwesendName.setCellValueFactory(l -> {
+            if (l.getValue() != null && l.getValue().getStudent() != null) {
+                return new SimpleStringProperty(l.getValue().getStudent().getVorname() + " " + l.getValue().getStudent().getNachname());
+            } else {
+                return new SimpleStringProperty("N/A");
+            }
+        });
+
+        klausurTeilnehmerAbwesendMatrNr.setCellValueFactory(l -> {
+            if (l.getValue() != null && l.getValue().getStudent() != null) {
+                return new SimpleStringProperty(l.getValue().getStudent().getMatrikelNr());
+            } else {
+                return new SimpleStringProperty("N/A");
+            }
+        });
+
+        klausurTeilnehmerAbwesendEntschuldigt.setCellValueFactory(l -> {
+            if (l.getValue() != null && l.getValue().getStudent() != null) {
+                return new SimpleStringProperty(l.getValue().getEntschuldigt().toString());
+            } else {
+                return new SimpleStringProperty("N/A");
+            }
+        });
+
+        ObservableList<KlausurTeilnahme> kt = FXCollections.observableArrayList(abwensendeKlausurTeilnehmer);
+
+        klausurTeilnehmerAbwesendTableView.setItems(kt);
+        klausurTeilnehmerAbwesendTableView.getSortOrder().add(klausurTeilnehmerAbwesendName);
+        klausurTeilnehmerAbwesendTab.setContent(klausurTeilnehmerAbwesendTableView);
     }
 
     private void setupNotenEingabeTab(Klausur klausur) {
@@ -283,6 +353,22 @@ public class KlausurenController {
                     new KlausurTeilnahme(student, klausur));
             tx.commit();
             return kt;
+        } catch (Exception e) {
+            System.out.println("N/A");
+            if (tx != null) tx.rollback();
+            throw e;
+        }
+    }
+
+    private List<KlausurTeilnahme> fetchAbwensendeKlausurTeilnehmer(Klausur klausur) {
+        Transaction tx = null;
+        try (Session session = sessionFactory.openSession()) {
+            tx = session.beginTransaction();
+            List<KlausurTeilnahme> klausurTeilnahmen = session.createQuery(
+                    "select kt from KlausurTeilnahme kt where klausur_id = :klausur_id", KlausurTeilnahme.class)
+                    .setParameter("klausur_id", klausur.getId()).list();
+            tx.commit();
+            return klausurTeilnahmen;
         } catch (Exception e) {
             System.out.println("N/A");
             if (tx != null) tx.rollback();

@@ -1,7 +1,6 @@
 package controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.util.converter.DoubleStringConverter;
@@ -138,11 +137,11 @@ public class KlausurTeilnahmeEingabeController {
                 new DoubleStringConverter(), 0.0,
                 change -> {
                     if (change.getControlNewText().isEmpty()) return null;
-                    String newText = change.getControlNewText() ;
+                    String newText = change.getControlNewText();
                     if (validDoubleText.matcher(newText).matches()) {
                         if (Double.valueOf(change.getControlNewText()) > maxPunkte) return null;
-                        return change ;
-                    } else return null ;
+                        return change;
+                    } else return null;
                 });
         return textFormatter;
     }
