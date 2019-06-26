@@ -8,23 +8,14 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.layout.GridPane;
 import model.klausur.Klausur;
 import model.relationen.KlausurTeilnahme;
-import org.hibernate.SessionFactory;
 
 
 public class KlausurStatistikController {
-    private SessionFactory sessionFactory;
-    private Klausur klausur;
     private int[] notenverteilung = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     @FXML
     private GridPane klausurStatistikGridPane;
 
-
-    void injectSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
     void setupController(Klausur klausur) {
-        this.klausur = klausur;
         createHistogram(klausur);
     }
 
@@ -63,18 +54,41 @@ public class KlausurStatistikController {
 
         for (KlausurTeilnahme kt : klausur.getKlausurTeilnahmen()) {
             switch (kt.getNote().toString()) {
-                case "1.0": notenverteilung[0]++; break;
-                case "1.3": notenverteilung[1]++; break;
-                case "1.7": notenverteilung[2]++; break;
-                case "2.0": notenverteilung[3]++; break;
-                case "2.3": notenverteilung[4]++; break;
-                case "2.7": notenverteilung[5]++; break;
-                case "3.0": notenverteilung[6]++; break;
-                case "3.3": notenverteilung[7]++; break;
-                case "3.7": notenverteilung[8]++; break;
-                case "4.0": notenverteilung[9]++; break;
-                case "5.0": notenverteilung[10]++; break;
-                default: break;
+                case "1.0":
+                    notenverteilung[0]++;
+                    break;
+                case "1.3":
+                    notenverteilung[1]++;
+                    break;
+                case "1.7":
+                    notenverteilung[2]++;
+                    break;
+                case "2.0":
+                    notenverteilung[3]++;
+                    break;
+                case "2.3":
+                    notenverteilung[4]++;
+                    break;
+                case "2.7":
+                    notenverteilung[5]++;
+                    break;
+                case "3.0":
+                    notenverteilung[6]++;
+                    break;
+                case "3.3":
+                    notenverteilung[7]++;
+                    break;
+                case "3.7":
+                    notenverteilung[8]++;
+                    break;
+                case "4.0":
+                    notenverteilung[9]++;
+                    break;
+                case "5.0":
+                    notenverteilung[10]++;
+                    break;
+                default:
+                    break;
             }
         }
     }

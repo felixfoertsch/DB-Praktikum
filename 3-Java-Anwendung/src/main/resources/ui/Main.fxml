@@ -4,25 +4,18 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.Scene?>
 <?import javafx.stage.Stage?>
-<Stage xmlns:fx="http://javafx.com/fxml/1" fx:id="mainStage" height="1000" width="1200"
+<Stage xmlns:fx="http://javafx.com/fxml/1" height="1000" width="1200"
        xmlns="http://javafx.com/javafx/11.0.1" fx:controller="controller.MainController" onShowing="#viewKlausuren">
     <scene>
         <Scene>
             <BorderPane fx:id="mainBorderPane">
                 <top>
-                    <MenuBar fx:id="mainMenuBar" useSystemMenuBar="false" BorderPane.alignment="CENTER">
+                    <MenuBar useSystemMenuBar="false">
                         <Menu text="File">
-                            <MenuItem onAction="#newKlausurButtonClicked" text="New Klausur"/>
-                            <SeparatorMenuItem/>
                             <MenuItem onAction="#importButtonClicked" text="Import"/>
                         </Menu>
                         <Menu text="View">
                             <MenuItem onAction="#viewKlausuren" text="Klausuren"/>
-                        </Menu>
-                        <Menu text="Test">
-                            <MenuItem onAction="#testStudiengangInsert" text="Insert Hard Coded Studiengang"/>
-                            <MenuItem onAction="#testStudiengangGet" text="Get Studiengang Id 1"/>
-                            <MenuItem onAction="#testEverything" text="Supertest"/>
                         </Menu>
                         <Menu text="Help">
                             <MenuItem onAction="#aboutButtonClicked" text="About"/>

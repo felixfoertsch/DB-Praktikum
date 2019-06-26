@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import services.HibernateService;
 
 import java.io.IOException;
 
@@ -28,8 +29,10 @@ public class App extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Main.fxml"));
         Stage stage = loader.load();
 
+        HibernateService hibernateService = new HibernateService(sessionFactory);
+
         MainController mc = loader.getController();
-        mc.injectSessionFactory(sessionFactory);
+        mc.setupController(hibernateService);
 
         stage.show();
     }

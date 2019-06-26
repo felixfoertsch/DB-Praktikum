@@ -9,16 +9,15 @@ import model.klausur.Klausur;
 import model.person.Student;
 import model.relationen.AufgabenBearbeitung;
 import model.relationen.KlausurTeilnahme;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import services.HibernateService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class KlausurTeilnahmeEingabeController {
-    private SessionFactory sessionFactory;
+public class KlausurTeilnehmerEingabeController {
+    private HibernateService hibernateService;
     private Student selectedStudent;
     private Klausur selectedKlausur;
     private List<Aufgabe> aufgaben;
@@ -43,11 +42,8 @@ public class KlausurTeilnahmeEingabeController {
     private Label punkteSummeLabel = new Label("");
     private Double gesamtpunkte = 0.0;
 
-    void injectSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-    void setupController(Student student, Klausur klausur) {
+    void setupController(HibernateService hibernateService, Student student, Klausur klausur) {
+        this.hibernateService = hibernateService;
         this.selectedStudent = student;
         this.selectedKlausur = klausur;
         this.aufgaben = klausur.getAufgaben();
@@ -118,17 +114,13 @@ public class KlausurTeilnahmeEingabeController {
         kt.setPunkte(gesamtpunkte);
         kt.setNote(Double.valueOf(klausurNotenEingabeNotenTextField.getText()));
 
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.save(kt);
+        hibernateService.saveKlausurTeilnahme(kt);
 
         for (Aufgabe a : aufgaben) {
             String aufgabenPunkte = aufgabenMap.get(a.getRang()).getText();
             AufgabenBearbeitung ab = new AufgabenBearbeitung(selectedStudent, a, Double.valueOf(aufgabenPunkte));
-            session.save(ab);
+            hibernateService.saveAufgabenBearbeitung(ab);
         }
-        session.getTransaction().commit();
-        session.close();
     }
 
     private TextFormatter<Double> getDoubleFormatterWithMax(Double maxPunkte) {

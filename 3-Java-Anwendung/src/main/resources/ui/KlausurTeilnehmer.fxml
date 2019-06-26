@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<TableView fx:id="klausurTeilnehmerTableView" xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="controller.KlausurTeilnehmerController">
+    <columns>
+        <TableColumn prefWidth="50.0" text="ID" fx:id="klausurTeilnehmerId"/>
+        <TableColumn prefWidth="215.0" text="Name" fx:id="klausurTeilnehmerName"/>
+        <TableColumn prefWidth="100.0" text="MatrNr" fx:id="klausurTeilnehmerMatrNr"/>
+        <TableColumn prefWidth="60.0" text="Punkte" fx:id="klausurTeilnehmerPunkte"/>
+        <TableColumn prefWidth="60.0" text="Note" fx:id="klausurTeilnehmerNote"/>
+    </columns>
+</TableView>
